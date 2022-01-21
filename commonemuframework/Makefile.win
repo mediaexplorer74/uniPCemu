@@ -1,0 +1,426 @@
+#Windows makefile test project settings
+
+BUILD_DIR = ../../projects_build/$(BUILD_NAME)
+
+BUILD_INTERMEDIATE = windows
+
+#Name of the destination application!
+ifneq (,$(findstring x64,$(MAKECMDGOALS)))
+#64-bit version
+$(info Using 64-bit executable)
+TARGET = $(BUILD_NAME)_x64.exe
+ifneq (,$(findstring mingw64,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE = msys64
+else
+BUILD_INTERMEDIATE = mingw64
+endif
+else
+#32-bit version
+$(info Using 32-bit executable)
+TARGET = $(BUILD_NAME)_x86.exe
+ifneq (,$(findstring mingw32,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE = msys32
+else
+BUILD_INTERMEDIATE = mingw32
+endif
+endif
+
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE := $(BUILD_INTERMEDIATE)_winpcap
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE := $(BUILD_INTERMEDIATE)_pcap
+endif
+endif
+ifneq ("$(wildcard gitversion2.txt)","")
+GIT_VERSION := $(shell cat gitversion2.txt)
+endif
+ifeq ("$(wildcard gitversion2.txt)","")
+GIT_VERSION := $(shell git describe --tags)
+endif
+
+TARGET_PROFILE_TXT = profiler.txt
+TARGET_PROFILE_CMP_TXT = profiler2.txt
+
+#Currently, our resource is only one: The project rc file!
+RESOURCES = $(BUILD_NAME).res
+
+#GProf switches, if not specified!
+ifeq ($(GPROF_SWITCHES),)
+GPROF_SWITCHES =
+endif
+
+# ###################################################
+
+
+#Our actual building script doing all the hard work:
+
+#Our filenames of the targets (release and debug)!
+TARGET_RELEASE = $(TARGET)
+TARGET_DEBUG = dbg$(TARGET)
+TARGET_PROFILE = prof$(TARGET)
+
+#Programs
+ifeq (,$(CC))
+CC := $(CROSS_COMPILE)gcc
+endif
+ifeq (,$(WINDRES))
+WINDRES := $(CROSS_COMPILE)windres
+endif
+ifeq (,$(AR))
+AR := $(CROSS_COMPILE)ar
+endif
+ifeq (,$(STRIP))
+STRIP := $(CROSS_COMPILE)strip
+endif
+ifeq (,$(RM))
+RM = rm -f
+endif
+ifeq (,$(MKDIR))
+MKDIR = mkdir
+endif
+
+#Default SDL2.dll location
+dllloc = /bin
+
+#Default pcap location
+usrdllloc = /usr/bin
+usrlibloc = /usr/lib
+
+ifneq (,$(findstring mingw64,$(MAKECMDGOALS)))
+prefix = /mingw64/x86_64-w64-mingw32
+dllloc = $(prefix)/bin
+endif
+
+ifneq (,$(findstring mingw32,$(MAKECMDGOALS)))
+prefix = /mingw32/i686-w64-mingw32
+dllloc = $(prefix)/bin
+endif
+
+WARNS = -Wall
+
+#Initialize directories to include first!
+INCLUDE_DIRS =
+INCLUDE_LIBRARY_DIRS =
+
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+#WinPCap support!
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+#WinPCap support!
+#INCLUDE_LIBRARY_DIRS += -L$(usrlibloc)
+#INCLUDE_DIRS += -I$(usrlibloc)
+endif
+endif
+
+ifeq (,$(findstring x64,$(MAKECMDGOALS)))
+#x86 version
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions instead!
+INCLUDE_DIRS := $(INCLUDE_DIRS) -I. -I$(prefix)/include -I$(prefix)/include/SDL2
+#INCLUDE_LIBRARY_DIRS := $(INCLUDE_LIBRARY_DIRS) -L$(prefix)/lib
+endif
+
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+INCLUDE_DIRS := -I. $(INCLUDE_DIRS) -I$(prefix)/include -I$(prefix)/include/SDL
+#INCLUDE_LIBRARY_DIRS := $(INCLUDE_LIBRARY_DIRS) -L$(prefix)/lib
+endif
+endif
+
+ifneq (,$(findstring x64,$(MAKECMDGOALS)))
+#x64 version
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions instead!
+INCLUDE_DIRS := -I. $(INCLUDE_DIRS) -I$(prefix)/include -I$(prefix)/include/SDL2
+#INCLUDE_LIBRARY_DIRS := $(INCLUDE_LIBRARY_DIRS) -L$(prefix)/lib
+endif
+
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+INCLUDE_DIRS := -I. $(INCLUDE_DIRS) -I$(prefix)/include -I$(prefix)/include/SDL
+#INCLUDE_LIBRARY_DIRS := $(INCLUDE_LIBRARY_DIRS) -L$(prefix)/lib
+endif
+
+#Modify the compiler to 64-bit!
+CC = x86_64-w64-mingw32-gcc
+endif
+
+#Common emulator framework!
+INCLUDE_DIRS := $(INCLUDE_DIRS) -I../commonemuframework
+
+#Default optimization flags!
+OPTIMIZATIONFLAGS = -O3
+
+#Execute stripping if set below!
+STRIP = -s
+
+#Building for debugging optimization flags
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
+OPTIMIZATIONFLAGS = -Og
+endif
+
+#Building for debugger and normal CFLAGS
+BUILD_CFLAGS = -enable-core-inline -static-libgcc -static-libstdc++
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
+BUILD_CFLAGS = -ggdb -ffunction-sections
+endif
+
+ifneq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+#Enable line-profiling instead!
+GPROF_SWITCHES := $(GPROF_SWITCHES)
+endif
+
+#Default switches!
+BUILD_LDFLAGS_PROFSWITCHES =
+
+ifneq (,$(findstring profile,$(MAKECMDGOALS)))
+ifneq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+#Enable line-profiling instead!
+BUILD_LDFLAGS_PROFSWITCHES = -fprofile-arcs -ftest-coverage -fprofile-generate
+endif
+BUILD_CFLAGS = -g -pg -ffunction-sections -enable-core-inline -static-libgcc -static-libstdc++
+endif
+
+#Different kinds of flags for x86 and x64!
+
+#Add -mno-ms-bitfields to fix broken bitfields and type sizes in MinGW.
+ifeq (,$(findstring x64,$(MAKECMDGOALS)))
+#x86 version
+#Build for i386 CPU? This doesn't work!
+#CFLAGS = -std=c99 ${WARNS} -mno-ms-bitfields -m32 -march=i386
+CFLAGS = -std=c99 ${WARNS} -mno-ms-bitfields
+endif
+
+ifneq (,$(findstring x64,$(MAKECMDGOALS)))
+#x64 version, don't specify the architecture: this is applied by the compiler automatically(AMD vs EM64T cannot be detected yet)
+CFLAGS = -std=c99 ${WARNS} -mno-ms-bitfields
+endif
+
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+SDLNET = -lSDL2_net
+endif
+endif
+
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+SDLNET = -lSDL_net
+endif
+endif
+
+# Initialize linker flags!
+LDFLAGS = 
+LDLIBS = 
+
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions&libs instead! Link statically?
+ifneq (,$(findstring SDL2static,$(MAKECMDGOALS)))
+LDLIBS = -static -lmingw32 $(SDLNET) -lSDL2main -lSDL2 -lm -static-libgcc
+endif
+ifeq (,$(findstring SDL2static,$(MAKECMDGOALS)))
+#Link dynamically?
+LDLIBS = -lmingw32 $(SDLNET) -lSDL2main -lSDL2
+endif
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+CFLAGS := $(CFLAGS) -DSDL2_NET
+endif
+#Flags always set for compiling with SDL2(for the code compilation itself)!
+CFLAGS := $(CFLAGS) -DSDL2
+endif
+
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+CFLAGS := $(CFLAGS) -DSDL_NET
+endif
+LDLIBS = -lmingw32 $(SDLNET) -lSDLmain -lSDL
+endif
+
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+#WinPCap support!
+CFLAGS := $(CFLAGS) -DPACKETSERVER_ENABLED -DWPCAP
+# WinPcap is loaded dynamically by the app, don't hardcode it in the app.
+# LDLIBS += -lwpcap
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+#PCap support!
+CFLAGS := $(shell pcap-config --cflags) $(CFLAGS) -DPACKETSERVER_ENABLED
+LDLIBS := $(shell pcap-config --libs) $(LDLIBS)
+endif
+endif
+
+#Required define support!
+CFLAGS := $(CFLAGS) -D$(BUILD_DEFINE)
+
+#Required library to run on Windows. Also, apply DEP and Windows subsystem
+LDLIBS += -lwinmm
+LDFLAGS += -Wl,--nxcompat -Wl,-subsystem,windows
+
+#Apply build directory etc.
+BUILD_RELEASE = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_RELEASE)
+BUILD_DEBUG = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_DEBUG)
+BUILD_PROFILE = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_PROFILE)
+BUILD_PROFILE_GMON = $(BUILD_DIR)/gmon.out
+BUILD_PROFILE_GMON_TXT = $(BUILD_DIR)/$(TARGET_PROFILE_TXT)
+BUILD_PROFILE_GMON_CMP_TXT = $(BUILD_DIR)/$(TARGET_PROFILE_CMP_TXT)
+BUILD_RESOURCES := $(patsubst %.res,$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.res,$(RESOURCES))
+BUILD_LDFLAGS = ${LDFLAGS}
+BUILD_LDLIBS = $(INCLUDE_LIBRARY_DIRS) ${LDLIBS}
+
+#Make sure the objects to compile are sorted!
+OBJS := $(sort $(OBJS))
+
+OBJS := $(patsubst %.o,$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,$(subst ../,___/,$(OBJS)))
+
+# can be ./src in different location
+subdir := $(ROOTPATH)/..
+# may have SHA-1 (detached HEAD) 
+subdep := $(subdir)/.git/HEAD
+# may be a ref HEAD (for any branch/tag) 
+gitref := $(word 2, $(shell cat $(subdep)))
+# append it if referenced HEAD
+ifneq "$(gitref)" ""
+# e.g. HEAD & refs/heads/master 
+subdep += $(subdir)/.git/$(gitref)
+endif
+
+#Rules themselves!
+#Build,debug and analyze(profile subcommand) command support!
+
+analyze: profile
+	$(info Creating $(TARGET_PROFILE_TXT)...)
+ifneq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+ifeq (,$(gcov_files))
+$(error Please specify gcov_files=FILESHERE (replacing FILESHERE with the file to check) to analyze. Add lineprofile_branches to look for branch probabilities. )
+endif
+ifneq (,$(findstring lineprofile_branches,$(MAKECMDGOALS)))
+	gcov -b $(gcov_files)
+endif
+ifeq (,$(findstring lineprofile_branches,$(MAKECMDGOALS)))
+	gcov $(gcov_files)
+endif
+endif
+ifeq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+	@gprof $(GPROF_SWITCHES) $(BUILD_PROFILE) $(BUILD_PROFILE_GMON) > $(BUILD_PROFILE_GMON_TXT)
+endif
+
+analyze2: profile
+	$(info Creating $(TARGET_PROFILE_CMP_TXT)...)
+ifneq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+endif
+ifeq (,$(findstring lineprofile,$(MAKECMDGOALS)))
+	@gprof $(GPROF_SWITCHES) $(BUILD_PROFILE) $(BUILD_PROFILE_GMON) > $(BUILD_PROFILE_GMON_CMP_TXT)
+endif
+build: $(BUILD_RELEASE)
+profile: $(BUILD_PROFILE)
+reprofile: clean profile
+
+#Run debugger now on the executable!
+debug: $(BUILD_DEBUG)
+	$(info Starting gdb...)
+	@gdb -w --cd="$(BUILD_DIR)" --se="$(TARGET_DEBUG)"
+
+redebug: clean debug
+
+#Dependancy support!
+-include $(OBJS:.o=.d)
+
+#Compile into debug mode without stripping (-s)!
+$(BUILD_DEBUG): ${OBJS}
+	$(info Creating debug executable $(TARGET_DEBUG)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -ggdb -o "$@" $(OBJS) -Wl,-gc-sections ${BUILD_LDFLAGS} ${BUILD_LDLIBS}
+	$(info Creating release executable copy of $(TARGET_DEBUG)...)
+	@cp $@ $(dir $@)/..
+
+$(BUILD_PROFILE): ${OBJS}
+	$(info Creating profiling executable $(TARGET_PROFILE)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -g -pg $(BUILD_LDFLAGS_PROFSWITCHES) -o "$@" $(OBJS) -Wl,-gc-sections ${BUILD_LDFLAGS} ${BUILD_LDLIBS}
+	$(info Creating release executable copy of $(TARGET_PROFILE)...)
+	@cp $@ $(dir $@)/..
+
+#Compile into release mode with stripping (-s)!
+$(BUILD_RELEASE): ${OBJS} $(BUILD_RESOURCES) ../.git/HEAD
+	$(info Creating release executable $(TARGET_RELEASE)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -o "$@" ${OBJS} $(BUILD_RESOURCES) $(STRIP) ${BUILD_LDFLAGS} ${BUILD_LDLIBS}
+	$(info Creating release executable copy of $(TARGET_RELEASE)...)
+	@cp $@ $(dir $@)/..
+	
+	$(info Creating library requirements...)
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions instead!
+	@cp $(dllloc)/SDL2.dll $(dir $@)
+	@cp $(dllloc)/SDL2.dll $(dir $@)/..
+endif
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+	@cp $(dllloc)/SDL.dll $(dir $@)
+	@cp $(dllloc)/SDL.dll $(dir $@)/..
+endif
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+#SDL2 functions instead!
+	@cp $(dllloc)/SDL2_net.dll $(dir $@)
+	@cp $(dllloc)/SDL2_net.dll $(dir $@)/..
+endif
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+	@cp $(dllloc)/SDL_net.dll $(dir $@)
+	@cp $(dllloc)/SDL_net.dll $(dir $@)/..
+endif
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+#winpcap packet driver is added!
+#	@cp $(dllloc)/wpcap.dll $(dir $@)
+#	@cp $(dllloc)/wpcap.dll $(dir $@)/..
+#	@cp $(dllloc)/Packet.dll $(dir $@)
+#	@cp $(dllloc)/Packet.dll $(dir $@)/..
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+#pcap packet driver is added!
+#	@cp $(usrdllloc)/msys-pcap-1.dll $(dir $@)
+#	@cp $(usrdllloc)/msys-pcap-1.dll $(dir $@)/..
+#	@cp $(usrdllloc)/msys-2.0.dll $(dir $@)
+#	@cp $(usrdllloc)/msys-2.0.dll $(dir $@)/..
+endif
+endif
+
+gitcommitversion.h: $(subdep)
+# Create the commit version header with our commit version: this cannot be passed directly to the interpreter(doesn't quote the data it contains)
+	@-git update-index --assume-unchanged gitcommitversion.h
+	@echo "#define GITVERSION \"$(GIT_VERSION)\"">gitcommitversion.h
+
+#Main requires gitcommitversion.h to be up-to-date!
+$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/___/commonemuframework/emu/main.o: gitcommitversion.h
+
+#Normal compilation of seperate modules!
+$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.res: %.rc gitcommitversion.h
+	$(info Creating resources...)
+	@$(MKDIR) -p $(dir $@)
+# Now that we're having an up-to-date version, create the file with the version specified!
+	@${WINDRES} $< -O coff -o $@
+
+#Dummy to prevent compiling .d.o invalid paths!
+%.d:
+	@
+
+#Patch for dependancy output using incorrect .o file paths is right below the CC lines!
+$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o:
+	$(info Compiling $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)))
+	@$(MKDIR) -p $(dir $@)
+	@${CC} $(OPTIMIZATIONFLAGS) ${CFLAGS} $(BUILD_CFLAGS) ${INCLUDE_DIRS} -c $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)) -o $@
+	@${CC} $(CFLAGS) $(INCLUDE_DIRS) -c $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)) -MM -MF $(patsubst %.o,%.d,$@)
+	@sed -i 's|$(notdir $@):|$@:|' $(patsubst %.o,%.d,$@)
+
+clean:
+	$(info Cleaning up...)
+	@-$(RM) $(OBJS)
+	@-$(RM) $(patsubst %.o,%.d,$(OBJS))
+	@-$(RM) $(BUILD_RESOURCES)
+	@-$(RM) $(BUILD_RELEASE)
+	@-$(RM) $(BUILD_PROFILE)
+	@-$(RM) $(BUILD_DEBUG)
+
+# Special flags that aren't targets, just targets used for creating compiler&linker flags!
+.PHONY: SDL2 SDL2static SDL2_net win pcap winpcap x64

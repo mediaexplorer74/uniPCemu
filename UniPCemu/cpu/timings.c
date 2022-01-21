@@ -1,0 +1,1383 @@
+/*
+
+Copyright (C) 2019 - 2021 Superfury
+
+This file is part of UniPCemu.
+
+UniPCemu is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+UniPCemu is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with UniPCemu.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+#include "headers/cpu/cpu.h" //Basic types!
+#include "headers/cpu/cpu_pmtimings.h" //Protected-mode timings header!
+
+#define EU_CYCLES_SUBSTRACT_ACCESSREAD 2
+#define EU_CYCLES_SUBSTRACT_ACCESSWRITE 2
+#define EU_CYCLES_SUBSTRACT_ACCESSRW 4
+
+//Compressed protected&real mode timing table. This will need to be uncompressed for usage to be usable(long lookup times otherwise)
+CPUPM_Timings CPUPMTimings[CPUPMTIMINGS_SIZE] = {
+	//286 CPU timings(216 entries)
+	//MOV
+	{0,0,0,0x88,0xFE,0x00,{{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}},{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //MOV Register to Register/Memory
+	,{0,0,0,0x8A,0xFE,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //MOV Register/memory to Register
+	,{0,0,0,0xC6,0xFE,0x01,{{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}},{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //MOV Immediate to register/memory
+	,{0,0,0,0xB0,0xF0,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //MOV Immediate to register
+	,{0,0,0,0xA0,0xFE,0x00,{{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Memory to accumulator
+	,{0,0,0,0xA2,0xFE,0x00,{{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Accumulator to memory
+	,{0,0,0,0x8E,0xFF,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{17,0,0},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //MOV Register/memory to segment register
+	,{0,0,0,0x8C,0xFF,0x00,{{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}},{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //MOV Segment register to register/memory
+	//PUSH
+	,{0,0,0,0xFF,0xFF,0x07,{{{{5,0,1},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{5,0,1},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //PUSH Memory
+	,{0,0,0,0x50,0xF8,0x00,{{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH Register
+	,{0,0,0,0x06,0xE7,0x00,{{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH Segment register
+	,{0,0,0,0x68,0xFD,0x00,{{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH immediate
+	,{0,0,0,0x60,0xFF,0x00,{{{{17-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{17-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}},{{{17-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{17-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}}}} //PUSHA
+	//POP
+	,{0,0,0,0x8F,0xFF,0x01,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //POP Memory
+	,{0,0,0,0x58,0xF8,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Register
+	,{0,0,0,0x07,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{0,0,0,0x17,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}}  //POP Segment register
+	,{0,0,0,0x1F,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{0,0,0,0x61,0xFF,0x00,{{{{19-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{19-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}},{{{19-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{19-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}}}} //POPA
+	//XCHG
+	,{0,0,0,0x86,0xFE,0x00,{{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //XCHG Register/memory with register
+	,{0,0,0,0x90,0xF8,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //XCHG Register with accumulator
+	//IN
+	,{0,0,0,0xE4,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IN Fixed port
+	,{0,0,0,0xEC,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IN Variable port
+	//OUT
+	,{0,0,0,0xE6,0xFE,0x00,{{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //OUT Fixed port
+	,{0,0,0,0xEE,0xFE,0x00,{{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //OUT Variable port
+	//XLAT
+	,{0,0,0,0xD7,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //XLAT
+	//LEA
+	,{0,0,0,0x8D,0xFF,0x00,{{{{3,0,1},{3,0,1}}},{{{3,0,1},{3,0,1}}}}} //LEA
+	//LDS
+	,{0,0,0,0xC5,0xFF,0x00,{{{{7,0,1},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{21,0,1},{21-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //LDS
+	//LES
+	,{0,0,0,0xC4,0xFF,0x00,{{{{7,0,1},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{21,0,1},{21-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //LES
+
+	//Page 3-48
+	//LAHF
+	,{0,0,0,0x9F,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //LAHF
+	//SAHF
+	,{0,0,0,0x9E,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //SAHF
+	//PUSHF
+	,{0,0,0,0x9C,0xFF,0x00,{{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSHF
+	//POPF
+	,{0,0,0,0x9D,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POPF
+	//ADD
+	,{0,0,0,0x00,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //ADD Reg/memory with register to either
+	,{0,0,0,0x80,0xFC,0x01,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //ADD Immediate to register/memory
+	,{0,0,0,0x04,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //ADD Immediate to accumulator
+	//ADC
+	,{0,0,0,0x10,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //ADC Reg/memory with register to either
+	,{0,0,0,0x80,0xFC,0x03,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //ADC Immediate to register/memory
+	,{0,0,0,0x14,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //ADC Immediate to accumulator
+	//INC
+	,{0,0,0,0xFE,0xFE,0x01,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //INC Register/memory
+	,{0,0,0,0x40,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //INC Register
+	//SUB
+	,{0,0,0,0x28,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //SUB Reg/memory and register to either
+	,{0,0,0,0x80,0xFC,0x06,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //SUB Immediate from register/memory
+	,{0,0,0,0x2C,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //SUB Immediate from accumulator
+	//SBB
+	,{0,0,0,0x18,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //SBB Reg/memory and register to either
+	,{0,0,0,0x80,0xFC,0x04,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //SBB Immediate from register/memory
+	,{0,0,0,0x1C,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //SBB Immediate from accumulator
+	//DEC
+	,{0,0,0,0xFE,0xFE,0x02,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //DEC Register/memory
+	,{0,0,0,0x48,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //DEC Register
+	//CMP
+	,{0,0,0,0x3A,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //CMP Register/memory with register
+	,{0,0,0,0x38,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //CMP Register with register/memory
+	,{0,0,0,0x80,0xFC,0x08,{{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //CMP Immediate with register/memory
+	,{0,0,0,0x3C,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //CMP Immediate with accumulator
+	//NEG
+	,{0,0,0,0xF6,0xFE,0x04,{{{{2,0,0},{2/*-EU_CYCLES_SUBSTRACT_ACCESSRW*/,0,0}}},{{{7,0,1},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //NEG: Can't read/write to memory: negative cycles(4>=2)?
+	//AAA
+	,{0,0,0,0x37,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //AAA
+	//DAA
+	,{0,0,0,0x27,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //DAA
+
+	//Page 3-49
+	//AAS
+	,{0,0,0,0x3F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //AAS
+	//DAS
+	,{0,0,0,0x2F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //DAS
+	//MUL
+	,{0,0,0,0xF6,0xFF,0x05,{{{{13,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{13,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //MULB Register/Memory-Byte
+	,{0,0,0,0xF7,0xFF,0x05,{{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //MULW Register/Memory-Word
+	//IMUL
+	,{0,0,0,0xF6,0xFF,0x06,{{{{13,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{13,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //IMULB Register/Memory-Byte
+	,{0,0,0,0xF7,0xFF,0x06,{{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //IMULW Register/Memory-Word
+	//IMUL (186+ instruction)
+	,{0,0,0,0x69,0xFD,0x00,{{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{21,0,0},{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //IMUL
+	//DIV
+	,{0,0,0,0xF6,0xFF,0x07,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //DIV Register/Memory-Byte
+	,{0,0,0,0xF7,0xFF,0x07,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //DIV Register/Memory-Word
+	//IDIV
+	,{0,0,0,0xF6,0xFF,0x08,{{{{17,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{17,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //IDIV Register/Memory-Byte
+	,{0,0,0,0xF7,0xFF,0x08,{{{{25,0,0},{28-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{25,0,0},{28-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //IDIV Register/Memory-Word
+	//AAM
+	,{0,0,0,0xD4,0xFF,0x00,{{{{16,0,0},{16,0,0}}},{{{16,0,0},{16,0,0}}}}} //AAM
+	//AAD
+	,{0,0,0,0xD5,0xFF,0x00,{{{{14,0,0},{14,0,0}}},{{{14,0,0},{14,0,0}}}}} //AAD
+	//CBW
+	,{0,0,0,0x98,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CBW
+	//CWD
+	,{0,0,0,0x99,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CWD
+	//Shift/Rotate Instructions
+	,{0,0,0,0xD0,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //Shift/Rotate Register/Memory by 1
+	,{0,0,0,0xD2,0xFE,0x00,{{{{5,1,0},{8-EU_CYCLES_SUBSTRACT_ACCESSRW,1,1}}},{{{5,1,0},{8-EU_CYCLES_SUBSTRACT_ACCESSRW,1,1}}}}} //Shift/Rotate Register/Memory by CL
+	,{0,0,0,0xC0,0xFE,0x00,{{{{5,1,0},{8-EU_CYCLES_SUBSTRACT_ACCESSRW,1,1}}},{{{5,1,0},{8-EU_CYCLES_SUBSTRACT_ACCESSRW,1,1}}}}} //Shift/Rotate Register/Memory by Count
+
+	//Page 3-50
+	//AND
+	,{0,0,0,0x20,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //AND Reg/memory and register to either
+	,{0,0,0,0x80,0xFE,0x05,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //AND Immediate to register/memory
+	,{0,0,0,0x24,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //AND Immediate to accumulator
+	//TEST
+	,{0,0,0,0x84,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //TEST Register/memory and register
+	,{0,0,0,0xF6,0xFE,0x01,{{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //TEST Immediate data and register/memory
+	,{0,0,0,0xA8,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //TEST Immediate data and accumulator
+	//OR
+	,{0,0,0,0x08,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //OR Reg/memory and register to either
+	,{0,0,0,0x80,0xFE,0x02,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //OR Immediate to register/memory
+	,{0,0,0,0x0C,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //OR Immediate to accumulator
+	//XOR
+	,{0,0,0,0x30,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //XOR Reg/memory and register to either
+	,{0,0,0,0x80,0xFE,0x07,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //XOR Immediate to register/memory
+	,{0,0,0,0x34,0xFE,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //XOR Immediate to accumulator
+	//NOT
+	,{0,0,0,0xF6,0xFE,0x03,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,1}}}}} //NOT
+
+	//String instructions without REP((N)Z)
+	//MOVS
+	,{0,0,0,0xA4,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MOVS
+	//CMPS
+	,{0,0,0,0xA6,0xFE,0x00,{{{{8-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{8-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{8-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{8-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //CMPS
+	//SCAS
+	,{0,0,0,0xAE,0xFE,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //SCAS
+	//LODS
+	,{0,0,0,0xAC,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LODS
+	//STOS
+	,{0,0,0,0xAA,0xFE,0x00,{{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //STOS
+	//INS
+	,{0,0,0,0x6C,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //INS
+	//OUTS
+	,{0,0,0,0x6E,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OUTS
+
+	//String instructions with REP(N)(Z)
+	//MOVS
+	,{0,0,0,0xA4,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //MOVS
+	//CMPS
+	,{0,0,0,0xA6,0xFE,0x00,{{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}},{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}}}} //CMPS
+	//SCAS
+	,{0,0,0,0xAE,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}}}} //SCAS
+	//LODS
+	,{0,0,0,0xAC,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}}}} //LODS
+	//STOS
+	,{0,0,0,0xAA,0xFE,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,3,2},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,3,2}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,3,2},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,3,2}}}}} //STOS
+	//INS
+	,{0,0,0,0x6C,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //INS
+	//OUTS
+	,{0,0,0,0x6E,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //OUTS
+
+	//Page 3-51
+	//We don't use the m value: this is done by the prefetch unit itself.
+	//CALL Direct Intersegment
+	,{0,0,0,0xE8,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //CALL Direct within segment
+	,{0,0,0,0xFF,0xFF,0x03,{{{{7,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{7,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //CALL Register/memory indirect within segment
+	,{0,0,0,0x9A,0xFF,0x00,{{{{13,0,0},{26,0,0}}},{{{13,0,0},{26,0,0}}}}} //CALL Direct Intersegment
+
+	//Protected mode variants
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{41,CALLGATE_SAMELEVEL,4},{41,CALLGATE_SAMELEVEL,4}}}}} //CALL Via call gate to same privilege level
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{82,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4},{82,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{86,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4},{86,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, X parameters
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{177,OTHERGATE_NORMALTSS,4},{177,OTHERGATE_NORMALTSS,4}}}}} //CALL Via TSS
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{182,OTHERGATE_NORMALTASKGATE,4},{182,OTHERGATE_NORMALTASKGATE,4}}}}} //CALL Via task gate
+
+	//CALL Indirect Intersegment
+	,{0,0,0,0xFF,0xFF,0x04,{{{{16,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{29,0,1},{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //CALL Register/memory indirect within segment
+
+	//Protected mode variants
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{44,CALLGATE_SAMELEVEL,5},{44,CALLGATE_SAMELEVEL,5}}}}} //CALL Via call gate to same privilege level
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{83,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5},{83,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{90,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5},{90,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, X parameters
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{180,OTHERGATE_NORMALTSS,5},{180,OTHERGATE_NORMALTSS,5}}}}} //CALL Via TSS
+	,{0,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{185,OTHERGATE_NORMALTASKGATE,5},{185,OTHERGATE_NORMALTASKGATE,5}}}}} //CALL Via task gate
+
+	//JMP
+	,{0,0,0,0xEB,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //JMP Short/long
+	,{0,0,0,0xE9,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //JMP Direct within segment
+	,{0,0,0,0xFF,0xFF,0x05,{{{{7,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{7,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //JMP Register/memory indirect within segment
+	,{0,0,0,0xEA,0xFF,0x00,{{{{11,0,0},{11,0,0}}},{{{23,0,0},{23,0,0}}}}} //JMP Direct intersegment
+	
+	//Protected mode variants(Direct Intersegment)
+	,{0,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{38,CALLGATE_SAMELEVEL,5},{38,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{0,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{175,OTHERGATE_NORMALTSS,5},{175,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS
+	,{0,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{180,OTHERGATE_NORMALTASKGATE,5},{180,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate
+
+	//JMP Indirect Intersegment
+	,{0,0,0,0xFF,0xFF,0x06,{{{{15,0,1},{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{26,0,1},{26-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //JMP Indirect intersegment
+
+	//Protected mode variants (Indirect Intersegment)
+	,{0,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{41,CALLGATE_SAMELEVEL,5},{41,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{0,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{178,OTHERGATE_NORMALTSS,5},{178,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS
+	,{0,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{183,OTHERGATE_NORMALTASKGATE,5},{183,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate
+
+	//RET
+	,{0,0,0,0xC3,0xFF,0x00,{{{{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within segment
+	,{0,0,0,0xC2,0xFF,0x00,{{{{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within seg adding immed to SP
+	,{0,0,0,0xCB,0xFF,0x00,{{{{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{25-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{25-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment
+	,{0,0,0,0xCA,0xFF,0x00,{{{{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{15-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment adding immediate to SP
+
+	//Protected mode variants (Intersegment)
+	,{0,0,0,0xCB,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{55-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{55-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment
+	,{0,0,0,0xCA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{55-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{55-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment adding immediate to SP
+
+	//Page 3-52
+
+	//JE/JZ
+	,{0,0,0,0x74,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JZ Not taken!
+	,{0,0,0,0x74,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JZ taken!
+	//JL/JNGE
+	,{0,0,0,0x7C,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JL Not taken!
+	,{0,0,0,0x7C,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JL taken!
+	//JLE/JNG
+	,{0,0,0,0x7E,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JLE Not taken!
+	,{0,0,0,0x7E,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JLE taken!
+	//JB/JNAE
+	,{0,0,0,0x72,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{0,0,0,0x72,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	//JBE/JNA
+	,{0,0,0,0x76,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JBE Not taken!
+	,{0,0,0,0x76,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JBE taken!
+	//JP/JPE
+	,{0,0,0,0x7A,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JP Not taken!
+	,{0,0,0,0x7A,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JP taken!
+	//JO
+	,{0,0,0,0x70,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JO Not taken!
+	,{0,0,0,0x70,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JO taken!
+	//JB
+	,{0,0,0,0x78,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{0,0,0,0x78,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	//JNE/JNZ
+	,{0,0,0,0x75,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNE Not taken!
+	,{0,0,0,0x75,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNE taken!
+	//JNL/JGE
+	,{0,0,0,0x7D,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNL Not taken!
+	,{0,0,0,0x7D,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNL taken!
+	//JNLE/JG
+	,{0,0,0,0x7F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNLE Not taken!
+	,{0,0,0,0x7F,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNLE taken!
+	//JNB/JAE
+	,{0,0,0,0x73,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNB Not taken!
+	,{0,0,0,0x73,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNB taken!
+	//JNBE/JA
+	,{0,0,0,0x77,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNBE Not taken!
+	,{0,0,0,0x77,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNBE taken!
+	//JNP/JPO
+	,{0,0,0,0x7B,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNP Not taken!
+	,{0,0,0,0x7B,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNP taken!
+	//JNO
+	,{0,0,0,0x71,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNO Not taken!
+	,{0,0,0,0x71,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNO taken!
+	//JNS
+	,{0,0,0,0x79,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNS Not taken!
+	,{0,0,0,0x79,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNS taken!
+	//LOOP
+	,{0,0,0,0xE2,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOP Not taken!
+	,{0,0,0,0xE2,0xFF,0x00,{{{{8,0,8},{8,0,8}}},{{{8,0,8},{8,0,8}}}}} //LOOP taken!
+	//LOOPZ/LOOPE
+	,{0,0,0,0xE1,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPZ Not taken!
+	,{0,0,0,0xE1,0xFF,0x00,{{{{8,0,8},{8,0,8}}},{{{8,0,8},{8,0,8}}}}} //LOOPZ taken!
+	//LOOPNZ/LOOPNE
+	,{0,0,0,0xE0,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPNZ Not taken!
+	,{0,0,0,0xE0,0xFF,0x00,{{{{8,0,8},{8,0,8}}},{{{8,0,8},{8,0,8}}}}} //LOOPNZ taken!
+	//JCXZ
+	,{0,0,0,0xE3,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //JCXZ Not taken!
+	,{0,0,0,0xE3,0xFF,0x00,{{{{8,0,8},{8,0,8}}},{{{8,0,8},{8,0,8}}}}} //JCXZ taken!
+	//ENTER
+	,{0,0,0,0xC8,0xFF,0x00,{{{{11,0,16},{11,0,16}}},{{{11,0,16},{11,0,16}}}}} //ENTER L=0
+	,{0,0,0,0xC8,0xFF,0x00,{{{{15,1,16},{15,1,16}}},{{{15,1,16},{15,1,16}}}}} //ENTER L=1
+	,{0,0,0,0xC8,0xFF,0x00,{{{{16,4,32},{16,4,32}}},{{{16,4,32},{16,4,32}}}}} //ENTER L>1
+	//LEAVE
+	,{0,0,0,0xC9,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LEAVE
+	//INT (Real mode only)
+	,{0,0,0,0xCD,0xFF,0x00,{{{{23-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0},{23-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INT Type specified
+	,{0,0,0,0xCC,0xFF,0x00,{{{{23-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0},{23-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INT 3
+	//INTO (Real mode only)
+	,{0,0,0,0xCE,0xFF,0x00,{{{{24-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,8},{24-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INTO Taken
+	,{0,0,0,0xCE,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //INTO Not taken
+
+	//Page 3-53
+	//INT&INTO Protected mode variants
+	,{0,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{40,INTERRUPTGATETIMING_SAMELEVEL,4},{40,INTERRUPTGATETIMING_SAMELEVEL,4}}}}} //INT Via Interrupt or Trap Gate to same privilege level
+	,{0,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{78,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{78,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //INT Via INterrupt or Trap Gate to different privilege level
+	,{0,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{167,INTERRUPTGATETIMING_TASKGATE,4},{167,INTERRUPTGATETIMING_TASKGATE,4}}}}} //INT Via Task Gate
+	,{0,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{40,INTERRUPTGATETIMING_SAMELEVEL,4},{40,INTERRUPTGATETIMING_SAMELEVEL,4}}}}} //INT Via Interrupt or Trap Gate to same privilege level
+	,{0,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{78,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{78,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //INT Via INterrupt or Trap Gate to different privilege level
+	,{0,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{167,INTERRUPTGATE_TASKGATE,4},{167,INTERRUPTGATE_TASKGATE,4}}}}} //INT Via Task Gate
+
+	//IRET
+	,{0,0,0,0xCF,0xFF,0x00,{{{{17,0,0},{17,0,0}}},{{{31,0,0},{31,0,0}}}}} //IRET
+	,{0,0,0,0xCF,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{55,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{55,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //IRET to different privilege level
+	,{0,0,0,0xCF,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{169,INTERRUPTGATE_TASKGATE,4},{169,INTERRUPTGATE_TASKGATE,4}}}}} //IRET to Different Task
+
+	//BOUND
+	,{0,0,0,0x62,0xFF,0x00,{{{{13-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{13-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{13-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{13-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //BOUND
+
+	//Processor Control
+	//CLC
+	,{0,0,0,0xF8,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CLC
+	//CMC
+	,{0,0,0,0xF5,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CMC
+	//STC
+	,{0,0,0,0xF9,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //STC
+	//CLD
+	,{0,0,0,0xFC,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CLD
+	//STD
+	,{0,0,0,0xFD,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //STD
+	//CLI
+	,{0,0,0,0xFA,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //CLI
+	//STI
+	,{0,0,0,0xFB,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //STI
+	//HLT
+	,{0,0,0,0xF4,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //HLT
+	//WAIT
+	,{0,0,0,0x9B,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //WAIT
+	//LOCK
+	,{0,0,0,0xF0,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,0,0},{0,0,0}}}}} //LOCK
+	//CLTS
+	,{0,0,1,0x06,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CLTS
+	//ESC (Coprocessor Instruction Escape)
+	,{0,0,0,0xD8,0xF8,0x00,{{{{9,0,0},{9,0,0}}},{{{9,0,0},{9,0,0}}}}} //ESC
+	//Segment override prefix
+	,{0,0,0,0x26,0xE7,0x00,{{{{0,0,0},{0,0,0}}},{{{0,0,0},{0,0,0}}}}} //Any Segment override prefix (CS,SS,DS,ES,FS,GS)
+	
+	//Protection control
+	//LGDT
+	,{0,0,1,0x01,0xFF,0x03,{{{{11,0,1},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{11,0,1},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //LGDT
+	//SGDT
+	,{0,0,1,0x01,0xFF,0x01,{{{{11,0,1},{11-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,1}}},{{{11,0,1},{11-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,1}}}}} //SGDT
+	//LIDT
+	,{0,0,1,0x01,0xFF,0x04,{{{{12,0,1},{12-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}},{{{12,0,1},{12-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,1}}}}} //LIDT
+	//SIDT
+	,{0,0,1,0x01,0xFF,0x02,{{{{12,0,1},{12-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,1}}},{{{12,0,1},{12-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,1}}}}} //SIDT
+	//LLDT
+	,{0,0,1,0x00,0xFF,0x03,{{{{0,0,0},{0,0,0}}},{{{17,0,1},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //LLDT
+	//SLDT
+	,{0,0,1,0x00,0xFF,0x01,{{{{0,0,0},{0,0,0}}},{{{2,0,1},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //SLDT
+
+	//Page 3-54
+
+	//LTR
+	,{0,0,1,0x00,0xFF,0x04,{{{{0,0,0},{0,0,0}}},{{{17,0,1},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //LTR
+	//STR
+	,{0,0,1,0x00,0xFF,0x02,{{{{0,0,0},{0,0,0}}},{{{2,0,1},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //STR
+	//LMSW
+	,{0,0,1,0x01,0xFF,0x07,{{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}},{{{3,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //LMSW
+	//SMSW
+	,{0,0,1,0x01,0xFF,0x05,{{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}},{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,1}}}}} //SMSW
+	//LAR
+	,{0,0,1,0x02,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{14,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //LAR
+	//LSL
+	,{0,0,1,0x03,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{14,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //LSL
+	//ARPL
+	,{0,0,0,0x63,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //ARPL
+	//VERR
+	,{0,0,1,0x00,0xFF,0x05,{{{{0,0,0},{0,0,0}}},{{{14,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //VERR
+	//VERW
+	,{0,0,1,0x00,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{14,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,1}}}}} //VERR
+	//215 items at this point!
+	//Undocumented instruction: LOADALL
+	,{0,0,1,0x05,0xFF,0x00,{{{{195-102,0,0},{195-102,0,0}}},{{{195-102,0,0},{195-102,0,0}}}}} //LOADALL uses 195 clocks and performs 51 word bus cycles.
+
+	/*
+	
+	80386 timings
+	
+	*/
+
+	//MOV
+	,{1,0,0,0x88,0xFE,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Register to Register/Memory
+	,{1,1,0,0x89,0xFF,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Register to Register/Memory
+	,{1,0,0,0x8A,0xFE,0x00,{{{{2,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Register/memory to Register
+	,{1,1,0,0x8B,0xFF,0x00,{{{{2,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Register/memory to Register
+	,{1,0,0,0xC6,0xFE,0x01,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Immediate to register/memory
+	,{1,1,0,0xC7,0xFF,0x01,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Immediate to register/memory
+	,{1,0,0,0xB0,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //MOV Immediate to register
+	,{1,0,0,0xB8,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //MOV Immediate to register
+	,{1,1,0,0xB8,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //MOV Immediate to register
+	,{1,0,0,0xA0,0xFE,0x00,{{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Memory to accumulator
+	,{1,0,0,0xA1,0xFF,0x00,{{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Memory to accumulator
+	,{1,1,0,0xA1,0xFF,0x00,{{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Memory to accumulator
+	,{1,0,0,0xA2,0xFE,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Accumulator to memory
+	,{1,1,0,0xA3,0xFF,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Accumulator to memory
+	,{1,0,0,0x8E,0xFF,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{18,0,0},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //MOV Register/memory to segment register
+	,{1,0,0,0x8C,0xFF,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //MOV Segment register to register/memory
+	//PUSH
+	,{1,0,0,0xFF,0xFF,0x07,{{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //PUSH Memory
+	,{1,1,0,0xFF,0xFF,0x07,{{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //PUSH Memory
+	,{1,0,0,0x50,0xF8,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH Register
+	,{1,1,0,0x50,0xF8,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH Register
+	,{1,0,0,0x06,0xE7,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH Segment register
+	,{1,0,0,0x68,0xFD,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH immediate
+	,{1,1,0,0x68,0xFF,0x00,{{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSH immediate
+	,{1,0,0,0x60,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}},{{{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}}}} //PUSHA
+	,{1,1,0,0x60,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}},{{{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*8),0,0}}}}} //PUSHA
+	//POP
+	,{1,0,0,0x8F,0xFF,0x01,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //POP Memory
+	,{1,1,0,0x8F,0xFF,0x01,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //POP Memory
+	,{1,0,0,0x58,0xF8,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Register
+	,{1,1,0,0x58,0xF8,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Register
+	,{1,0,0,0x07,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{1,0,0,0x17,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}}  //POP Segment register
+	,{1,0,0,0x1F,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{1,0,1,0xA1,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{1,0,1,0xA9,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POP Segment register
+	,{1,0,0,0x61,0xFF,0x00,{{{{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}},{{{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}}}} //POPA
+	,{1,1,0,0x61,0xFF,0x00,{{{{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}},{{{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0},{24-(EU_CYCLES_SUBSTRACT_ACCESSREAD*8),0,0}}}}} //POPA
+	//XCHG
+	,{1,0,0,0x86,0xFE,0x00,{{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XCHG Register/memory with register
+	,{1,1,0,0x86,0xFE,0x00,{{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XCHG Register/memory with register
+	,{1,0,0,0x90,0xF8,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //XCHG Register with accumulator
+	,{1,1,0,0x90,0xF8,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //XCHG Register with accumulator
+	//IN
+	,{1,0,0,0xE4,0xFE,0x00,{{{{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Fixed port
+	,{1,0,0,0xE4,0xFE,0x00,{{{{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,1,0,0xE5,0xFF,0x00,{{{{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{12-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,0,0,0xEC,0xFE,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Variable port
+	,{1,0,0,0xEC,0xFE,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Variable port
+	,{1,1,0,0xED,0xFF,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Variable port
+	//OUT
+	,{1,0,0,0xE6,0xFE,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Fixed port
+	,{1,0,0,0xE6,0xFE,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,1,0,0xE7,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{24-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,0,0,0xEE,0xFE,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Variable port
+	,{1,0,0,0xEE,0xFE,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Variable port
+	,{1,1,0,0xEF,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Variable port
+	//XLAT
+	,{1,0,0,0xD7,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //XLAT
+	//LEA
+	,{1,0,0,0x8D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //LEA
+	,{1,1,0,0x8D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //LEA
+	//LDS
+	,{1,0,0,0xC5,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LDS
+	,{1,1,0,0xC5,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LDS
+	//LES
+	,{1,0,0,0xC4,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LES
+	,{1,1,0,0xC4,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LES
+	//LSS
+	,{1,0,1,0xB2,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LSS
+	,{1,1,1,0xB2,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LSS
+	//LFS
+	,{1,0,1,0xB4,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LFS
+	,{1,1,1,0xB4,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LFS
+	//LGS
+	,{1,0,1,0xB5,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LGS
+	,{1,1,1,0xB5,0xFF,0x00,{{{{7,0,0},{7-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{22,0,0},{22-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LGS
+
+	//Page 3-48
+	//LAHF
+	,{1,0,0,0x9F,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //LAHF
+	//SAHF
+	,{1,0,0,0x9E,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //SAHF
+	//PUSHF
+	,{1,0,0,0x9C,0xFF,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSHF
+	,{1,1,0,0x9C,0xFF,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //PUSHF
+	//POPF
+	,{1,0,0,0x9D,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POPF
+	,{1,1,0,0x9D,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //POPF
+	//ADD
+	,{1,0,0,0x00,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADD Reg/memory with register to either
+	,{1,0,0,0x02,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADD Reg/memory with register to either
+	,{1,1,0,0x03,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADD Reg/memory with register to either
+	,{1,0,0,0x80,0xFD,0x01,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADD Immediate to register/memory
+	,{1,1,0,0x81,0xFD,0x01,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADD Immediate to register/memory
+	,{1,0,0,0x04,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADD Immediate to accumulator
+	,{1,0,0,0x05,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADD Immediate to accumulator
+	,{1,1,0,0x05,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADD Immediate to accumulator
+	//ADC
+	,{1,0,0,0x10,0xFC,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADC Reg/memory with register to either
+	,{1,0,0,0x12,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADC Reg/memory with register to either
+	,{1,1,0,0x13,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADC Reg/memory with register to either
+	,{1,0,0,0x80,0xFD,0x03,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADC Immediate to register/memory
+	,{1,1,0,0x81,0xFD,0x03,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //ADC Immediate to register/memory
+	,{1,0,0,0x14,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADC Immediate to accumulator
+	,{1,0,0,0x15,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADC Immediate to accumulator
+	,{1,1,0,0x15,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //ADC Immediate to accumulator
+	//INC
+	,{1,0,0,0xFE,0xFE,0x01,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //INC Register/memory
+	,{1,1,0,0xFF,0xFF,0x01,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //INC Register/memory
+	,{1,0,0,0x40,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //INC Register
+	//SUB
+	,{1,0,0,0x28,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Reg/memory and register to either
+	,{1,1,0,0x29,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Reg/memory and register to either
+	,{1,0,0,0x2A,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Reg/memory and register to either
+	,{1,1,0,0x2B,0xFF,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Reg/memory and register to either
+	,{1,0,0,0x80,0xFD,0x06,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Immediate from register/memory
+	,{1,1,0,0x81,0xFD,0x06,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SUB Immediate from register/memory
+	,{1,0,0,0x2C,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //SUB Immediate from accumulator
+	,{1,1,0,0x2D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //SUB Immediate from accumulator
+	//SBB
+	,{1,0,0,0x18,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Reg/memory and register to either
+	,{1,1,0,0x19,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Reg/memory and register to either
+	,{1,0,0,0x1A,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Reg/memory and register to either
+	,{1,1,0,0x1B,0xFF,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Reg/memory and register to either
+	,{1,0,0,0x80,0xFD,0x04,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Immediate from register/memory
+	,{1,1,0,0x81,0xFD,0x04,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //SBB Immediate from register/memory
+	,{1,0,0,0x1C,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //SBB Immediate from accumulator
+	,{1,1,0,0x1D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //SBB Immediate from accumulator
+	//DEC
+	,{1,0,0,0xFE,0xFE,0x02,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //DEC Register/memory
+	,{1,1,0,0xFF,0xFF,0x02,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //DEC Register/memory
+	,{1,0,0,0x48,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //DEC Register
+	,{1,1,0,0x48,0xF8,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //DEC Register
+	//CMP
+	,{1,0,0,0x3A,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Register/memory with register
+	,{1,1,0,0x3B,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Register/memory with register
+	,{1,0,0,0x38,0xFE,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Register with register/memory
+	,{1,1,0,0x39,0xFF,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Register with register/memory
+	,{1,0,0,0x80,0xFD,0x08,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Immediate with register/memory
+	,{1,1,0,0x81,0xFD,0x08,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CMP Immediate with register/memory
+	,{1,0,0,0x3C,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CMP Immediate with accumulator
+	,{1,1,0,0x3D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CMP Immediate with accumulator
+	//NEG
+	,{1,0,0,0xF6,0xFE,0x04,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //NEG Two's Complement Negation
+	,{1,1,0,0xF7,0xFF,0x04,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //NEG Two's Complement Negation
+	//AAA
+	,{1,0,0,0x37,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //AAA
+	//DAA
+	,{1,0,0,0x27,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //DAA
+
+	//Page 3-49
+	//AAS
+	,{1,0,0,0x3F,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //AAS
+	//DAS
+	,{1,0,0,0x2F,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //DAS
+	//MUL
+	,{1,0,0,0xF6,0xFF,0x05,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MULB Register/Memory-Byte
+	,{1,0,0,0xF7,0xFF,0x05,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MULW Register/Memory-Word
+	,{1,1,0,0xF7,0xFF,0x05,{{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MULW Register/Memory-Word
+	//IMUL
+	,{1,0,0,0xF6,0xFF,0x06,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{13,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //IMULB Register/Memory-Byte
+	,{1,0,0,0xF7,0xFF,0x06,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //IMULW Register/Memory-Word
+	,{1,1,0,0xF7,0xFF,0x06,{{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //IMULW Register/Memory-Word
+	//IMUL (186+ instruction)
+	,{1,0,0,0x69,0xFF,0x00,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	,{1,1,0,0x69,0xFF,0x00,{{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	//IMUL (386+ instruction)
+	,{1,0,0,0x6B,0xFF,0x00,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	,{1,1,0,0x6B,0xFF,0x00,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	,{1,0,1,0xAF,0xFF,0x00,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	,{1,1,1,0xAF,0xFF,0x00,{{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IMUL
+	//DIV
+	,{1,0,0,0xF6,0xFF,0x07,{{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{14,0,0},{17-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //DIV Register/Memory-Byte
+	,{1,0,0,0xF7,0xFF,0x07,{{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{22,0,0},{25-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //DIV Register/Memory-Word
+	,{1,1,0,0xF7,0xFF,0x07,{{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{38,0,0},{41-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //DIV Register/Memory-Word
+	//IDIV
+	,{1,0,0,0xF6,0xFF,0x08,{{{{19,0,0},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{19,0,0},{19-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IDIV Register/Memory-Byte
+	,{1,0,0,0xF7,0xFF,0x08,{{{{27,0,0},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{27,0,0},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IDIV Register/Memory-Word
+	,{1,1,0,0xF7,0xFF,0x08,{{{{43,0,0},{43-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{43,0,0},{43-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //IDIV Register/Memory-Word
+	//AAM
+	,{1,0,0,0xD4,0xFF,0x00,{{{{17,0,0},{17,0,0}}},{{{17,0,0},{17,0,0}}}}} //AAM
+	//AAD
+	,{1,0,0,0xD5,0xFF,0x00,{{{{19,0,0},{19,0,0}}},{{{19,0,0},{19,0,0}}}}} //AAD
+	//CBW
+	,{1,0,0,0x98,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //CBW
+	,{1,1,0,0x98,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //CWDE
+	//CWD
+	,{1,0,0,0x99,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CWD
+	,{1,1,0,0x99,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CDQ
+	//Shift/Rotate Instructions
+	//RCL/RCR have bigger timings!
+	,{1,0,0,0xD0,0xFE,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,1,0,0xD1,0xFF,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,0,0,0xD2,0xFE,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,1,0,0xD3,0xFF,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,0,0,0xC0,0xFE,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	,{1,1,0,0xC1,0xFF,0x03,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	,{1,0,0,0xD0,0xFE,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,1,0,0xD1,0xFF,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,0,0,0xD2,0xFE,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,1,0,0xD3,0xFF,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,0,0,0xC0,0xFE,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	,{1,1,0,0xC1,0xFF,0x04,{{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{9,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	,{1,0,0,0xD0,0xFE,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,1,0,0xD1,0xFF,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by 1
+	,{1,0,0,0xD2,0xFE,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,1,0,0xD3,0xFF,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by CL
+	,{1,0,0,0xC0,0xFE,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	,{1,1,0,0xC1,0xFF,0x00,{{{{3,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{3,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //Shift/Rotate Register/Memory by Count
+	//158 80386 entries up to this point. Total of 300 80386+ records so far(84 added records, excluding the todo on IN/OUT instructions)!
+	//Page 3-50
+	//AND
+	,{1,0,0,0x20,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Reg/memory and register to either
+	,{1,1,0,0x21,0xFF,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Reg/memory and register to either
+	,{1,0,0,0x22,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Reg/memory and register to either
+	,{1,1,0,0x23,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Reg/memory and register to either
+	,{1,0,0,0x80,0xFD,0x05,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Immediate to register/memory
+	,{1,1,0,0x81,0xFD,0x05,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //AND Immediate to register/memory
+	,{1,0,0,0x24,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //AND Immediate to accumulator
+	,{1,1,0,0x25,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //AND Immediate to accumulator
+	//TEST
+	,{1,0,0,0x84,0xFE,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //TEST Register/memory and register
+	,{1,1,0,0x85,0xFF,0x00,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //TEST Register/memory and register
+	,{1,0,0,0xF6,0xFE,0x01,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //TEST Immediate data and register/memory
+	,{1,1,0,0xF7,0xFF,0x01,{{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{2,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //TEST Immediate data and register/memory
+	,{1,0,0,0xA8,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //TEST Immediate data and accumulator
+	,{1,1,0,0xA9,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //TEST Immediate data and accumulator
+	//OR
+	,{1,0,0,0x08,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Reg/memory and register to either
+	,{1,1,0,0x09,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Reg/memory and register to either
+	,{1,0,0,0x0A,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Reg/memory and register to either
+	,{1,1,0,0x0B,0xFF,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Reg/memory and register to either
+	,{1,0,0,0x80,0xFD,0x02,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Immediate to register/memory
+	,{1,1,0,0x81,0xFD,0x02,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //OR Immediate to register/memory
+	,{1,0,0,0x0C,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //OR Immediate to accumulator
+	,{1,1,0,0x0D,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //OR Immediate to accumulator
+	//XOR
+	,{1,0,0,0x30,0xFE,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Reg/memory and register to either
+	,{1,1,0,0x31,0xFF,0x00,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Reg/memory and register to either
+	,{1,0,0,0x32,0xFE,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Reg/memory and register to either
+	,{1,1,0,0x33,0xFF,0x00,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Reg/memory and register to either
+	,{1,0,0,0x80,0xFC,0x07,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Immediate to register/memory
+	,{1,1,0,0x81,0xFD,0x07,{{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //XOR Immediate to register/memory
+	,{1,0,0,0x34,0xFE,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //XOR Immediate to accumulator
+	,{1,1,0,0x35,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //XOR Immediate to accumulator
+	//NOT
+	,{1,0,0,0xF6,0xFE,0x03,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //NOT
+	,{1,1,0,0xF7,0xFF,0x03,{{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{2,0,0},{6-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //NOT
+
+	//String instructions without REP((N)Z)
+	//MOVS
+	,{1,0,0,0xA4,0xFE,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MOVS
+	,{1,1,0,0xA5,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSRW,0,0}}}}} //MOVS
+	//CMPS
+	,{1,0,0,0xA6,0xFE,0x00,{{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //CMPS
+	,{1,1,0,0xA7,0xFE,0x00,{{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //CMPS
+	//SCAS
+	,{1,0,0,0xAE,0xFE,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //SCAS
+	,{1,1,0,0xAF,0xFF,0x00,{{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //SCAS
+	//LODS
+	,{1,0,0,0xAC,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LODS
+	,{1,1,0,0xAD,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LODS
+	//STOS
+	,{1,0,0,0xAA,0xFE,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //STOS
+	,{1,1,0,0xAB,0xFF,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //STOS
+	//INS
+	,{1,0,0,0x6C,0xFE,0x00,{{{{15-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{15-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{15-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80},{15-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Fixed port
+	,{1,0,0,0x6C,0xFE,0x00,{{{{9-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{9-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,1,0,0x6D,0xFF,0x00,{{{{9-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{9-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+
+	//OUTS
+	,{1,0,0,0x6E,0xFE,0x00,{{{{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80},{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //IN Fixed port
+	,{1,0,0,0x6E,0xFE,0x00,{{{{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{8-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{28-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+	,{1,1,0,0x6F,0xFF,0x00,{{{{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{14-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{8-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80},{28-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //IN Fixed port
+
+	//String instructions with REP(N)(Z)
+	//MOVS
+	,{1,0,0,0xA4,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //MOVS
+	,{1,1,0,0xA5,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //MOVS
+	//CMPS
+	,{1,0,0,0xA6,0xFE,0x00,{{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}},{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}}}} //CMPS
+	,{1,1,0,0xA7,0xFF,0x00,{{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}},{{{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2},{5-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),9,2}}}}} //CMPS
+	//SCAS
+	,{1,0,0,0xAE,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}}}} //SCAS
+	,{1,1,0,0xAF,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,8,2}}}}} //SCAS
+	//LODS
+	,{1,0,0,0xAC,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}}}} //LODS
+	,{1,1,0,0xAD,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,4,2}}}}} //LODS
+	//STOS
+	,{1,0,0,0xAA,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2},{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2},{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2}}}}} //STOS
+	,{1,1,0,0xAB,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2},{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2},{5-EU_CYCLES_SUBSTRACT_ACCESSWRITE,5,2}}}}} //STOS
+	//INS
+	,{1,0,0,0x6C,0xFE,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2}}},{{{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,0x82},{7-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,0x82}}}}} //IN Fixed port
+	,{1,0,0,0x6C,0xFE,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2}}},{{{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x86,0x82},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x86,0x82}}}}} //IN Fixed port
+	,{1,1,0,0x6D,0xFF,0x00,{{{{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,6,2}}},{{{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x86,0x82},{29-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x86,0x82}}}}} //IN Fixed port
+	//OUTS
+	,{1,0,0,0x6E,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2}}},{{{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,5,0x82},{6-EU_CYCLES_SUBSTRACT_ACCESSREAD,5,0x82}}}}} //IN Fixed port
+	,{1,0,0,0x6E,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2}}},{{{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x85,0x82},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x85,0x82}}}}} //IN Fixed port
+	,{1,1,0,0x6F,0xFF,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2},{5-EU_CYCLES_SUBSTRACT_ACCESSREAD,12,2}}},{{{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x85,0x82},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x85,0x82}}}}} //IN Fixed port
+	//TODO
+	,{1,0,0,0x6E,0xFE,0x00,{{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}},{{{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2},{5-EU_CYCLES_SUBSTRACT_ACCESSRW,4,2}}}}} //OUTS
+
+	//Page 3-51
+	//We don't use the m value: this is done by the prefetch unit itself(amount of components loaded from the next instruction is the amount of cycles???).
+	//CALL Direct Intersegment
+	,{1,0,0,0xE8,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //CALL Direct within segment
+	,{1,1,0,0xE8,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //CALL Direct within segment
+	,{1,0,0,0xFF,0xFF,0x03,{{{{7,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CALL Register/memory indirect within segment
+	,{1,1,0,0xFF,0xFF,0x03,{{{{7,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{7,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CALL Register/memory indirect within segment
+	,{1,0,0,0x9A,0xFF,0x00,{{{{17,0,0},{17,0,0}}},{{{34,0,0},{34,0,0}}}}} //CALL Direct Intersegment
+	,{1,1,0,0x9A,0xFF,0x00,{{{{17,0,0},{17,0,0}}},{{{34,0,0},{34,0,0}}}}} //CALL Direct Intersegment
+
+	//Protected mode variants
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{52,CALLGATE_SAMELEVEL,4},{52,CALLGATE_SAMELEVEL,4}}}}} //CALL Via call gate to same privilege level
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{52,CALLGATE_SAMELEVEL,4},{52,CALLGATE_SAMELEVEL,4}}}}} //CALL Via call gate to same privilege level
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{86,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4},{86,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{86,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4},{86,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{94,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4},{94,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, X parameters(times 4 cycles)
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{94,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4},{94,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,4}}}}} //CALL VIa call gate to different privilege level, X parameters(times 4 cycles)
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTSS,4},{0,OTHERGATE_NORMALTSS,4}}}}} //CALL Via TSS
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTSS,4},{0,OTHERGATE_NORMALTSS,4}}}}} //CALL Via TSS
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTASKGATE,4},{0,OTHERGATE_NORMALTASKGATE,4}}}}} //CALL Via task gate
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTASKGATE,4},{0,OTHERGATE_NORMALTASKGATE,4}}}}} //CALL Via task gate
+	//TODO: Task switch
+
+	//CALL Indirect Intersegment
+	,{1,0,0,0xFF,0xFF,0x04,{{{{22,0,0},{38-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{22,0,0},{38-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //CALL Register/memory indirect within segment
+
+	//Protected mode variants
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{56,CALLGATE_SAMELEVEL,5},{56,CALLGATE_SAMELEVEL,5}}}}} //CALL Via call gate to same privilege level
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{56,CALLGATE_SAMELEVEL,5},{56,CALLGATE_SAMELEVEL,5}}}}} //CALL Via call gate to same privilege level
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{90,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5},{90,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{90,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5},{90,CALLGATE_DIFFERENTLEVEL_NOPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, no parameters
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{98,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5},{98,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, X parameters(times 4 cycles)
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{98,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5},{98,CALLGATE_DIFFERENTLEVEL_XPARAMETERS,5}}}}} //CALL VIa call gate to different privilege level, X parameters(times 4 cycles)
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTSS,5},{5,OTHERGATE_NORMALTSS,5}}}}} //CALL Via TSS(5+ts)
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTSS,5},{5,OTHERGATE_NORMALTSS,5}}}}} //CALL Via TSS(5+ts)
+	,{1,0,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTASKGATE,5},{5,OTHERGATE_NORMALTASKGATE,5}}}}} //CALL Via task gate(5+ts)
+	,{1,1,0,0x9A,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTASKGATE,5},{5,OTHERGATE_NORMALTASKGATE,5}}}}} //CALL Via task gate(5+ts)
+	//TODO: Task switch
+
+	//JMP
+	,{1,0,0,0xEB,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //JMP Short/long
+	,{1,0,0,0xE9,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //JMP Direct within segment
+	,{1,1,0,0xE9,0xFF,0x00,{{{{7,0,0},{7,0,0}}},{{{7,0,0},{7,0,0}}}}} //JMP Direct within segment
+	,{1,0,0,0xFF,0xFF,0x05,{{{{7,0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{7,0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //JMP Register/memory indirect within segment
+	,{1,1,0,0xFF,0xFF,0x05,{{{{7,0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{7,0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //JMP Register/memory indirect within segment
+	,{1,0,0,0xEA,0xFF,0x00,{{{{12,0,0},{12,0,0}}},{{{27,0,0},{27,0,0}}}}} //JMP Direct intersegment
+	
+	//Protected mode variants(Direct Intersegment)
+	,{1,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{45,CALLGATE_SAMELEVEL,5},{45,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{1,1,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{45,CALLGATE_SAMELEVEL,5},{45,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{1,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTSS,5},{0,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS
+	,{1,1,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTSS,5},{0,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS
+	,{1,0,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTASKGATE,5},{0,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate
+	,{1,1,0,0xEA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,OTHERGATE_NORMALTASKGATE,5},{0,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate
+	//TODO: Task switch
+
+	//JMP Indirect Intersegment
+	,{1,0,0,0xFF,0xFF,0x06,{{{{43,0,0},{43-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{31,0,0},{31-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //JMP Indirect intersegment
+	,{1,1,0,0xFF,0xFF,0x06,{{{{43,0,0},{43-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{31,0,0},{31-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //JMP Indirect intersegment
+
+	//Protected mode variants (Indirect Intersegment)
+	,{1,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{49,CALLGATE_SAMELEVEL,5},{49,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{1,1,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{49,CALLGATE_SAMELEVEL,5},{49,CALLGATE_SAMELEVEL,5}}}}} //JMP Via call gate to same privilege level
+	,{1,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTSS,5},{5,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS(5+ts)
+	,{1,1,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTSS,5},{5,OTHERGATE_NORMALTSS,5}}}}} //JMP Via TSS(5+ts)
+	,{1,0,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTASKGATE,5},{5,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate(5+ts)
+	,{1,1,0,0xFF,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{5,OTHERGATE_NORMALTASKGATE,5},{5,OTHERGATE_NORMALTASKGATE,5}}}}} //JMP Via task gate(5+ts)
+	//TODO: Task switch
+
+	//RET
+	,{1,0,0,0xC3,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within segment
+	,{1,1,0,0xC3,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within segment
+	,{1,0,0,0xC2,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within seg adding immed to SP
+	,{1,1,0,0xC2,0xFF,0x00,{{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{10-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //RET Within seg adding immed to SP
+	,{1,0,0,0xCB,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment
+	,{1,1,0,0xCB,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment
+	,{1,0,0,0xCA,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment adding immediate to SP
+	,{1,1,0,0xCA,0xFF,0x00,{{{{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{18-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{32-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //RET Intersegment adding immediate to SP
+
+	//Protected mode variants (Intersegment)
+	,{1,0,0,0xCB,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment
+	,{1,1,0,0xCB,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment
+	,{1,0,0,0xCA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment adding immediate to SP
+	,{1,1,0,0xCA,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4},{68-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),RET_DIFFERENTLEVEL,4}}}}} //RET Intersegment adding immediate to SP
+
+	//Page 3-52
+
+	//JE/JZ
+	,{1,0,0,0x74,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JZ Not taken!
+	,{1,0,0,0x74,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JZ taken!
+	,{1,0,1,0x84,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JZ Not taken!
+	,{1,0,1,0x84,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JZ taken!
+	,{1,1,1,0x84,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JZ Not taken!
+	,{1,1,1,0x84,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JZ taken!
+	//JL/JNGE
+	,{1,0,0,0x7C,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JL Not taken!
+	,{1,0,0,0x7C,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JL taken!
+	,{1,0,1,0x8C,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JL Not taken!
+	,{1,0,1,0x8C,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JL taken!
+	,{1,1,1,0x8C,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JL Not taken!
+	,{1,1,1,0x8C,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JL taken!
+	//JLE/JNG
+	,{1,0,0,0x7E,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JLE Not taken!
+	,{1,0,0,0x7E,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JLE taken!
+	,{1,0,1,0x8E,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JLE Not taken!
+	,{1,0,1,0x8E,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JLE taken!
+	,{1,1,1,0x8E,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JLE Not taken!
+	,{1,1,1,0x8E,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JLE taken!
+	//JB/JNAE
+	,{1,0,0,0x72,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,0,0,0x72,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	,{1,0,1,0x82,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,0,1,0x82,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	,{1,1,1,0x82,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,1,1,0x82,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	//JBE/JNA
+	,{1,0,0,0x76,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JBE Not taken!
+	,{1,0,0,0x76,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JBE taken!
+	,{1,0,1,0x86,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JBE Not taken!
+	,{1,0,1,0x86,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JBE taken!
+	,{1,1,1,0x86,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JBE Not taken!
+	,{1,1,1,0x86,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JBE taken!
+	//JP/JPE
+	,{1,0,0,0x7A,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JP Not taken!
+	,{1,0,0,0x7A,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JP taken!
+	,{1,0,1,0x8A,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JP Not taken!
+	,{1,0,1,0x8A,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JP taken!
+	,{1,1,1,0x8A,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JP Not taken!
+	,{1,1,1,0x8A,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JP taken!
+	//JO
+	,{1,0,0,0x70,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JO Not taken!
+	,{1,0,0,0x70,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JO taken!
+	,{1,0,1,0x80,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JO Not taken!
+	,{1,0,1,0x80,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JO taken!
+	,{1,1,1,0x80,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JO Not taken!
+	,{1,1,1,0x80,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JO taken!
+	//JB
+	,{1,0,0,0x78,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,0,0,0x78,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	,{1,0,1,0x88,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,0,1,0x88,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	,{1,1,1,0x88,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JB Not taken!
+	,{1,1,1,0x88,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JB taken!
+	//JNE/JNZ
+	,{1,0,0,0x75,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNE Not taken!
+	,{1,0,0,0x75,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNE taken!
+	,{1,0,1,0x85,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNE Not taken!
+	,{1,0,1,0x85,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNE taken!
+	,{1,1,1,0x85,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNE Not taken!
+	,{1,1,1,0x85,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNE taken!
+	//JNL/JGE
+	,{1,0,0,0x7D,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNL Not taken!
+	,{1,0,0,0x7D,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNL taken!
+	,{1,0,1,0x8D,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNL Not taken!
+	,{1,0,1,0x8D,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNL taken!
+	,{1,1,1,0x8D,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNL Not taken!
+	,{1,1,1,0x8D,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNL taken!
+	//JNLE/JG
+	,{1,0,0,0x7F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNLE Not taken!
+	,{1,0,0,0x7F,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNLE taken!
+	,{1,0,1,0x8F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNLE Not taken!
+	,{1,0,1,0x8F,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNLE taken!
+	,{1,1,1,0x8F,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNLE Not taken!
+	,{1,1,1,0x8F,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNLE taken!
+	//JNB/JAE
+	,{1,0,0,0x73,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNB Not taken!
+	,{1,0,0,0x73,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNB taken!
+	,{1,0,1,0x83,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNB Not taken!
+	,{1,0,1,0x83,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNB taken!
+	,{1,1,1,0x83,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNB Not taken!
+	,{1,1,1,0x83,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNB taken!
+	//JNBE/JA
+	,{1,0,0,0x77,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNBE Not taken!
+	,{1,0,0,0x77,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNBE taken!
+	,{1,0,1,0x87,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNBE Not taken!
+	,{1,0,1,0x87,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNBE taken!
+	,{1,1,1,0x87,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNBE Not taken!
+	,{1,1,1,0x87,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNBE taken!
+	//JNP/JPO
+	,{1,0,0,0x7B,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNP Not taken!
+	,{1,0,0,0x7B,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNP taken!
+	,{1,0,1,0x8B,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNP Not taken!
+	,{1,0,1,0x8B,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNP taken!
+	,{1,1,1,0x8B,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNP Not taken!
+	,{1,1,1,0x8B,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNP taken!
+	//JNO
+	,{1,0,0,0x71,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNO Not taken!
+	,{1,0,0,0x71,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNO taken!
+	,{1,0,1,0x81,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNO Not taken!
+	,{1,0,1,0x81,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNO taken!
+	,{1,1,1,0x81,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNO Not taken!
+	,{1,1,1,0x81,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNO taken!
+	//JNS
+	,{1,0,0,0x79,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNS Not taken!
+	,{1,0,0,0x79,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNS taken!
+	,{1,0,1,0x89,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNS Not taken!
+	,{1,0,1,0x89,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNS taken!
+	,{1,1,1,0x89,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //JNS Not taken!
+	,{1,1,1,0x89,0xFF,0x00,{{{{7,0,8},{7,0,8}}},{{{7,0,8},{7,0,8}}}}} //JNS taken!
+	//LOOP
+	,{1,0,0,0xE2,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOP Not taken!
+	,{1,0,0,0xE2,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOP taken!
+	,{1,1,0,0xE2,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOP Not taken!
+	,{1,1,0,0xE2,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOP taken!
+	//LOOPZ/LOOPE
+	,{1,0,0,0xE1,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPZ Not taken!
+	,{1,0,0,0xE1,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOPZ taken!
+	,{1,1,0,0xE1,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPZ Not taken!
+	,{1,1,0,0xE1,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOPZ taken!
+	//LOOPNZ/LOOPNE
+	,{1,0,0,0xE0,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPNZ Not taken!
+	,{1,0,0,0xE0,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOPNZ taken!
+	,{1,1,0,0xE0,0xFF,0x00,{{{{4,0,0},{4,0,0}}},{{{4,0,0},{4,0,0}}}}} //LOOPNZ Not taken!
+	,{1,1,0,0xE0,0xFF,0x00,{{{{11,0,8},{11,0,8}}},{{{11,0,8},{11,0,8}}}}} //LOOPNZ taken!
+	//JCXZ
+	,{1,0,0,0xE3,0xFF,0x00,{{{{5,0,0},{5,0,0}}},{{{5,0,0},{5,0,0}}}}} //JCXZ Not taken!
+	,{1,0,0,0xE3,0xFF,0x00,{{{{9,0,8},{9,0,8}}},{{{9,0,8},{9,0,8}}}}} //JCXZ taken!
+	,{1,1,0,0xE3,0xFF,0x00,{{{{5,0,0},{5,0,0}}},{{{5,0,0},{5,0,0}}}}} //JECXZ Not taken!
+	,{1,1,0,0xE3,0xFF,0x00,{{{{9,0,8},{9,0,8}}},{{{9,0,8},{9,0,8}}}}} //JECXZ taken!
+	//ENTER
+	,{1,0,0,0xC8,0xFF,0x00,{{{{10,0,16},{10,0,16}}},{{{10,0,16},{10,0,16}}}}} //ENTER L=0
+	,{1,0,0,0xC8,0xFF,0x00,{{{{12,1,16},{12,1,16}}},{{{12,1,16},{12,1,16}}}}} //ENTER L=1
+	,{1,0,0,0xC8,0xFF,0x00,{{{{15,4,32},{15,4,32}}},{{{15,4,32},{15,4,32}}}}} //ENTER L>1
+	,{1,1,0,0xC8,0xFF,0x00,{{{{10,0,16},{10,0,16}}},{{{10,0,16},{10,0,16}}}}} //ENTER L=0
+	,{1,1,0,0xC8,0xFF,0x00,{{{{12,1,16},{12,1,16}}},{{{12,1,16},{12,1,16}}}}} //ENTER L=1
+	,{1,1,0,0xC8,0xFF,0x00,{{{{15,4,32},{15,4,32}}},{{{15,4,32},{15,4,32}}}}} //ENTER L>1
+	//LEAVE
+	,{1,0,0,0xC9,0xFF,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LEAVE
+	,{1,1,0,0xC9,0xFF,0x00,{{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{4-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LEAVE
+	//INT (Real mode only)
+	,{1,0,0,0xCD,0xFF,0x00,{{{{37-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0},{37-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INT Type specified
+	,{1,0,0,0xCC,0xFF,0x00,{{{{33-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0},{33-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INT 3
+	//INTO (Real mode only)
+	,{1,0,0,0xCE,0xFF,0x00,{{{{35-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,8},{35-((EU_CYCLES_SUBSTRACT_ACCESSREAD*2)+(EU_CYCLES_SUBSTRACT_ACCESSWRITE*3)),0,0}}},{{{0,0,0},{0,0,0}}}}} //INTO Taken
+	,{1,0,0,0xCE,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //INTO Not taken
+
+	//Page 3-53
+	//INT&INTO Protected mode variants
+	,{1,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{59,INTERRUPTGATETIMING_SAMELEVEL,4},{59,INTERRUPTGATETIMING_SAMELEVEL,4}}}}} //INT Via Interrupt or Trap Gate to same privilege level
+	,{1,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{99,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{99,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //INT Via INterrupt or Trap Gate to different privilege level
+	//Special case: task gate is different and handled manually!
+	,{1,0,0,0xCD,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,/*INTERRUPTGATETIMING_TASKGATE*/0xFF,4},{0,/*INTERRUPTGATETIMING_TASKGATE*/0xFF,4}}}}} //INT Via Task Gate
+	,{1,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{59,INTERRUPTGATETIMING_SAMELEVEL,4},{40,INTERRUPTGATETIMING_SAMELEVEL,4}}}}} //INT Via Interrupt or Trap Gate to same privilege level
+	,{1,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{99,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{78,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //INT Via INterrupt or Trap Gate to different privilege level
+	,{1,0,0,0xCE,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,/*INTERRUPTGATE_TASKGATE*/0,4},{0,/*INTERRUPTGATE_TASKGATE*/0,4}}}}} //INT Via Task Gate
+	//TODO: INT&INTO From V86 mode to PL 0, as well as through task gate!
+
+	//IRET
+	,{0,0,0,0xCF,0xFF,0x00,{{{{22,0,0},{22,0,0}}},{{{38,0,0},{38,0,0}}}}} //IRET
+	,{0,0,0,0xCF,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{82,INTERRUPTGATETIMING_DIFFERENTLEVEL,4},{82,INTERRUPTGATETIMING_DIFFERENTLEVEL,4}}}}} //IRET to different privilege level
+	,{0,0,0,0xCF,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,INTERRUPTGATE_TASKGATE,4},{0,INTERRUPTGATE_TASKGATE,4}}}}} //IRET to Different Task(ts)
+	//TODO: IRET to V86 mode
+
+	//BOUND
+	,{1,0,0,0x62,0xFF,0x00,{{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //BOUND
+	,{1,1,0,0x62,0xFF,0x00,{{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0},{10-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //BOUND
+
+	//Processor Control
+	//CLC
+	,{1,0,0,0xF8,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CLC
+	//CMC
+	,{1,0,0,0xF5,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CMC
+	//STC
+	,{1,0,0,0xF9,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //STC
+	//CLD
+	,{1,0,0,0xFC,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //CLD
+	//STD
+	,{1,0,0,0xFD,0xFF,0x00,{{{{2,0,0},{2,0,0}}},{{{2,0,0},{2,0,0}}}}} //STD
+	//CLI
+	,{1,0,0,0xFA,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //CLI
+	//STI
+	,{1,0,0,0xFB,0xFF,0x00,{{{{3,0,0},{3,0,0}}},{{{3,0,0},{3,0,0}}}}} //STI
+	//HLT
+	,{1,0,0,0xF4,0xFF,0x00,{{{{5,0,0},{5,0,0}}},{{{5,0,0},{5,0,0}}}}} //HLT
+	//WAIT
+	,{1,0,0,0x9B,0xFF,0x00,{{{{6,0,0},{6,0,0}}},{{{6,0,0},{6,0,0}}}}} //WAIT
+	//LOCK
+	,{1,0,0,0xF0,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{0,0,0},{0,0,0}}}}} //LOCK
+	//CLTS
+	,{1,0,1,0x06,0xFF,0x00,{{{{5,0,0},{5,0,0}}},{{{5,0,0},{5,0,0}}}}} //CLTS
+	//ESC (Coprocessor Instruction Escape)
+	,{1,0,0,0xD8,0xF8,0x00,{{{{9,0,0},{9,0,0}}},{{{9,0,0},{9,0,0}}}}} //ESC
+	//Segment override prefix
+	,{1,0,0,0x26,0xE7,0x00,{{{{0,0,0},{0,0,0}}},{{{0,0,0},{0,0,0}}}}} //Any Segment override prefix (CS,SS,DS,ES,FS,GS)
+	
+	//Protection control
+	//LGDT
+	,{1,0,1,0x01,0xFF,0x03,{{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LGDT
+	,{1,1,1,0x01,0xFF,0x03,{{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LGDT
+	//SGDT
+	,{1,0,1,0x01,0xFF,0x01,{{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}},{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}}}} //SGDT
+	,{1,1,1,0x01,0xFF,0x01,{{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}},{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}}}} //SGDT
+	//LIDT
+	,{1,0,1,0x01,0xFF,0x04,{{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LIDT
+	,{1,1,1,0x01,0xFF,0x04,{{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}},{{{11,0,0},{11-(EU_CYCLES_SUBSTRACT_ACCESSREAD*2),0,0}}}}} //LIDT
+	//SIDT
+	,{1,0,1,0x01,0xFF,0x02,{{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}},{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}}}} //SIDT
+	,{1,1,1,0x01,0xFF,0x02,{{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}},{{{9,0,0},{9-(EU_CYCLES_SUBSTRACT_ACCESSWRITE*2),0,0}}}}} //SIDT
+	//LLDT
+	,{1,0,1,0x00,0xFF,0x03,{{{{0,0,0},{0,0,0}}},{{{20,0,0},{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LLDT
+	//SLDT
+	,{1,0,1,0x00,0xFF,0x01,{{{{0,0,0},{0,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //SLDT
+
+	//Page 3-54
+
+	//LTR
+	,{1,0,1,0x00,0xFF,0x04,{{{{0,0,0},{0,0,0}}},{{{23,0,0},{27-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LTR
+	//STR
+	,{1,0,1,0x00,0xFF,0x02,{{{{0,0,0},{0,0,0}}},{{{23,0,0},{27-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //STR
+	//LMSW
+	,{1,0,1,0x01,0xFF,0x07,{{{{10,0,0},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}},{{{10,0,0},{13-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LMSW
+	//SMSW
+	,{1,0,1,0x01,0xFF,0x05,{{{{2,0,0},{3-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}},{{{2,0,0},{2-EU_CYCLES_SUBSTRACT_ACCESSWRITE,0,0}}}}} //SMSW
+	//LAR
+	,{1,0,1,0x02,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{15,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LAR
+	,{1,1,1,0x02,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{15,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //LAR
+	//LSL
+	,{1,0,1,0x03,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{20,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //LSL(byte granular)
+	,{1,1,1,0x03,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{20,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0x80}}}}} //LSL(byte granular)
+	,{1,0,1,0x03,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{25,0,0},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //LSL(page granular)
+	,{1,1,1,0x03,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{25,0,0},{26-EU_CYCLES_SUBSTRACT_ACCESSREAD,0x80,0x80}}}}} //LSL(page granular)
+	//ARPL
+	,{1,0,0,0x63,0xFF,0x00,{{{{0,0,0},{0,0,0}}},{{{20-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0},{21-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //ARPL
+	//VERR
+	,{1,0,1,0x00,0xFF,0x05,{{{{0,0,0},{0,0,0}}},{{{10,0,0},{11-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //VERR
+	//VERW
+	,{1,0,1,0x00,0xFF,0x06,{{{{0,0,0},{0,0,0}}},{{{15,0,0},{16-EU_CYCLES_SUBSTRACT_ACCESSREAD,0,0}}}}} //VERR
+	//294 80386+ items at this point!
+	//Undocumented instruction: LOADALL
+	,{1,0,1,0x05,0xFF,0x00,{{{{195-102,0,0},{195-102,0,0}}},{{{195-102,0,0},{195-102,0,0}}}}} //LOADALL uses 195 clocks and performs 51 bus cycles(actually transfers, so x2).
+
+	//New 80386+ instructions:
+	//MOVSX
+	,{1,0,1,0xBE,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVSX r16,r/m8
+	,{1,1,1,0xBE,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVSX r32,r/m8
+	,{1,0,1,0xBF,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVSX r32,r/m16
+
+	//MOVZX
+	,{1,0,1,0xB6,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVZX r16,r/m8
+	,{1,1,1,0xB6,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVZX r32,r/m8
+	,{1,0,1,0xB7,0xFF,0x00,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //MOVZX r32,r/m16
+
+	//SHLD
+	,{1,0,1,0xA4,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHLD r/m16,r16,imm8
+	,{1,1,1,0xA4,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHLD r/m32,r32,imm8
+	,{1,0,1,0xA5,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHLD r/m16,r16,CL
+	,{1,1,1,0xA5,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHLD r/m32,r32,CL
+
+	//SHRD
+	,{1,0,1,0xAC,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHRD r/m16,r16,imm8
+	,{1,1,1,0xAC,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHRD r/m32,r32,imm8
+	,{1,0,1,0xAD,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHRD r/m16,r16,CL
+	,{1,1,1,0xAD,0xFF,0x00,{{{{3,0,0},{7,0,0}}},{{{3,0,0},{7,0,0}}}}} //SHRD r/m32,r32,CL
+
+	//SETcc
+	,{1,0,1,0x90,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETO
+	,{1,0,1,0x91,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNO
+	,{1,0,1,0x92,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETC
+	,{1,0,1,0x93,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNC
+	,{1,0,1,0x94,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETZ
+	,{1,0,1,0x95,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNZ
+	,{1,0,1,0x96,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNA
+	,{1,0,1,0x97,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETA
+	,{1,0,1,0x98,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETS
+	,{1,0,1,0x99,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNS
+	,{1,0,1,0x9A,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETP
+	,{1,0,1,0x9B,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETNP
+	,{1,0,1,0x9C,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETL
+	,{1,0,1,0x9D,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETGE
+	,{1,0,1,0x9E,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETLE
+	,{1,0,1,0x9F,0xFF,0x00,{{{{4,0,0},{5,0,0}}},{{{4,0,0},{5,0,0}}}}} //SETG
+
+	//BSF
+	,{1,0,1,0xBC,0xFF,0x00,{{{{10,3,0x40},{10,3,0x40}}},{{{10,3,0x40},{10,3,0x40}}}}} //BSF r16,r/m16
+	,{1,1,1,0xBC,0xFF,0x00,{{{{10,3,0x40},{10,3,0x40}}},{{{10,3,0x40},{10,3,0x40}}}}} //BSF r32,r/m32
+
+	//BSR
+	,{1,0,1,0xBD,0xFF,0x00,{{{{10,3,0x40},{10,3,0x40}}},{{{10,3,0x40},{10,3,0x40}}}}} //BSR r16,r/m16
+	,{1,1,1,0xBD,0xFF,0x00,{{{{10,3,0x40},{10,3,0x40}}},{{{10,3,0x40},{10,3,0x40}}}}} //BSR r32,r/m32
+
+	//BT
+	,{1,0,1,0xA3,0xFF,0x00,{{{{3,0,0},{12,0,0}}},{{{3,0,0},{12,0,0}}}}} //BT r/m16,r16
+	,{1,1,1,0xA3,0xFF,0x00,{{{{3,0,0},{12,0,0}}},{{{3,0,0},{12,0,0}}}}} //BT r/m32,r32
+	,{1,0,1,0xBA,0xFF,0x05,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //BT r/m16,imm8
+	,{1,1,1,0xBA,0xFF,0x05,{{{{3,0,0},{6,0,0}}},{{{3,0,0},{6,0,0}}}}} //BT r/m32,imm8
+
+	//BTC
+	,{1,0,1,0xBB,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTC r/m16,r16
+	,{1,1,1,0xBB,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTC r/m32,r32
+	,{1,0,1,0xBA,0xFF,0x08,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTC r/m16,imm8
+	,{1,1,1,0xBA,0xFF,0x08,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTC r/m32,imm8
+
+	//BTR
+	,{1,0,1,0xB3,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTR r/m16,r16
+	,{1,1,1,0xB3,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTR r/m32,r32
+	,{1,0,1,0xBA,0xFF,0x07,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTR r/m16,imm8
+	,{1,1,1,0xBA,0xFF,0x07,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTR r/m32,imm8
+
+	//BTS
+	,{1,0,1,0xAB,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTS r/m16,r16
+	,{1,1,1,0xAB,0xFF,0x00,{{{{6,0,0},{13,0,0}}},{{{6,0,0},{13,0,0}}}}} //BTS r/m32,r32
+	,{1,0,1,0xBA,0xFF,0x06,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTS r/m16,imm8
+	,{1,1,1,0xBA,0xFF,0x06,{{{{6,0,0},{8,0,0}}},{{{6,0,0},{8,0,0}}}}} //BTS r/m32,imm8
+};
+
+word timing286lookup[4][2][2][0x100][8][8]; //4 modes(bit0=protected mode when set, bit1=32-bit instruction when set), 2 memory modes, 2 0F possibilities, 256 instructions, 9 modr/m variants, no more than 8 possibilities for every instruction. About 73K memory consumed(unaligned).
+
+byte CPU_apply286cycles() //Apply the 80286+ cycles method. Result: 0 when to apply normal cycles. 1 when 80286+ cycles are applied!
+{
+	if (EMULATED_CPU < CPU_80286) return 0; //Not applied on unsupported processors!
+	word* currentinstructiontiming; //Current timing we're processing!
+	byte instructiontiming, ismemory, modrm_threevariablesused; //Timing loop used on 286+ CPUs!
+	word currentinstructiontimingindex;
+	MemoryTimingInfo* currenttimingcheck; //Current timing check!
+	//80286 uses other timings than the other chips!
+	ismemory = modrm_ismemory(CPU[activeCPU].params) ? 1 : 0; //Are we accessing memory?
+	if (ismemory)
+	{
+		modrm_threevariablesused = MODRM_threevariables(CPU[activeCPU].params); //Three variables used?
+	}
+	else
+	{
+		modrm_threevariablesused = 0; //Only 2 or less variables used in calculating the ModR/M.
+	}
+
+	if (CPU[activeCPU].CPU_interruptraised) //Any fault is raised?
+	{
+		ismemory = modrm_threevariablesused = 0; //Not to be applied with this!
+		currentinstructiontiming = &timing286lookup[isPM() | ((CPU[activeCPU].CPU_Operand_size) << 1)][0][0][0xCD][0x00][0]; //Start by pointing to our records to process! Enforce interrupt!
+	}
+	else
+	{
+		currentinstructiontiming = &timing286lookup[isPM() | ((CPU[activeCPU].CPU_Operand_size) << 1)][ismemory][CPU[activeCPU].is0Fopcode][CPU[activeCPU].currentopcode][MODRM_REG(CPU[activeCPU].params.modrm)][0]; //Start by pointing to our records to process!
+	}
+	//Try to use the lookup table!
+	for (instructiontiming = 0; ((instructiontiming < 8) && *currentinstructiontiming); ++instructiontiming, ++currentinstructiontiming) //Process all timing candidates!
+	{
+		if (*currentinstructiontiming) //Valid timing?
+		{
+			currentinstructiontimingindex = (*currentinstructiontiming - 1); //Actual instruction timing index to use(1-base to 0-base)!
+			if (CPUPMTimings[currentinstructiontimingindex].CPUmode[isPM()].ismemory[ismemory].basetiming) //Do we have valid timing to use?
+			{
+				currenttimingcheck = &CPUPMTimings[currentinstructiontimingindex].CPUmode[isPM()].ismemory[ismemory]; //Our current info to check!
+				if (currenttimingcheck->addclock & 0x80) //Multiply BST_cnt and add to this to get the correct timing?
+				{
+					if ((currenttimingcheck->n & 0x80) == ((CPU[activeCPU].protection_PortRightsLookedup & 1) << 7)) //Match case?
+					{
+						//REP support added for string instructions!
+						if (CPU[activeCPU].didNewREP || ((currenttimingcheck->addclock & 2) == 0)) //Including the REP, first instruction?
+						{
+							CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+						}
+						else //Already repeating instruction continued?
+						{
+							CPU[activeCPU].cycles_OP += (currenttimingcheck->n & 0x7F); //Simply cycle count added each REPeated instruction!
+						}
+						if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+						return 1; //Apply the cycles!
+					}
+				}
+				else if (currenttimingcheck->addclock & 0x40) //Multiply BST_cnt and add to this to get the correct timing?
+				{
+					CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+					CPU[activeCPU].cycles_OP += currenttimingcheck->n * CPU[activeCPU].BST_cnt; //This adds the n value for each level linearly!
+					if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+					return 1; //Apply the cycles!									
+				}
+				else if (currenttimingcheck->addclock & 0x20) //L of instruction doesn't fit in 1 bit?
+				{
+					if ((CPU[activeCPU].ENTER_L & 1) != CPU[activeCPU].ENTER_L) //Doesn't fit in 1 bit?
+					{
+						if ((CPU[activeCPU].ENTER_L & 1) == currenttimingcheck->n) //Matching timing?
+						{
+							CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+							CPU[activeCPU].cycles_OP += currenttimingcheck->n * (CPU[activeCPU].ENTER_L - 1); //This adds the n value for each level after level 1 linearly!
+							if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+							return 1; //Apply the cycles!									
+						}
+					}
+				}
+				else if (currenttimingcheck->addclock & 0x10) //L of instruction fits in 1 bit and matches?
+				{
+					if ((CPU[activeCPU].ENTER_L & 1) == CPU[activeCPU].ENTER_L) //Fits in 1 bit?
+					{
+						if ((CPU[activeCPU].ENTER_L & 1) == currenttimingcheck->n) //Matching timing?
+						{
+							CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+							if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+							return 1; //Apply the cycles!									
+						}
+					}
+				}
+				else if (currenttimingcheck->addclock & 0x08) //Only when jump taken?
+				{
+					if (CPU[activeCPU].didJump) //Did we jump?
+					{
+						CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!								
+						if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+						return 1; //Apply the cycles!
+					}
+				}
+				else if (currenttimingcheck->addclock & 0x04) //Gate type has to match in order to be processed?
+				{
+					if (currenttimingcheck->n == CPU[activeCPU].hascallinterrupttaken_type) //Did we execute this kind of gate?
+					{
+						CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!								
+						if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+						return 1; //Apply the cycles!								
+					}
+				}
+				else if (currenttimingcheck->addclock & 0x02) //REP((N)Z) instruction prefix only?
+				{
+					if (CPU[activeCPU].didRepeating) //Are we executing a repeat?
+					{
+						if (CPU[activeCPU].didNewREP) //Including the REP, first instruction?
+						{
+							CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+						}
+						else //Already repeating instruction continued?
+						{
+							CPU[activeCPU].cycles_OP += currenttimingcheck->n; //Simply cycle count added each REPeated instruction!
+						}
+						if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+						return 1; //Apply the cycles!
+					}
+				}
+				else //Normal/default behaviour? Always matches!
+				{
+					CPU[activeCPU].cycles_OP += currenttimingcheck->basetiming; //Use base timing specified only!
+					if (modrm_threevariablesused && (currenttimingcheck->addclock & 1)) ++CPU[activeCPU].cycles_OP; //One cycle to add with added clock!
+					return 1; //Apply the cycles!
+				}
+			}
+		}
+	}
+	return 0; //Not applied, because it's an unknown instruction!
+}
+
+byte haslower286timingpriority(byte CPUmode, byte ismemory, word lowerindex, word higherindex)
+{
+	--lowerindex; //We're checking base 0, not base 1!
+	--higherindex; //We're checking base 0, not base 1!
+	if ((CPUPMTimings[higherindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 2) > (CPUPMTimings[lowerindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 2)) return 1; //REP over non-REP
+	if ((CPUPMTimings[higherindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 4) > (CPUPMTimings[lowerindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 4)) return 1; //Gate over non-Gate!
+	if ((CPUPMTimings[higherindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 8) > (CPUPMTimings[lowerindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 8)) return 1; //JMP taken over JMP not taken!
+	if ((CPUPMTimings[higherindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 16) > (CPUPMTimings[lowerindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 16)) return 1; //L value of BOUND fits having higher priority!
+	if ((CPUPMTimings[higherindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 32) > (CPUPMTimings[lowerindex].CPUmode[CPUmode].ismemory[ismemory].addclock & 32)) return 1; //L value of BOUND counts having higher priority!
+	return 0; //We're equal priority or having higher priority! Don't swap!
+}
+
+int lookupTablesCPU = -1; //What lookup table is loaded?
+
+void CPU_initLookupTables() //Initialize the CPU timing lookup tables!
+{
+	word index; //The index into the main table!
+	word sublistindex; //The index in the sublist!
+	byte CPUmode; //The used CPU mode!
+	byte ismemory; //Memory used in the CPU mode!
+	byte is0Fopcode; //0F opcode bit!
+	word instruction; //Instruction itself!
+	word modrm_register; //The modr/m register used, if any(modr/m specified only)!
+	word sublistsize; //Sub-list size!
+	word sublist[8]; //All instructions matching this!
+	word tempsublist; //Temporary value for swapping items!
+	byte latestCPU; //Last supported CPU for this instruction timing!
+	byte currentCPU; //The CPU we're emulating, relative to the 80286!
+	byte current32; //32-bit opcode?
+	byte notfound = 0; //Not found CPU timings?
+	if (lookupTablesCPU == (int)EMULATED_CPU) return; //Already loaded? Don't reload when already ready to use!
+	lookupTablesCPU = (int)EMULATED_CPU; //We're loading the specified CPU to be active!
+
+	memset(&timing286lookup, 0, sizeof(timing286lookup)); //Clear the entire list!
+
+	if (EMULATED_CPU < CPU_80286) //Not a capable CPU for these timings?
+	{
+		return; //No lookup table to apply, use an empty table!
+	}
+
+	currentCPU = EMULATED_CPU - CPU_80286; //The CPU to find in the table!
+	for (CPUmode = 0; CPUmode < 4; ++CPUmode) //All CPU modes! Real vs Protected is bit 0, 16-bit vs 32-bit is bit 1!
+	{
+		for (ismemory = 0; ismemory < 2; ++ismemory) //All memory modes!
+		{
+			for (is0Fopcode = 0; is0Fopcode < 2; ++is0Fopcode) //All 0F opcode possibilities!
+			{
+				for (instruction = 0; instruction < 0x100; ++instruction) //All instruction opcodes!
+				{
+					for (modrm_register = 0; modrm_register < 8; ++modrm_register) //All modr/m variants!
+					{
+						sublistsize = 0; //Initialize our size to none!
+						latestCPU = currentCPU; //Start off with the current CPU that's supported!
+						notfound = 1; //Default to not found!
+						current32 = (CPUmode >> 1); //32-bit opcode?
+					try16bit:
+						for (;;) //Find the top CPU supported!
+						{
+							//First, detect the latest supported CPU!
+							for (index = 0; index < NUMITEMS(CPUPMTimings); ++index) //Process all timings available!
+							{
+								if ((CPUPMTimings[index].CPU == latestCPU) && (CPUPMTimings[index].is0F == is0Fopcode) && (CPUPMTimings[index].is32 == current32) && (CPUPMTimings[index].OPcode == (instruction & CPUPMTimings[index].OPcodemask))) //Basic opcode matches?
+								{
+									if ((CPUPMTimings[index].modrm_reg == 0) || (CPUPMTimings[index].modrm_reg == (modrm_register + 1))) //MODR/M filter matches to full opcode?
+									{
+										notfound = 0; //We're found!
+										goto topCPUTimingsdetected; //We're detected!
+									}
+								}
+							}
+							if (latestCPU == 0) goto topCPUTimingsdetected; //Abort when finished!
+							--latestCPU; //Check the next CPU!
+						}
+					topCPUTimingsdetected: //TOP CPU timings detected?
+						memset(&sublist, 0, sizeof(sublist)); //Clear our sublist!
+						if (notfound) //No CPU found matching this instruction?
+						{
+							if (current32) //32-bit opcode to check?
+							{
+								current32 = 0; //Try 16-bit opcode instead!
+								latestCPU = currentCPU; //Start off with the current CPU that's supported!
+								notfound = 1; //Default to not found!
+								goto try16bit; //Try the 16-bit variant instead!
+							}
+							memset(&timing286lookup[CPUmode][ismemory][is0Fopcode][instruction][modrm_register], 0, sizeof(timing286lookup[CPUmode][ismemory][is0Fopcode][instruction][modrm_register])); //Unused timings!
+						}
+						else //Valid CPU found for this instruction?
+						{
+							//Now, find all items that apply to this instruction!
+							for (index = 0; index < NUMITEMS(CPUPMTimings); ++index) //Process all timings available!
+							{
+								if ((CPUPMTimings[index].CPU == latestCPU) && (CPUPMTimings[index].is0F == is0Fopcode) && (CPUPMTimings[index].OPcode == (instruction & CPUPMTimings[index].OPcodemask))) //Basic opcode matches?
+								{
+									if ((CPUPMTimings[index].modrm_reg == 0) || (CPUPMTimings[index].modrm_reg == (modrm_register + 1))) //MODR/M filter matches to full opcode?
+									{
+										if (sublistsize < NUMITEMS(sublist)) //Can we even add this item?
+										{
+											sublist[sublistsize++] = (index + 1); //Add the index to the sublist, when possible!
+										}
+									}
+								}
+							}
+
+							//Now, sort the items in their apropriate order!
+							for (index = 0; index < (sublistsize - 1); ++index) //Process all items to sort!
+							{
+								for (sublistindex = 0; sublistindex < (sublistsize - index - 1); ++sublistindex) //The items to compare!
+								{
+									if (haslower286timingpriority(CPUmode, ismemory, sublist[sublistindex], sublist[sublistindex + 1])) //Do we have lower timing priority (item must be after the item specified)?
+									{
+										tempsublist = sublist[sublistindex]; //Lower priority index saved!
+										sublist[sublistindex] = sublist[sublistindex + 1]; //Higher priority index to higher priority position!
+										sublist[sublistindex + 1] = tempsublist; //Lower priority index to lower priority position!
+									}
+								}
+							}
+
+							//Now, the sublist is filled with items needed for the entry!
+							memcpy(&timing286lookup[CPUmode][ismemory][is0Fopcode][instruction][modrm_register], &sublist, MIN(sizeof(sublist), sizeof(timing286lookup[CPUmode][ismemory][is0Fopcode][instruction][modrm_register]))); //Copy the sublist to the active items!
+						}
+					}
+				}
+			}
+		}
+	}
+	//The list is now ready for use!
+}

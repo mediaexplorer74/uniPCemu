@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp build" xmlns:build="http://schemas.microsoft.com/developer/appx/2015/build">
+  <!--
+    ЭТОТ ФАЙЛ МАНИФЕСТА ПАКЕТА СОЗДАН ПРОЦЕССОМ СБОРКИ.
+
+    Изменения этого файла будут потеряны при его повторном создании. Чтобы исправить ошибки в этом файле, измените исходный файл .appxmanifest.
+
+ Дополнительные сведения о файлах манифестов приложений см. по адресу http://go.microsoft.com/fwlink/?LinkID=241727
+  -->
+  <Identity Name="9a426968-6283-4b9f-a466-1a944b04f901" Publisher="CN=media" Version="1.0.0.0" ProcessorArchitecture="x64" />
+  <mp:PhoneIdentity PhoneProductId="9a426968-6283-4b9f-a466-1a944b04f901" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Properties>
+    <DisplayName>UniPCemu</DisplayName>
+    <PublisherDisplayName>media</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.15063.0" MaxVersionTested="10.0.15063.0" />
+    <PackageDependency Name="Microsoft.VCLibs.140.00.Debug" MinVersion="14.0.30704.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+  </Dependencies>
+  <Resources>
+    <Resource Language="RU-RU" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="UniPCemu.exe" EntryPoint="UniPCemu.App">
+      <uap:VisualElements DisplayName="UniPCemu" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="UniPCemu" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" />
+        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+  <build:Metadata>
+    <build:Item Name="cl.exe" Version="19.31.31103.0" />
+    <build:Item Name="VisualStudio" Version="17.0" />
+    <build:Item Name="VisualStudioEdition" Value="Microsoft Visual Studio Community 2022" />
+    <build:Item Name="OperatingSystem" Version="10.0.19041.1466 (WinBuild.160101.0800)" />
+    <build:Item Name="Microsoft.Build.AppxPackage.dll" Version="17.0.32113.165" />
+    <build:Item Name="ProjectGUID" Value="{21622b81-92c4-4943-985b-ad3d76ab69f1}" />
+    <build:Item Name="OptimizingToolset" Value="None" />
+    <build:Item Name="TargetRuntime" Value="Native" />
+    <build:Item Name="Microsoft.Windows.UI.Xaml.Build.Tasks.dll" Version="17.0.32113.165" />
+    <build:Item Name="MakePri.exe" Version="10.0.15063.468 (WinBuild.160101.0800)" />
+  </build:Metadata>
+</Package>

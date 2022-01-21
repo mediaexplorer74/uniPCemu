@@ -1,0 +1,35 @@
+//For defining additional data!
+#include <windows.h>
+#include "version.h"
+
+id ICON THEICON
+IDI_ICON1               ICON                    THEICON
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION        VER_FILEVERSION
+ PRODUCTVERSION     VER_PRODUCTVERSION
+ FILEFLAGSMASK      0x3fL
+ FILESUBTYPE        0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription",  VER_FILEDESCRIPTION_STR "\0"
+            VALUE "FileVersion",      VER_FILEVERSION_STR "\0"
+            VALUE "InternalName",     VER_INTERNALNAME_STR "\0"
+            VALUE "LegalCopyright",   VER_LEGALCOPYRIGHT_STR "\0"
+            VALUE "OriginalFilename", VER_ORIGINALFILENAME_STR "\0"
+            VALUE "ProductName",      VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",   VER_PRODUCTVERSION_STR "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

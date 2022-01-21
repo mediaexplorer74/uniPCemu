@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-HJVJ8KR</Machine>
+    <WindowsUser>media</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Debug|x64</SolutionConfiguration>
+    <PackageArchitecture>x64</PackageArchitecture>
+    <PackageIdentityName>9a426968-6283-4b9f-a466-1a944b04f901</PackageIdentityName>
+    <PackageIdentityPublisher>CN=media</PackageIdentityPublisher>
+    <IntermediateOutputPath>C:\Users\media\source\repos\UniPCemu\UniPCemu\x64\Debug\</IntermediateOutputPath>
+    <RemoteDeploymentType>CopyToDevice</RemoteDeploymentType>
+    <PackageRegistrationPath>
+    </PackageRegistrationPath>
+    <RemoveNonLayoutFiles>false</RemoveNonLayoutFiles>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
+    <LayoutDir>C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\AppX</LayoutDir>
+    <RegisteredManifestChecksum>5180E359CD7E2071529DC7DBAE72F1966EAF52FDBA8F32B82206D4D003A0F219</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>9a426968-6283-4b9f-a466-1a944b04f901_1.0.0.0_x64__cj4nrm0qt9s1y</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>9a426968-6283-4b9f-a466-1a944b04f901_cj4nrm0qt9s1y!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>9a426968-6283-4b9f-a466-1a944b04f901</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=media</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.0.0</RegisteredVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-20T07:15:01.988</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\UniPCemu.exe">
+      <PackagePath>UniPCemu.exe</PackagePath>
+      <Modified>2022-01-20T07:14:58.973</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\UniPCemu.winmd">
+      <PackagePath>UniPCemu.winmd</PackagePath>
+      <Modified>2022-01-20T07:14:51.952</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\LockScreenLogo.scale-200.png">
+      <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
+      <Modified>2022-01-19T19:19:34.529</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\SplashScreen.scale-200.png">
+      <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.548</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\Square150x150Logo.scale-200.png">
+      <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.551</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\Square44x44Logo.scale-200.png">
+      <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.553</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.556</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\StoreLogo.png">
+      <PackagePath>Assets\StoreLogo.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.565</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\UniPCemu\Assets\Wide310x150Logo.scale-200.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-19T19:19:34.605</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\App.xbf">
+      <PackagePath>App.xbf</PackagePath>
+      <Modified>2022-01-20T07:14:52.664</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\MainPage.xbf">
+      <PackagePath>MainPage.xbf</PackagePath>
+      <Modified>2022-01-20T07:14:52.665</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.UniversalCRT.Debug\10.0.15063.0\\redist\Debug\X64\ucrtbased.dll">
+      <PackagePath>ucrtbased.dll</PackagePath>
+      <Modified>2017-06-12T22:01:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\UniPCemu\x64\Debug\UniPCemu\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2022-01-20T07:15:01.651</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\ARM\Microsoft.VCLibs.ARM.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\ARM64\Microsoft.VCLibs.ARM64.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\x64\Microsoft.VCLibs.x64.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\x86\Microsoft.VCLibs.x86.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>

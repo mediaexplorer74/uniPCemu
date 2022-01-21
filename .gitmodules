@@ -1,0 +1,6 @@
+[submodule "commonemuframework"]
+	path = commonemuframework
+	url = https://bitbucket.org/superfury/commonemuframework
+[submodule "commonemuframework-sdl2"]
+	path = commonemuframework-sdl2
+	url = https://bitbucket.org/superfury/commonemuframework-sdl2

@@ -1,0 +1,286 @@
+#Linux makefile test project settings
+
+BUILD_DIR = ../../projects_build/$(BUILD_NAME)
+
+#Name of the destination application!
+TARGET = $(BUILD_NAME)
+
+BUILD_INTERMEDIATE = linux
+
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE := $(BUILD_INTERMEDIATE)_winpcap
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+BUILD_INTERMEDIATE := $(BUILD_INTERMEDIATE)_pcap
+endif
+endif
+
+ifneq ("$(wildcard gitversion2.txt)","")
+GIT_VERSION := $(shell cat gitversion2.txt)
+endif
+ifeq ("$(wildcard gitversion2.txt)","")
+GIT_VERSION := $(shell git describe --tags)
+endif
+
+TARGET_PROFILE_TXT = profiler.txt
+TARGET_PROFILE_CMP_TXT = profiler2.txt
+
+#GProf switches!
+GPROF_SWITCHES =
+
+# ###################################################
+
+
+#Our actual building script doing all the hard work:
+
+#Our filenames of the targets (release and debug)!
+TARGET_RELEASE = $(TARGET)
+TARGET_DEBUG = dbg$(TARGET)
+TARGET_PROFILE = prof$(TARGET)
+
+#Programs
+#CC = $(CROSS_COMPILE)gcc
+RM = rm -f
+ifeq (,$(MKDIR))
+MKDIR = mkdir
+endif
+
+WARNS = -Wall
+
+ifneq (,$(findstring SDL2repo,$(MAKECMDGOALS)))
+PROJECT_CWD = $(shell pwd)
+cd ..
+cd commonemuframework-sdl2
+mkdir build
+cd build
+../configure
+make
+sudo make install
+#Return to where we came from, the current project!
+cd $(PROJECT_CWD)
+endif
+
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions instead!
+INCLUDE_DIRS := -I. $(shell sdl2-config --cflags)
+endif
+
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL1 functions instead!
+INCLUDE_DIRS := -I. $(shell sdl-config --cflags)
+endif
+
+#Common emulator framework!
+INCLUDE_DIRS := $(INCLUDE_DIRS) -I../commonemuframework
+
+#Default optimization flags!
+OPTIMIZATIONFLAGS = -O3
+
+#Execute stripping if set below!
+STRIP = -s
+
+#Building for debugging optimization flags
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
+OPTIMIZATIONFLAGS = -Og
+endif
+
+#Building for debugger and normal CFLAGS
+BUILD_CFLAGS = -enable-core-inline -static-libgcc -static-libstdc++
+ifneq (,$(findstring debug,$(MAKECMDGOALS)))
+BUILD_CFLAGS = -g -ggdb -ffunction-sections
+endif
+
+ifneq (,$(findstring profile,$(MAKECMDGOALS)))
+BUILD_CFLAGS = -g -pg -ffunction-sections -enable-core-inline -static-libgcc -static-libstdc++
+endif
+
+#Different kinds of flags!
+#Add -mno-ms-bitfields to fix broken bitfields and type sizes in MinGW.
+CFLAGS := $(CFLAGS) -std=c99 ${WARNS} -mno-ms-bitfields
+
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+SDLNET = -lSDL2_net
+endif
+endif
+
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+SDLNET = -lSDL_net
+endif
+endif
+
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2 functions&libs instead! Link statically?
+ifneq (,$(findstring SDL2static,$(MAKECMDGOALS)))
+LDFLAGS := $(LDFLAGS) -static -static-libgcc
+LDLIBS := $(LDLIBS) $(shell sdl2-config --static-libs)
+endif
+ifeq (,$(findstring SDL2static,$(MAKECMDGOALS)))
+#Link dynamically?
+LDLIBS := $(LDLIBS) $(SDLNET)
+LDLIBS := $(LDLIBS) $(shell sdl2-config --libs)
+endif
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+CFLAGS := $(CFLAGS) -DSDL2_NET
+endif
+#Flags always set for compiling with SDL2(for the code compilation itself)!
+CFLAGS := $(CFLAGS) -DSDL2
+endif
+
+ifneq (,$(findstring winpcap,$(MAKECMDGOALS)))
+#WinPCap support!
+CFLAGS := $(CFLAGS) -DPACKETSERVER_ENABLED -DWPCAP
+LDLIBS += -lwpcap
+else
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+#WinPCap support!
+CFLAGS := $(CFLAGS) $(shell pcap-config --cflags) -DPACKETSERVER_ENABLED
+LDLIBS := $(shell pcap-config --libs) $(LDLIBS)
+endif
+endif
+
+CFLAGS := $(CFLAGS) -D$(BUILD_DEFINE)
+
+#Version support!
+CFLAGS := $(CFLAGS) -DGITVERSION="\"$(GIT_VERSION)\""
+
+ifeq (,$(findstring SDL2,$(MAKECMDGOALS)))
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+CFLAGS := $(CFLAGS) -DSDL_NET
+endif
+#SDL1 functions instead!
+LDLIBS := $(LDLIBS) $(SDLNET)
+LDLIBS := $(LDLIBS) $(shell sdl-config --libs)
+endif
+
+# Generic requirements!
+LDLIBS += -lm
+
+#Apply build directory etc.
+BUILD_RELEASE = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_RELEASE)
+BUILD_DEBUG = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_DEBUG)
+BUILD_PROFILE = $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/$(TARGET_PROFILE)
+BUILD_PROFILE_GMON = $(BUILD_DIR)/gmon.out
+BUILD_PROFILE_GMON_TXT = $(BUILD_DIR)/$(TARGET_PROFILE_TXT)
+BUILD_PROFILE_GMON_CMP_TXT = $(BUILD_DIR)/$(TARGET_PROFILE_CMP_TXT)
+
+#Make sure the objects to compile are sorted!
+OBJS := $(sort $(OBJS))
+
+OBJS := $(patsubst %.o,$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,$(subst ../,___/,$(OBJS)))
+
+# can be ./src in different location
+subdir := $(ROOTPATH)/..
+# may have SHA-1 (detached HEAD) 
+subdep := $(subdir)/.git/HEAD
+# may be a ref HEAD (for any branch/tag) 
+gitref := $(word 2, $(shell cat $(subdep)))
+# append it if referenced HEAD
+ifneq "$(gitref)" ""
+# e.g. HEAD & refs/heads/master 
+subdep += $(subdir)/.git/$(gitref)
+endif
+
+#Rules themselves!
+#Build,debug and analyze(profile subcommand) command support!
+
+analyze: profile
+	$(info Creating $(TARGET_PROFILE_TXT)...)
+	@gprof $(GPROF_SWITCHES) $(BUILD_PROFILE) $(BUILD_PROFILE_GMON) > $(BUILD_PROFILE_GMON_TXT)
+
+analyze2: profile
+	$(info Creating $(TARGET_PROFILE_CMP_TXT)...)
+	@gprof $(GPROF_SWITCHES) $(BUILD_PROFILE) $(BUILD_PROFILE_GMON) > $(BUILD_PROFILE_GMON_CMP_TXT)
+
+build: $(BUILD_RELEASE)
+profile: $(BUILD_PROFILE)
+reprofile: clean profile
+
+#Run debugger now on the executable!
+debug: $(BUILD_DEBUG)
+	$(info Starting gdb...)
+ifneq (,$(wildcard $(BUILD_DIR)/.gdbinit))
+	@cp $(BUILD_DIR)/.gdbinit ./.gdbinit
+endif
+ifeq (,$(ARGS))
+	@gdb -w --cd="$(BUILD_DIR)" $(GDBARGS) --se="$(TARGET_DEBUG)"
+else
+	@gdb -w --cd="$(BUILD_DIR)" $(GDBARGS) --args "$(TARGET_DEBUG)" $(ARGS)
+endif
+redebug: clean debug
+
+#Dependancy support!
+-include $(OBJS:.o=.d)
+
+#Compile into debug mode without stripping (-s)!
+$(BUILD_DEBUG): ${OBJS}
+	$(info Creating debug executable $(TARGET_DEBUG)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -ggdb -o "$@" $(OBJS) -Wl,-gc-sections ${LDFLAGS} ${LDLIBS}
+	$(info Creating release executable copy of $(TARGET_DEBUG)...)
+	@cp $@ $(dir $@)/..
+
+$(BUILD_PROFILE): ${OBJS}
+	$(info Creating profiling executable $(TARGET_PROFILE)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -g -pg -o "$@" $(OBJS) -Wl,-gc-sections ${LDFLAGS} ${LDLIBS}
+	$(info Creating release executable copy of $(TARGET_PROFILE)...)
+	@cp $@ $(dir $@)/..
+
+#Compile into release mode with stripping (-s)!
+$(BUILD_RELEASE): ${OBJS}
+	$(info Creating release executable $(TARGET_RELEASE)...)
+	@$(MKDIR) -p $(dir $@)
+	@${CC} -o "$@" ${OBJS} $(STRIP) ${LDFLAGS} ${LDLIBS}
+	$(info Creating release executable copy of $(TARGET_RELEASE)...)
+	@cp $@ $(dir $@)/..
+
+gitcommitversion.h: $(subdep)
+# Create the commit version header with our commit version: this cannot be passed directly to the interpreter(doesn't quote the data it contains)
+	@-git update-index --assume-unchanged gitcommitversion.h
+	@echo "#define GITVERSION \"$(GIT_VERSION)\"">gitcommitversion.h
+
+#Main requires gitcommitversion.h to be up-to-date!
+$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/___/commonemuframework/emu/main.o: gitcommitversion.h
+
+#Dummy to prevent compiling .d.o invalid paths!
+%.d:
+	@
+
+#Patch for dependancy output using incorrect .o file paths is right below the CC lines!
+$(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o:
+	$(info Compiling $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)))
+	@$(MKDIR) -p $(dir $@)
+	@${CC} $(OPTIMIZATIONFLAGS) ${CFLAGS} $(BUILD_CFLAGS) ${INCLUDE_DIRS} -c $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)) -o $@
+	@${CC} $(CFLAGS) $(INCLUDE_DIRS) -c $(subst ___/,../,$(patsubst $(BUILD_DIR)/$(BUILD_INTERMEDIATE)/%.o,%.c,$@)) -MM -MF $(patsubst %.o,%.d,$@)
+	@sed -i 's|$(notdir $@):|$@:|' $(patsubst %.o,%.d,$@)
+
+clean:
+	$(info Cleaning up...)
+	@-$(RM) $(OBJS)
+	@-$(RM) $(patsubst %.o,%.d,$(OBJS))
+	@-$(RM) $(BUILD_RELEASE)
+	@-$(RM) $(BUILD_PROFILE)
+	@-$(RM) $(BUILD_DEBUG)
+	@-$(RM) $(patsubst %.o,%.d,$(OBJS))
+
+install: $(BUILD_RELEASE)
+	$(info Installing...)
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+#Requiring user rights for pcap
+ifneq (,$(PCAPUSER))
+	usermod -a -G pcap $(PCAPUSER)
+endif
+endif
+	$(INSTALL) -m 0755 $(BUILD_RELEASE) $(bindir)
+ifneq (,$(findstring pcap,$(MAKECMDGOALS)))
+ifneq (,$(PCAPUSER))
+#Set the pcap rights to the app!
+	chgrp pcap $(bindir)/$(TARGET_RELEASE)
+	setcap cap_net_raw,cap_net_admin=eip $(bindir)/$(TARGET_RELEASE)
+endif
+endif
+
+# Special flags that aren't targets, just targets used for creating compiler&linker flags!
+.PHONY: SDL2 SDL2static SDL2_net pcap linux

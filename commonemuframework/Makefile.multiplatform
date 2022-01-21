@@ -1,0 +1,41 @@
+#Finally, the desired platform to build for:
+ifeq (,$(PLATFORM))
+ifneq (,$(findstring psp,$(MAKECMDGOALS)))
+PLATFORM = psp
+endif
+
+ifneq (,$(findstring win,$(MAKECMDGOALS)))
+PLATFORM = win
+endif
+
+ifneq (,$(findstring linux,$(MAKECMDGOALS)))
+PLATFORM = linux
+endif
+
+ifneq (,$(findstring android,$(MAKECMDGOALS)))
+PLATFORM = android
+endif
+
+ifneq (,$(findstring vita,$(MAKECMDGOALS)))
+PLATFORM = vita
+endif
+
+ifneq (,$(findstring switch,$(MAKECMDGOALS)))
+PLATFORM = switch
+endif
+endif
+
+ifeq (,$(PLATFORM))
+$(error Please specify a platform (psp,win,linux,android) and action ((re)build or (re)clean), e.g. make win build or make win clean. Optional other targets(besides build/clean) are (re)debug, rebuild, clean, SDL2(static) to use (static) SDL2 linking instead of dynamic SDL linking, (re)profile, analyze(2), x64(for MinGW64 only), mingw32 for MSYS2 32-bit compilation, mingw64 for MSYS2 64-bit compilation)
+endif
+
+ifneq (,$(PLATFORM))
+ifneq (custom,$(PLATFORM))
+include $(ROOTDIR)../commonemuframework/Makefile.$(PLATFORM)
+endif
+endif
+
+rebuild: clean build
+
+#Disable parsing of the platforms themselves!
+.PHONY: psp win linux android clean build vita switch

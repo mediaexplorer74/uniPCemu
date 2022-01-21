@@ -1,0 +1,55 @@
+#Define our building directory for all output files!
+BUILD_DIR = ../../projects_build/$(BUILD_NAME)/PSP
+
+TARGET = eboot
+
+#need prx to be able to run the exception handler!
+#atm. build_prx causes multithreading to fail?
+#BUILD_PRX/ENCRYPT is determined by the caller!
+
+#Enable large memory detection? Disabled during developing.
+PSP_LARGE_MEMORY = 1
+
+#Init for below:
+#optimization flags: Nothing: Debugging, -O3 normal operations.
+OPTIMIZATIONFLAG = -O3
+#OPTIMIZATIONFLAG = 
+
+#Finally, everything PSP!
+
+#Basic compiler stuff and paths
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPDEV = $(shell psp-config -d)
+PSPBIN = $(PSPDEV)/bin
+SDL_CONFIG = $(PSPBIN)/sdl-config
+
+CFLAGS = $(OPTIMIZATIONFLAG) -G0 -Wall
+CFLAGS := $(CFLAGS) -D$(BUILD_DEFINE)
+
+#Common emulator framework!
+CFLAGS := $(CFLAGS) -I../commonemuframework
+
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+ASFLAGS = $(CFLAGS)
+
+LIBDIR = $(shell $(PSPBIN)/psp-config --psp-prefix)/lib
+LIBS = $(shell $(PSPBIN)/sdl-config --libs)
+LIBS += -lpspirkeyb -lpsppower -lstdc++
+LDFLAGS = 
+
+EXTRA_TARGETS = EBOOT.PBP
+
+CFLAGS += $(shell $(PSPBIN)/sdl-config --cflags)
+
+#Custom: we use our own main function, not SDL's (to facilitate proper registering of handlers)!
+LIBS := $(subst -lSDLmain ,,$(LIBS))
+CFLAGS := $(subst -Dmain=SDL_main ,,$(CFLAGS))
+
+#EBOOT title to use!
+PSP_EBOOT_TITLE = $(BUILD_NAME)
+
+#Make sure the objects to compile are sorted!
+OBJS := $(sort $(OBJS))
+
+#PSP build path and compile script!
+include ../commonemuframework/tools/build.mak

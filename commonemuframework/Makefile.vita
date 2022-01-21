@@ -1,0 +1,123 @@
+# You should only use Makefile-based build if you know what you're doing.
+# For most vitasdk projects, CMake is a better choice. See CMakeLists.txt for an example.
+
+.PHONY: build rebuild clean SDL2 SDL_net SDL2_net
+
+#Define our building directory for all output files!
+BUILD_DIR = ../../projects_build/$(BUILD_NAME)/vita
+
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+
+# Sort first!
+OBJS := $(sort $(OBJS))
+
+CC := arm-vita-eabi-gcc
+CXX := arm-vita-eabi-g++
+STRIP := arm-vita-eabi-strip
+
+PROJECT_TITLE := $(BUILD_NAME)
+ifeq (,$(VITAID))
+PROJECT_TITLEID := SFHB99999
+endif
+ifneq (,$(VITAID))
+PROJECT_TITLEID := $(VITAID)
+endif
+
+PROJECT := $(BUILD_NAME)
+CFLAGS += -g -Wl,-q -Wall -O3 \
+			-D__VITA__ -D__ARM_ARCH=7 -D__ARM_ARCH_7A__ \
+			-mfpu=neon -mcpu=cortex-a9 -march=armv7-a -mfloat-abi=hard
+CXXFLAGS += -std=c++11 = -g -Wl,-q -Wall -O3 \
+			-D__VITA__ -D__ARM_ARCH=7 -D__ARM_ARCH_7A__ \
+			-mfpu=neon -mcpu=cortex-a9 -march=armv7-a -mfloat-abi=hard
+
+#Our own dependency!
+CFLAGS := $(CFLAGS)  -I. -I../commonemuframework
+
+#Required define support!
+CFLAGS := $(CFLAGS) -D$(BUILD_DEFINE)
+
+#Custom here
+CFLAGS += -Wformat-truncation=0
+
+SRC_C := $(patsubst %.o,%.c,$(OBJS))
+SRC_CPP := $(patsubst %.o,%.cpp,$(OBJS))
+
+#Replace objects to destination
+OBJS := $(patsubst %.o,$(BUILD_DIR)/%.o,$(subst ../,___/,$(OBJS)))
+
+# Needed by psvDebugScreenPrintf
+#LIBS += -lstdc++
+
+#SDL(2) is a requirement!
+ifneq (,$(findstring SDL2,$(MAKECMDGOALS)))
+#SDL2!
+LIBS += -lSDL2
+CFLAGS += -DSDL2
+ifneq (,$(findstring SDL2_net,$(MAKECMDGOALS)))
+LIBS += -lSDL2_net
+CFLAGS += _DSDL2_net
+endif
+else
+#SDL
+LIBS += -lSDL
+ifneq (,$(findstring SDL_net,$(MAKECMDGOALS)))
+LIBS += -lSDL_net
+CFLAGS += _DSDL_net
+endif
+endif
+
+#SDL2 library requirements!
+LIBS += -lvita2d -lSceDisplay_stub -lSceCtrl_stub -lSceAudio_stub -lSceSysmodule_stub -lSceGxm_stub -lSceCommonDialog_stub -lSceAppMgr_stub -lSceTouch_stub -lSceHid_stub -lSceMotion_stub -lm
+
+build: $(BUILD_DIR)/$(PROJECT).vpk
+
+$(BUILD_DIR)/$(PROJECT).vpk: $(BUILD_DIR)/eboot.bin $(BUILD_DIR)/param.sfo
+	$(info Creating $@)
+	@vita-pack-vpk -s $(BUILD_DIR)/param.sfo -b $(BUILD_DIR)/eboot.bin \
+		--add sce_sys/icon0.png=sce_sys/icon0.png \
+		--add sce_sys/livearea/contents/bg.png=sce_sys/livearea/contents/bg.png \
+		--add sce_sys/livearea/contents/startup.png=sce_sys/livearea/contents/startup.png \
+		--add sce_sys/livearea/contents/template.xml=sce_sys/livearea/contents/template.xml \
+	$(BUILD_DIR)/$(PROJECT).vpk
+
+$(BUILD_DIR)/eboot.bin: $(BUILD_DIR)/$(PROJECT).velf
+	$(info Creating $@)
+	@vita-make-fself $(BUILD_DIR)/$(PROJECT).velf $(BUILD_DIR)/eboot.bin
+
+$(BUILD_DIR)/param.sfo:
+	$(info Creating $@)
+	@vita-mksfoex -s TITLE_ID="$(PROJECT_TITLEID)" "$(PROJECT_TITLE)" $(BUILD_DIR)/param.sfo
+
+$(BUILD_DIR)/$(PROJECT).velf: $(BUILD_DIR)/$(PROJECT).elf
+	$(info Creating $@)
+	@$(STRIP) -g $<
+	@vita-elf-create $< $@
+
+$(BUILD_DIR)/$(PROJECT).elf: $(OBJS)
+	$(info Linking $@)
+	@$(CC) $(CFLAGS) $^ $(LIBS) -o $@
+
+#$(BUILD_DIR)/%.o : %.cpp | $(OBJ_DIRS)
+#	mkdir -p $(dir $@)
+#	arm-vita-eabi-g++ -c $(CXXFLAGS) -o $@ $<
+
+#Ignore .d requirements!
+%.d:
+	@
+
+%.o:
+	$(info Compiling $(subst ___/,../,$(patsubst $(BUILD_DIR)/%.o,%.c,$@)))
+	@mkdir -p $(dir $@)
+	@$(CC) -c $(CFLAGS) -o $@ $(subst ___/,../,$(patsubst $(BUILD_DIR)/%.o,%.c,$@))
+#Generate dependencies!	
+	@$(CC) $(CFLAGS) -c $(patsubst $(BUILD_DIR)/%.o,%.c,$(subst ___/,../,$@)) -MM -MF $(patsubst %.o,%.d,$@)
+	@sed -i 's|$(notdir $@):|$@:|' $(patsubst %.o,%.d,$@)
+
+-include $(OBJS:.o=.d)
+
+rebuild: clean build
+
+clean:
+	$(info Cleaning up...)
+	@rm -f $(BUILD_DIR)/$(PROJECT).velf $(BUILD_DIR)/$(PROJECT).elf $(BUILD_DIR)/$(PROJECT).vpk $(BUILD_DIR)/param.sfo $(BUILD_DIR)/eboot.bin $(OBJS) $(OBJS:.o=.d)
