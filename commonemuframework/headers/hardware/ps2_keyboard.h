@@ -51,7 +51,8 @@ typedef struct
 	byte used; //Are we used instead of a normal one?
 } KEYBOARDENTRY_EXTENDED;
 
-#ifdef UNIPCEMU
+//RnD
+#ifndef UNIPCEMU//#ifdef UNIPCEMU
 typedef struct
 {
 	byte keyboard_enabled; //Keyboard enabled?
@@ -87,7 +88,7 @@ int EMU_keyboard_handler_idtoname(int id, char *name); //Same as above, but with
 float HWkeyboard_getrepeatrate(); //Which repeat rate to use after the repeat delay! (chars/second)
 word HWkeyboard_getrepeatdelay(); //Delay after which to start using the repeat rate till release! (in ms)
 
-#ifdef UNIPCEMU
+#ifndef UNIPCEMU//#ifdef UNIPCEMU
 void BIOS_initKeyboard(); //Initialise the PS/2 keyboard (AFTER the 8042!)
 void BIOS_doneKeyboard(); //Finish the PS/2 keyboard.
 

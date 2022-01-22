@@ -1,0 +1,17 @@
+C:\Users\media\source\repos\UniPCemu\x64\Debug\SDL-UWP\SDL2.pri
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\SDL-UWP.vcxproj.AssemblyReference.cache
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\priconfig.xml
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\priconfig.xml.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\unfiltered.layout.resfiles
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\unfiltered.layout.resfiles.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\filtered.layout.resfiles
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\filtered.layout.resfiles.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\excluded.layout.resfiles
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\excluded.layout.resfiles.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\resources.resfiles
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\resources.resfiles.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\pri.resfiles
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\pri.resfiles.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\qualifiers.txt
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\qualifiers.txt.intermediate
+C:\Users\media\source\repos\UniPCemu\SDL2\x64\Debug\MultipleQualifiersPerDimensionFound.txt

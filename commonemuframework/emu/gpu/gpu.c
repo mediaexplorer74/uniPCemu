@@ -196,8 +196,9 @@ void updateWindow(word xres, word yres, uint_32 flags)
 		window_xres = xres;
 		window_yres = yres;
 		window_flags = flags;
-		#ifndef SDL2
-		useFullscreen = (flags&SDL_FULLSCREEN)?1:0; //Fullscreen specified?
+		
+        #ifndef SDL2//#ifndef SDL2
+		useFullscreen = 1;// (flags & SDL_FULLSCREEN) ? 1 : 0; //Fullscreen specified?
 		char posstr[256];
 		memset(&posstr,0,sizeof(posstr)); //Init when needed!
 		//SDL1?
@@ -458,11 +459,11 @@ SDL_Surface *getGPUSurface()
 	windowready:
 	#endif
 	flags = SDL_SWSURFACE; //Default flags!
-	#ifndef SDL2
-	if (GPU.fullscreen) flags |= SDL_FULLSCREEN; //Goto fullscreen mode!
-	#else
+	//#ifndef SDL2
+	//if (GPU.fullscreen) flags |= SDL_FULLSCREEN; //Goto fullscreen mode!
+	//#else
 	if (GPU.fullscreen) flags |= SDL_WINDOW_FULLSCREEN; //Goto fullscreen mode!
-	#endif
+	//#endif
 
 	updateWindow(xres,yres,flags); //Update the window resolution if needed!
 

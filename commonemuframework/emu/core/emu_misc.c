@@ -179,7 +179,9 @@ uint_32 safe_strlen(const char *str, size_t size)
 
 void safe_strcpy(char *dest, size_t size, const char *src)
 {
-	strncpy(dest,src,(MAX(size,1)-1));
+	// RnD
+	strncpy_s(dest,src,(MAX(size,1)-1), MAXSSIZE_T); 
+	
 	dest[MAX(size,1)-1]=0; //Proper termination always!
 }
 
@@ -199,7 +201,9 @@ void safe_strcat(char *dest, size_t size, const char *src)
 	}
 	length = (size-1)-length; //How much size is available, including a NULL character in the destination?
 	if (unlikely(!length)) return; //Abort if nothing can be added!
-	strncat(dest, src, length); //Append source to the destination, with up to the available length only!
+
+	//RnD
+	strncat_s(dest, src, length, MAXSIZE_T); //Append source to the destination, with up to the available length only!
 	dest[MAX(size, 1) - 1] = 0; //Proper termination always!
 }
 

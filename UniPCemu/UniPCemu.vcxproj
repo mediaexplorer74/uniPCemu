@@ -159,6 +159,7 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
       <DisableSpecificWarnings>4453;28204</DisableSpecificWarnings>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <AdditionalIncludeDirectories>..\commonemuframework\;..\commonemuframework-sdl2\include;$(ProjectDir);$(GeneratedFilesDir);$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,26 +178,66 @@
     <ClCompile Include="..\commonemuframework\emu\core\emu_misc.c">
       <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
     </ClCompile>
-    <ClCompile Include="..\commonemuframework\emu\core\errors.c" />
-    <ClCompile Include="..\commonemuframework\emu\core\number_optimizations.c" />
-    <ClCompile Include="..\commonemuframework\emu\core\threads.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_emu.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_framerate.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_renderer.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_sdl.c" />
-    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_text.c" />
-    <ClCompile Include="..\commonemuframework\emu\io\directorylist.c" />
-    <ClCompile Include="..\commonemuframework\emu\io\input.c" />
-    <ClCompile Include="..\commonemuframework\emu\io\keyboard.c" />
-    <ClCompile Include="..\commonemuframework\emu\io\sound.c" />
-    <ClCompile Include="..\commonemuframework\emu\main.c" />
-    <ClCompile Include="..\commonemuframework\exception\exception.c" />
-    <ClCompile Include="..\commonemuframework\hardware\ps2_keyboard_data.c" />
-    <ClCompile Include="..\commonemuframework\support\bmp.c" />
-    <ClCompile Include="..\commonemuframework\support\crc32.c" />
-    <ClCompile Include="..\commonemuframework\support\fifobuffer.c" />
-    <ClCompile Include="..\commonemuframework\support\filters.c" />
+    <ClCompile Include="..\commonemuframework\emu\core\errors.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\core\number_optimizations.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\core\threads.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_emu.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_framerate.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_renderer.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_sdl.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\gpu\gpu_text.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\io\directorylist.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\io\input.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\io\keyboard.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\io\sound.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\emu\main.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\exception\exception.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\hardware\ps2_keyboard_data.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\support\bmp.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\support\crc32.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\support\fifobuffer.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
+    <ClCompile Include="..\commonemuframework\support\filters.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
     <ClCompile Include="..\commonemuframework\support\highrestimer.c" />
     <ClCompile Include="..\commonemuframework\support\iniparser.c" />
     <ClCompile Include="..\commonemuframework\support\locks.c" />
@@ -279,7 +320,9 @@
     <ClCompile Include="hardware\pic.c" />
     <ClCompile Include="hardware\pit.c" />
     <ClCompile Include="hardware\ppi.c" />
-    <ClCompile Include="hardware\ps2_keyboard.c" />
+    <ClCompile Include="hardware\ps2_keyboard.c">
+      <CompileAsWinRT Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsWinRT>
+    </ClCompile>
     <ClCompile Include="hardware\ps2_mouse.c" />
     <ClCompile Include="hardware\sermouse.c" />
     <ClCompile Include="hardware\softdebugger.c" />
@@ -537,6 +580,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SDL2\SDL-UWP.vcxproj">
+      <Project>{89e9b32e-a86a-47c3-a948-d2b1622925ce}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

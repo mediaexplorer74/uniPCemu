@@ -122,9 +122,9 @@ word firstsplitx=(GPU_TEXTSURFACE_WIDTH/3)+1; //End of the first horizontal area
 word secondsplitx=((GPU_TEXTSURFACE_WIDTH/3)*2)+1; //End of the second horizontal area(middle button becomes right button)!
 word thirdsplity=(GPU_TEXTSURFACE_HEIGHT/3)+1; //End of the first vertical area(middle button becomes no button)!
 
-#ifdef SDL2
+//#ifdef SDL2
 extern SDL_Window *sdlWindow; //Our Window!
-#endif
+//#endif
 
 #if !defined(IS_VITA) && !defined(IS_SWITCH)
 //PSP map
@@ -163,7 +163,7 @@ byte remap_tab_active = 0;
 
 byte emu_keys_state[104]; //All states for all emulated keys!
 //SDL 1.0 states!
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 int emu_keys_SDL[104] = {
 #else
 //SDL2 variant
@@ -221,7 +221,7 @@ uint_32 emu_keys_SDL[104] = {
 
 	SDLK_LSHIFT, //L SHFT
 	SDLK_LCTRL, //L CTRL
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 	SDLK_LSUPER, //L WIN
 #else
 	SDLK_LGUI, //L WIN
@@ -229,14 +229,14 @@ uint_32 emu_keys_SDL[104] = {
 	SDLK_LALT, //L ALT
 	SDLK_RSHIFT, //R SHFT
 	SDLK_RCTRL, //R CTRL
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 	SDLK_RSUPER, //R WIN
 #else
 	SDLK_RGUI, //R WIN
 #endif
 	SDLK_RALT, //R ALT
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	SDLK_APPLICATION, //APPS
 #else
 	SDLK_MENU, //APPS
@@ -259,7 +259,7 @@ uint_32 emu_keys_SDL[104] = {
 
 	SDLK_SYSREQ, //PRNT SCRN
 
-#ifdef SDL2
+#ifndef SDL2 //#ifdef SDL2
 	SDLK_SCROLLLOCK, //SCROLL
 #else
 	SDLK_SCROLLOCK, //SCROLL
@@ -280,7 +280,7 @@ uint_32 emu_keys_SDL[104] = {
 	SDLK_DOWN, //D ARROW
 	SDLK_RIGHT, //R ARROW
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	SDLK_NUMLOCKCLEAR, //NUM
 #else
 	SDLK_NUMLOCK, //NUM
@@ -292,7 +292,7 @@ uint_32 emu_keys_SDL[104] = {
 	SDLK_KP_ENTER, //KP EN
 	SDLK_KP_PERIOD, //KP .
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	SDLK_KP_0, //KP 0
 	SDLK_KP_1, //KP 1
 	SDLK_KP_2, //KP 2
@@ -324,7 +324,7 @@ uint_32 emu_keys_SDL[104] = {
 	SDLK_SLASH  ///
 };
 
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 int emu_keys_sdl_rev[UINT16_MAX+1]; //Reverse of emu_keys_sdl!
 #else
 //SDL 2.0 variant, without lookup table, but as fast as possible!
@@ -1526,11 +1526,11 @@ OPTINLINE void fingerOSK_presskey(byte index)
 	//A key has been pressed!
 	SDL_Event inputevent;
 	inputevent.key.type = SDL_KEYDOWN; //Our event type!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	inputevent.key.repeat = 0; //Not repeated key!
 	#endif
 	inputevent.key.keysym.sym = emu_keys_SDL[index]; //The key that is to be handled!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	inputevent.key.windowID = SDL_GetWindowID(sdlWindow); //Our Window ID!
 	#endif
 	inputevent.key.state = SDL_PRESSED;
@@ -1546,11 +1546,11 @@ OPTINLINE void fingerOSK_releasekey(byte index)
 	//A key has been pressed!
 	SDL_Event inputevent;
 	inputevent.key.type = SDL_KEYUP; //Our event type!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	inputevent.key.repeat = 0; //Not repeated key!
 	#endif
 	inputevent.key.keysym.sym = emu_keys_SDL[index]; //The key that is to be handled!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	inputevent.key.windowID = SDL_GetWindowID(sdlWindow); //Our Window ID!
 	#endif
 	inputevent.key.keysym.scancode = SDL_SCANCODE_UNKNOWN; //Unknown scancode, ignore this!
@@ -1691,7 +1691,7 @@ OPTINLINE byte isStickyKey(byte index)
 		case SDLK_LCTRL:
 		case SDLK_LALT:
 		case SDLK_LSHIFT:
-		#ifndef SDL2
+        #ifdef SDL2//#ifndef SDL2
 		case SDLK_LSUPER:
 		#else
 		case SDLK_LGUI:
@@ -1699,7 +1699,7 @@ OPTINLINE byte isStickyKey(byte index)
 		case SDLK_RCTRL:
 		case SDLK_RALT:
 		case SDLK_RSHIFT:
-		#ifndef SDL2
+        #ifdef SDL2//#ifndef SDL2
 		case SDLK_RSUPER:
 		#else
 		case SDLK_RGUI:
@@ -3204,7 +3204,7 @@ void toggleDirectInput(byte cause)
 	if (Direct_Input) //Enabled Direct Input?
 	{
 		DirectInput_Middle = cause; //Are we toggled on by the middle mouse button?
-		#ifndef SDL2
+        #ifdef SDL2//#ifndef SDL2
 			SDL_WM_GrabInput(SDL_GRAB_ON); //Grab the mouse!
 			SDL_ShowCursor(SDL_DISABLE); //Don't show the cursor!
 		#else
@@ -3214,7 +3214,7 @@ void toggleDirectInput(byte cause)
 	else //Disabled?
 	{
 		DirectInput_Middle = 0; //Reset middle mouse button flag!
-		#ifndef SDL2
+        #ifdef SDL2//#ifndef SDL2
 			SDL_WM_GrabInput(SDL_GRAB_OFF); //Don't grab the mouse!
 			SDL_ShowCursor(SDL_ENABLE); //Show the cursor!
 		#else
@@ -3254,34 +3254,40 @@ OPTINLINE byte getjoystick(SDL_Joystick *joystick, int_32 which) //Are we a supp
 	#ifdef IS_SWITCH
 		return ((SDL_JoystickInstanceID(joystick)==0) && (which==0))?1:0; //Our default joystick?
 	#endif
-	#ifdef SDL2
+	
+    #ifndef SDL2//#ifdef SDL2
 	if ((which!=-1) && (SDL_JoystickInstanceID(joystick)!=which)) return 0; //Not our joystick!
 	#endif
 	memset(&name,0,sizeof(name)); //Init!
-	#ifndef SDL2
+	
+    #ifdef SDL2//#ifndef SDL2
 	safestrcpy(name,sizeof(name),SDL_JoystickName(whatJoystick)); //Get the joystick name, with max length limit!
 	#else
 	safestrcpy(name,sizeof(name),SDL_JoystickName(joystick)); //Get the joystick name, with max length limit!
 	#endif
 	name[255] = '\0'; //End of string safety!
-	#ifdef IS_VITA
+	
+    #ifdef IS_VITA
 	if ((!strcmp(name, "PSVita Controller"))) //PS Vita controller?
 	{
 		return 1; //Is Vita controller!
 	}
 	#endif
-	#ifdef IS_SWITCH
+	
+    #ifdef IS_SWITCH
 	if ((!strcmp(name, "Switch Controller"))) //Switch controller?
 	{
 		return 1; //Is Switch controller!
 	}
 	#endif
-	#ifdef IS_WINDOWS
+	
+    #ifdef IS_WINDOWS
 		if ((!strcmp(name,"XBOX 360 For Windows (Controller)")) || (!strcmp(name, "Controller (XBOX 360 For Windows)")) || //SDL1 controller names!
 			(!strcmp(name,"XInput Controller #1")) //From SDL2!
 			) //XBox 360 controller?
 	#else
-	#ifdef IS_LINUX
+	
+    #ifdef IS_LINUX
 		if ((!strcmp(name, "Microsoft X-Box 360 pad")) || (!strcmp(name, "XInput Controller #1"))) //XBox 360 controller?
 	#else
 		if (0) //Unsupported system!
@@ -3301,7 +3307,7 @@ void disconnectJoystick(int_32 index)
 {
 	if (joystick) //A joystick is connected?
 	{
-		#ifndef SDL2
+        #ifdef SDL2//#ifndef SDL2
 		if (whatJoystick == index) //Our joystick is disconnected?
 		#else
 		if (SDL_JoystickInstanceID(joystick) == index) //Our joystick is disconnected?
@@ -3331,7 +3337,7 @@ void connectJoystick(int index)
 	}
 	lock(LOCK_INPUT);
 	joystick = SDL_JoystickOpen(index); //Open the new joystick as new input device!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	if (joystick) //Loaded?
 	{
 		whatJoystick = SDL_JoystickInstanceID(joystick); //Set our joystick to this joystick!
@@ -3366,7 +3372,7 @@ OPTINLINE word getyres()
 	return window_yres;
 }
 
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 typedef int_64 SDL_FingerID; //Finger ID type!
 #endif
 
@@ -3656,7 +3662,7 @@ void updateInput(SDL_Event *event) //Update all input!
 			case SDLK_l: //Joy right?
 				input.keyboardjoy_direction &= ~8; //Down!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses space too!
 			case SDLK_SPACE:
@@ -3671,7 +3677,7 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons &= ~BUTTON_TRIANGLE; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP4: //SQUARE?
 #else
 			case SDLK_KP_4: //SQUARE?
@@ -3679,7 +3685,7 @@ void updateInput(SDL_Event *event) //Update all input!
 				input.Buttons &= ~BUTTON_SQUARE; //Pressed!
 				break;
 			case SDLK_ESCAPE:
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses escape&backspace too!
 			case SDLK_BACKSPACE:
@@ -3692,14 +3698,14 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons &= ~BUTTON_CANCEL; //Released!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP6: //CIRCLE?
 #else
 			case SDLK_KP_6: //CIRCLE?
 #endif
 				input.Buttons &= ~BUTTON_CIRCLE; //Released!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses return too!
 			case SDLK_RETURN:
@@ -3712,7 +3718,7 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons &= ~BUTTON_CONFIRM; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP2: //CROSS?
 #else
 			case SDLK_KP_2: //CROSS?
@@ -3775,7 +3781,7 @@ void updateInput(SDL_Event *event) //Update all input!
 				input.cas = 0; //Ignore pressed buttons!
 				//Handle button press/releases!
 				int key,extrakey;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 				INLINEREGISTER int index;
 				index = signed2unsigned16(event->key.keysym.sym); //Load the index to use!
 				if (index < (int)NUMITEMS(emu_keys_sdl_rev)) //Valid key to lookup?
@@ -3839,7 +3845,7 @@ void updateInput(SDL_Event *event) //Update all input!
 		if (hasinputfocus) //Just focus?
 		#endif
 		{
-			#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 			if ((event->key.keysym.sym!=SDLK_LCTRL) && event->key.repeat) //Repeating key when not left ctrl (required for the altgr detection)?
 			{
 				unlock(LOCK_INPUT); //Finish up!
@@ -3857,7 +3863,7 @@ void updateInput(SDL_Event *event) //Update all input!
 					unlock(LOCK_INPUT); //Finish up!
 					return; //Abort!
 				}
-				#ifdef SDL2
+                #ifndef SDL2//#ifdef SDL2
 				if (input.cas&CAS_LCTRL) //Check for repeat manually, as SDL can't be trusted in RALT cases!
 				{
 					unlock(LOCK_INPUT); //Finish up!
@@ -3940,7 +3946,7 @@ void updateInput(SDL_Event *event) //Update all input!
 			case SDLK_l: //Joy right?
 				input.keyboardjoy_direction |= 8; //Down!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses space too!
 			case SDLK_SPACE:
@@ -3955,7 +3961,7 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons |= BUTTON_TRIANGLE; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP4: //SQUARE?
 #else
 			case SDLK_KP_4: //SQUARE?
@@ -3963,7 +3969,7 @@ void updateInput(SDL_Event *event) //Update all input!
 				input.Buttons |= BUTTON_SQUARE; //Pressed!
 				break;
 			case SDLK_ESCAPE:
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses escape&backspace too!
 			case SDLK_BACKSPACE:
@@ -3976,14 +3982,14 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons |= BUTTON_CANCEL; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP6: //CIRCLE?
 #else
 			case SDLK_KP_6: //CIRCLE?
 #endif
 				input.Buttons |= BUTTON_CIRCLE; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 				//Android uses return too!
 			case SDLK_RETURN:
@@ -3996,7 +4002,7 @@ void updateInput(SDL_Event *event) //Update all input!
 #endif
 				input.Buttons |= BUTTON_CONFIRM; //Pressed!
 				break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 			case SDLK_KP2: //CROSS?
 #else
 			case SDLK_KP_2: //CROSS?
@@ -4033,7 +4039,7 @@ void updateInput(SDL_Event *event) //Update all input!
 
 				//Handle button press/releases!
 				int key,extrakey;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 				INLINEREGISTER int index;
 				index = signed2unsigned16(event->key.keysym.sym); //Load the index to use!
 				if (index < (int)NUMITEMS(emu_keys_sdl_rev)) //Valid key to lookup?
@@ -4579,7 +4585,7 @@ void updateInput(SDL_Event *event) //Update all input!
 			if (Direct_Input) //Direct input? Move the mouse in the emulator itself!
 			{
 #ifdef IS_WINDOWS
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 	//SDL 1.*: Always patch RDP!
 #define PATCHRDP 1
 #else
@@ -4633,7 +4639,7 @@ void updateInput(SDL_Event *event) //Update all input!
 		}
 		break;
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 	case SDL_APP_LOWMEMORY: //Low on memory? Release memory if possible requested by the OS!
 		//Not able to handle yet! Ignore it for now!
@@ -4643,7 +4649,7 @@ void updateInput(SDL_Event *event) //Update all input!
 
 		//Misc system events
 	case SDL_QUIT: //Quit?
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 #if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 	case SDL_APP_TERMINATING: //Terminating the application by the OS?
 
@@ -4663,7 +4669,7 @@ void updateInput(SDL_Event *event) //Update all input!
 		EMU_Shutdown(1); //Request a shutdown!
 		unlock(LOCK_INPUT);
 		break;
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 	case SDL_ACTIVEEVENT: //Window event?
 		lock(LOCK_INPUT);
 		if (event->active.state&SDL_APPMOUSEFOCUS)
@@ -4795,7 +4801,7 @@ void updateInput(SDL_Event *event) //Update all input!
 		haswindowactive |= 0x8; //Discard any future time!
 		unlock(LOCK_INPUT);
 		break;
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	case SDL_APP_WILLENTERFOREGROUND: //Are we pushing to the foreground?
 		break; //Unhandled!
 	case SDL_APP_DIDENTERFOREGROUND: //Are we pushed to the foreground?
@@ -4817,7 +4823,7 @@ void updateInput(SDL_Event *event) //Update all input!
 		allowInput = 1; //Allow input handling to resume!
 		unlock(LOCK_ALLOWINPUT);
 		break;
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	#if defined(ANDROID) || defined(IS_VITA) || defined(IS_SWITCH)
 	case SDL_WINDOWEVENT_SIZE_CHANGED: //Orientation changed?
 		lock(LOCK_GPU); //Lock the GPU!
@@ -4894,7 +4900,7 @@ void updateMouse(DOUBLE timepassed)
 	mouse_ticktiming = temp; //Save the new timing, if any!
 }
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 int SDLCALL myEventFilter(void *userdata, SDL_Event * event)
 {
 	//Emergency calls! Immediately update!
@@ -4935,7 +4941,7 @@ void psp_input_init()
 		memset(&input,0,sizeof(input)); //Init
 		input_notready = 0; //Ready!
 	}
-	#ifndef SDL2
+    #ifdef SDL2//#ifndef SDL2
 	uint_32 i;
 	#endif
 	#ifdef SDL_SYS_JoystickInit
@@ -4948,7 +4954,7 @@ void psp_input_init()
 	{
 		joystick = SDL_JoystickOpen(0); //Open our first joystick by default!
 	}
-	#ifndef SDL2
+    #ifdef SDL2//#ifndef SDL2
 	//SDL2 can't use the reverse table anymore! It uses a simple function for lookups instead!
 	for (i = 0;i < NUMITEMS(emu_keys_sdl_rev);i++) //Initialise all keys!
 	{
@@ -4961,7 +4967,8 @@ void psp_input_init()
 		++i; //Next!
 	}
 	#endif
-	#ifndef SDL2
+    
+    #ifdef SDL2//#ifndef SDL2
 	//SDL2 doesn't support key repeating!
 	#ifdef __DEBUG_INPUT
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY,SDL_DEFAULT_REPEAT_INTERVAL); //Repeat pressed keys for logging!
@@ -4970,7 +4977,7 @@ void psp_input_init()
 	#endif
 	#endif
 	keyboard_mousetiming = mouse_ticktiming = 0.0f; //Initialise mouse timing!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	SDL_AddEventWatch(myEventFilter, NULL); //For applying critical updates!
 	#ifdef SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4
 		SDL_SetHintWithPriority(SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4,"1",SDL_HINT_OVERRIDE); //We're forcing the window not to quit on ALT-F4!
@@ -5013,7 +5020,7 @@ void psp_input_done()
 		joystick = NULL; //No joystick anymore!
 	}
 	//Do nothing for now!
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	SDL_DelEventWatch(myEventFilter, NULL); //For applying critical updates!
 	#endif
 }

@@ -407,11 +407,11 @@ ThreadParams_p startThread(Handler thefunc, char *name, void *params) //Start a 
 
 	uint_32 thid; //The thread ID!
 	docreatethread: //Try to start a thread!
-	#ifndef SDL2
-	threadparams->thread = SDL_CreateThread(threadhandler,threadparams); //Create the thread!
-	#else
+	//#ifndef SDL2
+	//threadparams->thread = SDL_CreateThread(threadhandler,threadparams); //Create the thread!
+	//#else
 	threadparams->thread = SDL_CreateThread(threadhandler,name,threadparams); //Create the thread!
-	#endif
+	//#endif
 	
 	if (!threadparams->thread) //Failed to create?
 	{

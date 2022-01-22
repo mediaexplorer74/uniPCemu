@@ -1,22 +1,3 @@
-/*
-
-Copyright (C) 2019 - 2021 Superfury
-
-This file is part of The Common Emulator Framework.
-
-The Common Emulator Framework is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-The Common Emulator Framework is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with The Common Emulator Framework.  If not, see <https://www.gnu.org/licenses/>.
-*/
 
 //Our audio includes!
 #include "headers/types.h" //Basic types!
@@ -77,7 +58,7 @@ along with The Common Emulator Framework.  If not, see <https://www.gnu.org/lice
 //#define SOUND_HIGHPASS 18.2f
 #define SOUND_CHANNELHIGHPASS 18.2f
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 #ifdef SDL_ENABLEQUEUEAUDIO
 //QueueAudio is supported, use it!
 #define SDL_QUEUEAUDIO
@@ -133,7 +114,7 @@ typedef struct
 SDL_AudioDeviceID audiodevice; //Our used audio device!
 #endif
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 SDL_AudioDeviceID recorddevice; //Our used audio device!
 #endif
 
@@ -150,7 +131,7 @@ uint_32 soundchannels_used = 0; //Ammount of used sound channels to check, incre
 playing_t soundchannels[1000]; //All soundchannels!
 
 SDL_AudioSpec audiospecs; //Our requested and obtained audio specifications.
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 SDL_AudioSpec recordspecs; //Our requested and obtained audio specifications.
 #endif
 
@@ -1036,7 +1017,7 @@ OPTINLINE void recordaudio(uint_32 length) //Record audio channels to state!
 	INLINEREGISTER int_32 result_l, result_r; //Sample buffer!
 	sword temp_l, temp_r; //Filtered values!
 	uint_32 limit;
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	limit = ((uint_32)SW_RECORDRATE) << 1; //How many samples to tender max?
 	if (length > limit) //More than we can handle?
 		length = limit; //Limit samples!
@@ -1136,7 +1117,7 @@ OPTINLINE void HW_recordaudio(sample_stereo_p buffer, uint_32 length) //Mix audi
 	currentsample = length; //Init samples to give!
 	for (;;)
 	{
-		#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 		#ifdef RECORD_TESTWAVE
 		buffer->r = buffer->l = (sword)(sinf(2.0f*PI*RECORD_TESTWAVE*recordtime)*(SHRT_MAX/2.0)); //Use a test wave instead!
 		recordtime += (1.0f/SW_RECORDRATE); //Tick time!
@@ -1334,7 +1315,7 @@ void audiodevice_disconnectcurrentdevice(byte iscapture)
 	}
 		}
 #else
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		if (iscapture) //Record device?
 		{
 			if (recorddevice)
@@ -1404,18 +1385,18 @@ void audiodevice_connected(uint_32 which, byte iscapture)
 	//Connect the audio device and switch over to the audio device from the previous one!
 	if (!iscapture) //Playback device?
 	{
-		#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 		if (audiodevice)
 		{
 		#endif
 			PAUSEAUDIO(1); //Disable the thread!
-		#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 		}
 		#endif
 	}
 	else //Capture device?
 	{
-		#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 		if (recorddevice) //Allocated?
 		{
 			SDL_PauseAudioDevice(recorddevice, 1); //Disable the thread!
@@ -1460,7 +1441,7 @@ void audiodevice_connected(uint_32 which, byte iscapture)
 	}
 	else //Capture device?
 	{
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		//Supporting audio recording?
 		recordspecs.freq = HW_SAMPLERATE;	/* desired output sample rate */
 		recordspecs.format = AUDIO_S16SYS;	/* request signed 16-bit samples */
@@ -1489,7 +1470,7 @@ void audiodevice_connected(uint_32 which, byte iscapture)
 	}
 	if (iscapture) //Capture device?
 	{
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		if (SDLRecord_Loaded)
 		{
 			SDL_PauseAudioDevice(recorddevice, 1); //Disable the thread
@@ -1540,7 +1521,7 @@ void audiodevice_connected(uint_32 which, byte iscapture)
 	{
 		PAUSEAUDIO(0); //Start playing!
 	}
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	if (iscapture) //Capture device?
 	{
 		if (SDLRecord_Loaded)
@@ -1612,7 +1593,7 @@ void initAudio() //Initialises audio subsystem!
 			}
 			PAUSEAUDIO(1); //Disable the thread!
 
-			#ifdef SDL2
+            #ifndef SDL2//#ifdef SDL2
 			SDL_PauseAudioDevice(recorddevice,1); //Disable the thread!
 			#endif
 			
@@ -1644,7 +1625,7 @@ void initAudio() //Initialises audio subsystem!
 				return; //Just to be safe!
 			}
 #endif
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 			//Supporting audio recording?
 			recordspecs.freq = HW_SAMPLERATE;	/* desired output sample rate */
 			recordspecs.format = AUDIO_S16SYS;	/* request signed 16-bit samples */
@@ -1684,7 +1665,7 @@ void initAudio() //Initialises audio subsystem!
 			resetchannels(); //Reset the channels!
 		}
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		if (SDLRecord_Loaded)
 		{
 			SDL_PauseAudioDevice(recorddevice, 1); //Disable the thread
@@ -1718,7 +1699,7 @@ void initAudio() //Initialises audio subsystem!
 		//Finish up to start playing!
 		calc_samplePos(); //Initialise sample position precalcs!
 		PAUSEAUDIO(0); //Start playing!
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		if (SDLRecord_Loaded)
 		{
 			SDL_PauseAudioDevice(recorddevice, 0); //Start recording!
@@ -1747,7 +1728,7 @@ void doneAudio()
 			SDL_CloseAudioDevice(recorddevice); //Close our allocated audio device!
 		}
 #else
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 		if (recorddevice)
 		{
 			SDL_CloseAudioDevice(recorddevice); //Close our allocated audio device!
