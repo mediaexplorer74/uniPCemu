@@ -732,7 +732,7 @@ GPU_SDL_Surface *createSurface(int columns, int rows) //Create a new 32BPP surfa
 {
 	uint_32 thermask=0,thegmask=0,thebmask=0,theamask=0; //Masks!
 	loadByteOrder(&rmask,&gmask,&bmask,&amask); //Load our masks!
-	#ifndef SDL2
+    #ifdef SDL2//#ifndef SDL2
 	SDL_Surface *surface = SDL_CreateRGBSurface(SDL_SWSURFACE,columns,rows, 32, thermask,thegmask,thebmask,theamask); //Try to create it!
 	#else
 	SDL_Surface *surface = SDL_CreateRGBSurface(0,columns,rows, 32, thermask,thegmask,thebmask,theamask); //Try to create it!
@@ -782,7 +782,7 @@ GPU_SDL_Surface *freeSurface(GPU_SDL_Surface *surface)
 	return surface; //Still allocated!
 }
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 extern SDL_Window *sdlWindow;
 extern SDL_Renderer *sdlRenderer;
 extern SDL_Texture *sdlTexture;
@@ -797,7 +797,7 @@ void safeFlip(GPU_SDL_Surface *surface) //Safe flipping (non-null)
 		{
 			if (memprotect(surface->sdllayer,sizeof(*surface->sdllayer),NULL)) //Valid?
 			{
-				#ifndef SDL2
+                #ifdef SDL2//#ifndef SDL2
 				if (SDL_Flip(surface->sdllayer)==-1) //Failed to update by flipping?
 					SDL_UpdateRect(surface->sdllayer, 0, 0, 0, 0); //Make sure we update!
 				#else

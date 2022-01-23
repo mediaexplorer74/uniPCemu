@@ -1070,6 +1070,12 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="gitversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gitcommitversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="UniPCemu.ico">
@@ -1110,5 +1116,8 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UniPCemu_TemporaryKey.pfx" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-//This file is part of The Common Emulator Framework.
+// This file is part of The Common Emulator Framework.
 
 #include "..\commonemuframework\headers\types.h" //"headers/types.h" //Basic types!
 #include "..\commonemuframework\headers\support\zalloc.h" //"headers/support/zalloc.h" //Zero allocation support!
@@ -172,7 +172,7 @@ BIGFILE *emufopen64(char *filename, char *mode)
 
 	//Detect file size!
 	#ifndef IS_PSP
-	#ifdef SDL2
+    #ifndef SDL2//#ifdef SDL2
 	stream->size = SDL_RWsize(stream->f); //This is the size!
 	//Otherwise, detect manually for SDL v1!
 	#else

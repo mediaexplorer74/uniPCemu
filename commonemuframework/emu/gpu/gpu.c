@@ -1,22 +1,5 @@
-/*
 
-Copyright (C) 2019 - 2021 Superfury
-
-This file is part of The Common Emulator Framework.
-
-The Common Emulator Framework is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-The Common Emulator Framework is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with The Common Emulator Framework.  If not, see <https://www.gnu.org/licenses/>.
-*/
+// This file is part of The Common Emulator Framework.
 
 //We're the GPU!
 #define IS_GPU
@@ -33,7 +16,7 @@ along with The Common Emulator Framework.  If not, see <https://www.gnu.org/lice
 #include "headers/emu/gpu/gpu_renderer.h" //Renderer support!
 #include "headers/emu/gpu/gpu_text.h" //Text delta position support!
 #include "headers/support/locks.h" //Lock support!
-#ifdef UNIPCEMU
+#ifndef UNIPCEMU//#ifdef UNIPCEMU
 #include "headers/bios/biosmenu.h" //Allocating BIOS menu layer support!
 #include "headers/emu/emucore.h" //Core support!
 #endif
@@ -58,9 +41,7 @@ uint_32 rmask=0, gmask=0, bmask=0, amask=0; //All mask values!
 uint_32 transparentpixel = 0xFFFFFFFF; //Transparent pixel!
 
 /*
-
 VIDEO BASICS!
-
 */
 
 byte firstwindow = 1;
@@ -75,11 +56,12 @@ TicksHolder renderTiming;
 DOUBLE currentRenderTiming = 0.0;
 DOUBLE renderTimeout = 0.0; //60Hz refresh!
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 SDL_Window *sdlWindow = NULL;
 SDL_Renderer *sdlRenderer = NULL;
 SDL_Texture *sdlTexture = NULL;
 #endif
+
 byte usefullscreenwindow = 0; //Fullscreen Window?
 
 
@@ -90,7 +72,7 @@ byte textureUpdateRequired = 0; //Texture update required?
 
 void GPU_messagebox(char* title, byte type, char* text, ...)
 {
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	//Supported?
 	char msg[256];
 	char result[256]; //Result!
@@ -154,7 +136,7 @@ void GPU_messagebox(char* title, byte type, char* text, ...)
 void GPU_updateDPI()
 {
 	float xDPI, yDPI;
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	if (SDL_GetDisplayDPI(0, NULL, &xDPI, &yDPI) != 0) //DPI not retrieved?
 	{
 		xDPI = yDPI = 96.0f; //Default value: Assume 96DPI is the default for Windows!
@@ -190,15 +172,17 @@ void updateWindow(word xres, word yres, uint_32 flags)
 	if ((xres!=window_xres) || (yres!=window_yres) || (flags!=window_flags) || textureUpdateRequired || !originalrenderer) //Do we need to update the Window?
 	{
 		textureUpdateRequired = 0; //No update required anymore!
+
 #include "headers/emu/icon.h" //We need our icon!
+		
 		SDL_Surface *icon = NULL; //Our icon!
 		icon = SDL_CreateRGBSurfaceFrom((void *)&icondata,ICON_BMPWIDTH,ICON_BMPHEIGHT,32,ICON_BMPWIDTH<<2, 0x000000FF, 0x0000FF00,0x00FF0000,0); //We have a RGB icon only!
 		window_xres = xres;
 		window_yres = yres;
 		window_flags = flags;
 		
-        #ifndef SDL2//#ifndef SDL2
-		useFullscreen = 1;// (flags & SDL_FULLSCREEN) ? 1 : 0; //Fullscreen specified?
+#ifdef SDL2//#ifndef SDL2
+		useFullscreen = (flags & SDL_FULLSCREEN) ? 1 : 0; //Fullscreen specified?
 		char posstr[256];
 		memset(&posstr,0,sizeof(posstr)); //Init when needed!
 		//SDL1?
@@ -218,7 +202,7 @@ void updateWindow(word xres, word yres, uint_32 flags)
 		}
 		#endif
 		originalrenderer = SDL_SetVideoMode(xres, yres, 32, flags); //Start rendered display, 32BPP pixel mode! Don't use double buffering: this changes our address (too slow to use without in hardware surface, so use sw surface)!
-		#else
+#else
 		useFullscreen = 0; //Default: not fullscreen!
 		if (flags&SDL_WINDOW_FULLSCREEN) //Fullscreen specified?
 		{
@@ -327,7 +311,7 @@ void updateWindow(word xres, word yres, uint_32 flags)
 			0x0000FF00,
 			0x000000FF,
 			0xFF000000); //The SDL Surface we render to!
-		#endif
+#endif
 		if (icon)
 		{
 			SDL_FreeSurface(icon); //Free the icon!
@@ -349,8 +333,8 @@ SDL_Surface *getGPUSurface()
 	GPU.fullscreen = 1; //Forced full screen!
 	goto windowready; //Skip other calculations!
 	#else
-	#ifdef STATICSCREEN
-	#ifndef SDL2
+    #ifndef STATICSCREEN//#ifdef STATICSCREEN
+    #ifdef SDL2 //#ifndef SDL2
 	//SDL Autodetection of fullscreen resolution!
 	SDL_Rect **modes;
 	if ((!window_xres) || (!window_yres)) //Not initialized yet?
@@ -455,23 +439,23 @@ SDL_Surface *getGPUSurface()
 	if (yres < miny) yres = miny; //Minimum height!
 
 	uint_32 flags;
-	#if defined(STATICSCREEN) || defined(IS_PSP)
+	//#if defined(STATICSCREEN) || defined(IS_PSP)
 	windowready:
-	#endif
-	flags = SDL_SWSURFACE; //Default flags!
-	//#ifndef SDL2
-	//if (GPU.fullscreen) flags |= SDL_FULLSCREEN; //Goto fullscreen mode!
-	//#else
-	if (GPU.fullscreen) flags |= SDL_WINDOW_FULLSCREEN; //Goto fullscreen mode!
 	//#endif
+	flags = SDL_SWSURFACE; //Default flags!
+    #ifdef SDL2//#ifndef SDL2
+	if (GPU.fullscreen) flags |= SDL_FULLSCREEN; //Goto fullscreen mode!
+	#else
+	if (GPU.fullscreen) flags |= SDL_WINDOW_FULLSCREEN; //Goto fullscreen mode!
+	#endif
 
 	updateWindow(xres,yres,flags); //Update the window resolution if needed!
 
 	if (firstwindow)
 	{
 		firstwindow = 0; //Not anymore!
-		#ifndef SDL2
-		#ifdef UNIPCEMU
+        #ifdef SDL2//#ifndef SDL2
+        #ifndef UNIPCEMU//#ifdef UNIPCEMU
 		SDL_WM_SetCaption( "UniPCemu", 0 ); //Initialise our window title!
 		#else
 		SDL_WM_SetCaption( "GBemu", 0 ); //Initialise our window title!
@@ -541,7 +525,8 @@ void initVideoLayer() //We're for allocating the main video layer, only dealloca
 			rendersurface = getSurfaceWrapper(originalrenderer); //Allocate a surface wrapper!
 			if (rendersurface) //Allocated?
 			{
-				#ifndef SDL2
+                
+				#ifdef SDL2//#ifndef SDL2
 				registerSurface(rendersurface,"SDLRenderSfc",0); //Register, but don't allow release: this is done by SDL_Quit only!
 				#else
 				registerSurface(rendersurface, "SDLRenderSfc", 1); //Register, allow release: this is allowed in SDL2!

@@ -1,22 +1,5 @@
-/*
+// This file is part of UniPCemu.
 
-Copyright (C) 2019 - 2021 Superfury
-
-This file is part of UniPCemu.
-
-UniPCemu is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-UniPCemu is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with UniPCemu.  If not, see <https://www.gnu.org/licenses/>.
-*/
 
 #include "headers/types.h" //Basic types!
 #include "headers/support/sf2.h" //Soundfont support!
@@ -98,7 +81,10 @@ MIDIDEVICE_VOICE activevoices[MIDI_TOTALVOICES]; //All active voices!
 
 #ifdef IS_WINDOWS
 int flag;           // monitor the status of returning functions
-HMIDIOUT device;    // MIDI device interface for sending MIDI output
+
+//RnD
+//HMIDIOUT 
+MIDIDEVICE_H device;    // MIDI device interface for sending MIDI output
 #endif
 
 OPTINLINE void lockMPURenderer()
@@ -2957,15 +2943,20 @@ void MIDIDEVICE_addbuffer(byte command, MIDIPTR data) //Add a command to the buf
 		case 0xF0:
 			if (command != 0xFF) //Not resetting?
 			{
-				flag = midiOutShortMsg(device, message.word);
-				if (flag != MMSYSERR_NOERROR) {
+				//RnD
+				flag = NULL;//midiOutShortMsg(device, message.word);
+
+				//RnD
+				if (flag != MM_MIN)//MMSYSERR_NOERROR) 
+				{
 					printf("Warning: MIDI Output is not open.\n");
 				}
 			}
 			else
 			{
 				// turn any MIDI notes currently playing:
-				midiOutReset(device);
+				// RnD
+				//midiOutReset(device);
 			}
 			break;
 		}
@@ -2988,8 +2979,11 @@ void done_MIDIDEVICE() //Finish our midi device!
 	if (direct_midi)
 	{
 		// turn any MIDI notes currently playing:
-		midiOutReset(device);
+		//RnD
+		//midiOutReset(device);
+		
 		lock(LOCK_INPUT);
+		
 		if (RDPDelta&1)
 		{
 			unlock(LOCK_INPUT);
@@ -2997,7 +2991,8 @@ void done_MIDIDEVICE() //Finish our midi device!
 		}
 		unlock(LOCK_INPUT);
 		// Remove any data in MIDI device and close the MIDI Output port
-		midiOutClose(device);
+		//RnD
+		//midiOutClose(device);
 		//We're directly sending MIDI to the output!
 		return; //Stop: ready!
 	}
@@ -3052,9 +3047,14 @@ byte init_MIDIDEVICE(char *filename, byte use_direct_MIDI) //Initialise MIDI dev
 		lock(LOCK_INPUT);
 		RDPDelta &= ~1; //Clear our RDP delta flag!
 		unlock(LOCK_INPUT);
+
 		// Open the MIDI output port
-		flag = midiOutOpen(&device, 0, 0, 0, CALLBACK_NULL);
-		if (flag != MMSYSERR_NOERROR) {
+		//RnD
+		flag = NULL;//midiOutOpen(&device, 0, 0, 0, CALLBACK_NULL);
+
+		//RnD
+		if (flag != MM_MIN)//MMSYSERR_NOERROR) 
+		{
 			printf("Error opening MIDI Output.\n");
 			return 0;
 		}

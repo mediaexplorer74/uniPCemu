@@ -98,7 +98,7 @@ void raiseNonFatalError(char* source, const char* text, ...)
 	vsnprintf(msg, sizeof(msg), text, args); //Compile list!
 	va_end(args); //Destroy list!
 
-#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 	GPU_messagebox(source, MESSAGEBOX_ERROR, msg); //Show the message!
 #endif
 }

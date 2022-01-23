@@ -104,7 +104,7 @@ typedef struct  PACKED {
 #include "..\commonemuframework\headers\endpacked.h" //"headers/endpacked.h" //We're packed!
 
 #include "..\commonemuframework\headers\packed.h"//"headers/packed.h" //We're packed!
-typedef struct  PACKED { 
+typedef struct PACKED { 
      FOURCC ckID; 
      DWORD ckSize; 
      FOURCC fccType;          // RIFF form type 
@@ -143,7 +143,7 @@ typedef union PACKED
 
 #include "..\commonemuframework\headers\packed.h" //"headers/packed.h" //We're packed!
 // RnD TODO
-/*typedef enum PACKED
+typedef enum VCPACKED // PACKED
 {
  monoSample = 1, 
  rightSample = 2, 
@@ -154,7 +154,7 @@ typedef union PACKED
  RomLeftSample = 0x8004, 
  RomLinkedSample = 0x8008 
 } SFSampleLink;
-*/
+
 #include "..\commonemuframework\headers\endpacked.h" //"headers/endpacked.h" //We're packed!
 
 #include "..\commonemuframework\headers\packed.h" //#include "headers/packed.h" //We're packed!

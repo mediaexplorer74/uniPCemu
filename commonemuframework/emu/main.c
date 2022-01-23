@@ -25,7 +25,7 @@
 
 #include "headers/support/tcphelper.h" //TCP support!
 
-#ifdef UNIPCEMU
+#ifndef UNIPCEMU//#ifdef UNIPCEMU
 #include "headers/mmu/mmuhandler.h" //hasmemory support!
 #include "headers/hardware/modem.h" //Packet support
 #endif
@@ -241,43 +241,47 @@ byte IsCurrentSessionRemoteable()
 {
     byte fIsRemoteable = FALSE;
                                        
-    if (GetSystemMetrics(SM_REMOTESESSION)) 
-    {
+    //if (GetSystemMetrics(SM_REMOTESESSION)) 
+    //{
         fIsRemoteable = TRUE;
-    }
-    else
+    //}
+    //else
     {
         HKEY hRegKey = NULL;
         LONG lResult;
-
-        lResult = RegOpenKeyEx(
-            HKEY_LOCAL_MACHINE,
-            TERMINAL_SERVER_KEY,
-            0, // ulOptions
-            KEY_READ,
-            &hRegKey
-            );
+		//RnD
+		lResult = /*RegOpenKeyEx(
+			HKEY_LOCAL_MACHINE,
+			TERMINAL_SERVER_KEY,
+			0, // ulOptions
+			KEY_READ,
+			&hRegKey
+			);*/NULL;
 
         if (lResult == ERROR_SUCCESS)
         {
-            DWORD dwGlassSessionId;
+			//RnD
+            DWORD dwGlassSessionId = 0; // = 0 - added by me
             DWORD cbGlassSessionId = sizeof(dwGlassSessionId);
             DWORD dwType;
 
-            lResult = RegQueryValueEx(
-                hRegKey,
-                GLASS_SESSION_ID,
-                NULL, // lpReserved
-                &dwType,
-                (byte*) &dwGlassSessionId,
-                &cbGlassSessionId
-                );
+			// RnD
+			lResult = /*RegQueryValueEx(
+				hRegKey,
+				GLASS_SESSION_ID,
+				NULL, // lpReserved
+				&dwType,
+				(byte*) &dwGlassSessionId,
+				&cbGlassSessionId
+				);*/ NULL;
 
             if (lResult == ERROR_SUCCESS)
             {
-                DWORD dwCurrentSessionId;
+				// RnD
+                DWORD dwCurrentSessionId = 0; // = 0 added by me
 
-                if (ProcessIdToSessionId(GetCurrentProcessId(), &dwCurrentSessionId))
+				//RnD
+                if (1==1)//(ProcessIdToSessionId(GetCurrentProcessId(), &dwCurrentSessionId))
                 {
                     fIsRemoteable = (dwCurrentSessionId != dwGlassSessionId);
                 }
@@ -286,7 +290,8 @@ byte IsCurrentSessionRemoteable()
 
         if (hRegKey)
         {
-            RegCloseKey(hRegKey);
+			//RnD
+            //RegCloseKey(hRegKey);
         }
     }
 
@@ -880,9 +885,14 @@ int main(int argc, char * argv[])
 #ifdef IS_WINDOWS
 		//Windows Remote Desktop autodetection!
 		lock(LOCK_INPUT);
-		RDP = (useRDP|IsCurrentSessionRemoteable()); //Are we a remote desktop session?
+		
+		// RnD
+		RDP = 0;//(useRDP|IsCurrentSessionRemoteable()); //Are we a remote desktop session?
+
 		RDPDelta |= ((oldRDP ^ RDP)?~0:0); //Many deltas are being kept in parallel! Set all if changed!
+		
 		oldRDP = RDP;
+		
 		if (RDPDelta & 8) //To update the GPU textures?
 		{
 			lockGPU();
@@ -934,7 +944,8 @@ int main(int argc, char * argv[])
 		if (nosleep)
 		{
 			// Prevent Idle-to-Sleep (monitor not affected) (see note above)
-			SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED); //Enable noSleep: we're enabled by the parameter!
+			// RnD
+			//SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED); //Enable noSleep: we're enabled by the parameter!
 		}
 		#endif
 

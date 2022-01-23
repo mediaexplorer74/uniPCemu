@@ -1,3 +1,5 @@
+#pragma warning(disable : 4996)
+
 //This file is part of UniPCemu
 
 #include "..\commonemuframework\headers\types.h"//"headers/types.h" //Basic types etc.
@@ -497,7 +499,7 @@ void BIOS_DetectStorage() //Auto-Detect the current storage to use, on start onl
 {
 	#if defined(ANDROID) || defined(IS_LINUX) || defined(IS_VITA) || defined(IS_SWITCH)
 		#ifndef ANDROID
-		#ifdef SDL2
+        #ifndef SDL2//#ifdef SDL2
 		char* base_path;
 		char* linuxpath = SDL_getenv("UNIPCEMU");
 		if (linuxpath) //Linux environment path specified?

@@ -1,22 +1,6 @@
-/*
+#pragma warning(disable : 4996)
 
-Copyright (C) 2019 - 2021 Superfury
-
-This file is part of UniPCemu.
-
-UniPCemu is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-UniPCemu is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with UniPCemu.  If not, see <https://www.gnu.org/licenses/>.
-*/
+//This file is part of UniPCemu.
 
 #include "headers/types.h" //Types and linkage!
 #include "headers/bios/bios.h" //Basic BIOS compatibility types etc including myself!
@@ -4921,7 +4905,7 @@ setJoysticktext: //For fixing it!
 		break;
 	}
 
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #if !defined(IS_PSP) && !defined(ANDROID) && !defined(IS_VITA) && !defined(IS_SWITCH)
 	optioninfo[advancedoptions] = 3; //Reconnect joystick
 	safestrcpy(menuoptions[advancedoptions++],sizeof(menuoptions[0]), "Detect joystick"); //Detect the new joystick!

@@ -82,7 +82,7 @@ along with The Common Emulator Framework.  If not, see <https://www.gnu.org/lice
 #endif
 #endif
 
-#ifndef SDL2
+#ifdef SDL2//#ifndef SDL2
 #define SDL_SCANCODE_UNKNOWN ~0
 #endif
 
@@ -122,9 +122,9 @@ word firstsplitx=(GPU_TEXTSURFACE_WIDTH/3)+1; //End of the first horizontal area
 word secondsplitx=((GPU_TEXTSURFACE_WIDTH/3)*2)+1; //End of the second horizontal area(middle button becomes right button)!
 word thirdsplity=(GPU_TEXTSURFACE_HEIGHT/3)+1; //End of the first vertical area(middle button becomes no button)!
 
-//#ifdef SDL2
+#ifndef SDL2//#ifdef SDL2
 extern SDL_Window *sdlWindow; //Our Window!
-//#endif
+#endif
 
 #if !defined(IS_VITA) && !defined(IS_SWITCH)
 //PSP map
