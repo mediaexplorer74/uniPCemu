@@ -1,0 +1,45 @@
+﻿  seg009.cpp
+C:\Users\media\source\repos\SDLPoP\src\types.h(267,18): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(267,18): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(433,15): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(433,15): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(441,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(441,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(499,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(499,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(529,12): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(529,12): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(538,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(538,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(548,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(548,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(560,9): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(560,9): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(562,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(562,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(576,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(576,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(600,9): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(600,9): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\types.h(602,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении)
+C:\Users\media\source\repos\SDLPoP\src\types.h(602,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(113,2): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(324,21): warning C4244: =: преобразование "time_t" в "dword", возможна потеря данных
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(431,3): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(457,4): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(1330,131): warning C4244: аргумент: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(1656,31): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(2043,20): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(2743,45): warning C4838: Преобразование из "int" в "short" требует сужающего преобразования.
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(2775,22): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(2781,45): warning C4838: Преобразование из "int" в "short" требует сужающего преобразования.
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(2979,5): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
+C:\Users\media\source\repos\SDLPoP\src\seg009.cpp(3451,64): warning C4244: =: преобразование "double" в "word", возможна потеря данных
+     Создается библиотека C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP.lib и объект C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP.exp
+  SDLPoP.vcxproj -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP.exe
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP_1.0.5.0_ARM_Debug.appx
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP_1.0.5.0_scale-100.appx
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP_1.0.5.0_scale-125.appx
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP_1.0.5.0_scale-150.appx
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\ARM\Debug\SDLPoP\SDLPoP_1.0.5.0_scale-400.appx
+  SDLPoP -> C:\Users\media\source\repos\SDLPoP\AppPackages\SDLPoP\SDLPoP_1.0.5.0_Debug_Test\SDLPoP_1.0.5.0_arm_Debug.appxbundle

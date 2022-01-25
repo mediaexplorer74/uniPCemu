@@ -2,11 +2,14 @@
 
 An Attempt to port UniPCEmu project to W10M 15063 
 
-## Shots
-![shot1](Images/Shot1.png)
-![shot2](Images/Shot2.png)
+## 2 words about it
 
-## What's is this?
+I try to "sinthez" SDLPOP and UniPCEmu desktop...
+
+Work in progress
+
+
+## About the original
 https://superfury.itch.io/unipcemu
 
 -- me 2022

@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Machine>DESKTOP-HJVJ8KR</Machine>
+    <WindowsUser>media</WindowsUser>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetOsVersion>10.0</TargetOsVersion>
+    <TargetOsDescription>Windows 10.0</TargetOsDescription>
+    <SolutionConfiguration>Debug|x64</SolutionConfiguration>
+    <PackageArchitecture>x64</PackageArchitecture>
+    <PackageIdentityName>a4d2e393-3689-46e4-8fa0-0671f8c1dc61</PackageIdentityName>
+    <PackageIdentityPublisher>CN=media</PackageIdentityPublisher>
+    <IntermediateOutputPath>C:\Users\media\source\repos\SDLPoP\SDLPoP\x64\Debug\</IntermediateOutputPath>
+    <RemoteDeploymentType>CopyToDevice</RemoteDeploymentType>
+    <PackageRegistrationPath>
+    </PackageRegistrationPath>
+    <RemoveNonLayoutFiles>false</RemoveNonLayoutFiles>
+    <DeployOptionalPackages>false</DeployOptionalPackages>
+    <WindowsSdkPath>C:\Program Files %28x86%29\Windows Kits\10\</WindowsSdkPath>
+    <LayoutDir>C:\Users\media\source\repos\SDLPoP\x64\Debug\SDLPoP\AppX</LayoutDir>
+    <RegisteredManifestChecksum>70C6B9790841F70496C2539D54ED603F6BDA4D7F311F8FAD780BB0E6433582A9</RegisteredManifestChecksum>
+    <RegisteredPackageMoniker>SDLPoP_1.0.4.0_x64__cj4nrm0qt9s1y</RegisteredPackageMoniker>
+    <RegisteredUserModeAppID>SDLPoP_cj4nrm0qt9s1y!App</RegisteredUserModeAppID>
+    <RegisteredPackageID>SDLPoP</RegisteredPackageID>
+    <RegisteredPackagePublisher>CN=media</RegisteredPackagePublisher>
+    <RegisteredVersion>1.0.4.0</RegisteredVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <AppXManifest Include="C:\Users\media\source\repos\SDLPoP\x64\Debug\SDLPoP\AppxManifest.xml">
+      <PackagePath>AppxManifest.xml</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-24T08:43:44.357</Modified>
+    </AppXManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\x64\Debug\SDLPoP\SDLPoP.exe">
+      <PackagePath>SDLPoP.exe</PackagePath>
+      <Modified>2022-01-24T08:43:41.705</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\x64\Debug\SDLPoP\SDLPoP.winmd">
+      <PackagePath>SDLPoP.winmd</PackagePath>
+      <Modified>2022-01-22T17:43:29.586</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\data\icon.png">
+      <PackagePath>icon.png</PackagePath>
+      <Modified>2022-01-22T08:59:51.912</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\data\light.png">
+      <PackagePath>light.png</PackagePath>
+      <Modified>2022-01-22T08:59:51.959</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LargeTile.scale-100.png">
+      <PackagePath>Assets\LargeTile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.208</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LargeTile.scale-125.png">
+      <PackagePath>Assets\LargeTile.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.255</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LargeTile.scale-150.png">
+      <PackagePath>Assets\LargeTile.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.317</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LargeTile.scale-200.png">
+      <PackagePath>Assets\LargeTile.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.371</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LargeTile.scale-400.png">
+      <PackagePath>Assets\LargeTile.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.417</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\LockScreenLogo.scale-200.png">
+      <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>
+      <Modified>2022-01-22T09:01:00.526</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SmallTile.scale-100.png">
+      <PackagePath>Assets\SmallTile.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.628</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SmallTile.scale-125.png">
+      <PackagePath>Assets\SmallTile.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.702</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SmallTile.scale-150.png">
+      <PackagePath>Assets\SmallTile.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.749</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SmallTile.scale-200.png">
+      <PackagePath>Assets\SmallTile.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.812</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SmallTile.scale-400.png">
+      <PackagePath>Assets\SmallTile.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.874</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SplashScreen.scale-100.png">
+      <PackagePath>Assets\SplashScreen.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.937</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SplashScreen.scale-125.png">
+      <PackagePath>Assets\SplashScreen.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:00.984</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SplashScreen.scale-150.png">
+      <PackagePath>Assets\SplashScreen.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.046</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SplashScreen.scale-200.png">
+      <PackagePath>Assets\SplashScreen.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.109</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\SplashScreen.scale-400.png">
+      <PackagePath>Assets\SplashScreen.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.155</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square150x150Logo.scale-100.png">
+      <PackagePath>Assets\Square150x150Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.202</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square150x150Logo.scale-125.png">
+      <PackagePath>Assets\Square150x150Logo.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.265</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square150x150Logo.scale-150.png">
+      <PackagePath>Assets\Square150x150Logo.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.312</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square150x150Logo.scale-200.png">
+      <PackagePath>Assets\Square150x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.374</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square150x150Logo.scale-400.png">
+      <PackagePath>Assets\Square150x150Logo.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.421</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png">
+      <PackagePath>Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.484</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png">
+      <PackagePath>Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.530</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png">
+      <PackagePath>Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.593</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png">
+      <PackagePath>Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.640</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png">
+      <PackagePath>Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.687</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-unplated_targetsize-16.png">
+      <PackagePath>Assets\Square44x44Logo.altform-unplated_targetsize-16.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.734</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-unplated_targetsize-256.png">
+      <PackagePath>Assets\Square44x44Logo.altform-unplated_targetsize-256.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.796</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-unplated_targetsize-32.png">
+      <PackagePath>Assets\Square44x44Logo.altform-unplated_targetsize-32.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.843</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.altform-unplated_targetsize-48.png">
+      <PackagePath>Assets\Square44x44Logo.altform-unplated_targetsize-48.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.890</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.scale-100.png">
+      <PackagePath>Assets\Square44x44Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.937</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.scale-125.png">
+      <PackagePath>Assets\Square44x44Logo.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:01.999</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.scale-150.png">
+      <PackagePath>Assets\Square44x44Logo.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.046</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.scale-200.png">
+      <PackagePath>Assets\Square44x44Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.093</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.scale-400.png">
+      <PackagePath>Assets\Square44x44Logo.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.156</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-16.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-16.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.187</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-24.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.249</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-24_altform-unplated.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.296</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-256.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-256.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.343</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-32.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-32.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.390</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Square44x44Logo.targetsize-48.png">
+      <PackagePath>Assets\Square44x44Logo.targetsize-48.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.437</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\StoreLogo.scale-100.png">
+      <PackagePath>Assets\StoreLogo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.577</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\StoreLogo.scale-125.png">
+      <PackagePath>Assets\StoreLogo.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.640</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\StoreLogo.scale-150.png">
+      <PackagePath>Assets\StoreLogo.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.702</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\StoreLogo.scale-200.png">
+      <PackagePath>Assets\StoreLogo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.749</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\StoreLogo.scale-400.png">
+      <PackagePath>Assets\StoreLogo.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.796</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Wide310x150Logo.scale-100.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-100.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.859</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Wide310x150Logo.scale-125.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-125.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.906</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Wide310x150Logo.scale-150.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-150.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.952</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Wide310x150Logo.scale-200.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-200.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:02.999</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP\Assets\Wide310x150Logo.scale-400.png">
+      <PackagePath>Assets\Wide310x150Logo.scale-400.png</PackagePath>
+      <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
+      <Modified>2022-01-22T09:01:03.046</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\SDLPoP.ini">
+      <PackagePath>SDLPoP.ini</PackagePath>
+      <Modified>2022-01-22T08:59:51.318</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\x64\Debug\SDL-UWP\SDL2.dll">
+      <PackagePath>SDL2.dll</PackagePath>
+      <Modified>2022-01-22T17:43:12.681</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\Output\SDL2_image-UWP\x64\Debug\SDL_image-UWP\SDL2_image.dll">
+      <PackagePath>SDL2_image.dll</PackagePath>
+      <Modified>2022-01-22T17:43:18.744</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.UniversalCRT.Debug\10.0.15063.0\\redist\Debug\X64\ucrtbased.dll">
+      <PackagePath>ucrtbased.dll</PackagePath>
+      <Modified>2017-06-12T22:01:04.000</Modified>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\media\source\repos\SDLPoP\x64\Debug\SDLPoP\resources.pri">
+      <PackagePath>resources.pri</PackagePath>
+      <Modified>2022-01-24T08:43:44.006</Modified>
+    </AppxPackagedFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\ARM\Microsoft.VCLibs.ARM.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>ARM64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\ARM64\Microsoft.VCLibs.ARM64.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x64</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\x64\Microsoft.VCLibs.x64.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+    <ResolvedSDKReference Include="C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\">
+      <Name>Microsoft.VCLibs.140.00.Debug</Name>
+      <Version>14.0.30704.0</Version>
+      <Architecture>x86</Architecture>
+      <FrameworkIdentity>Name = Microsoft.VCLibs.140.00.Debug, MinVersion = 14.0.30704.0, Publisher = %27CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US%27</FrameworkIdentity>
+      <AppxLocation>C:\Program Files %28x86%29\Microsoft SDKs\Windows Kits\10\ExtensionSDKs\Microsoft.VCLibs\14.0\.\AppX\Debug\x86\Microsoft.VCLibs.x86.Debug.14.00.appx</AppxLocation>
+      <MoreInfo>
+      </MoreInfo>
+    </ResolvedSDKReference>
+  </ItemGroup>
+</Project>

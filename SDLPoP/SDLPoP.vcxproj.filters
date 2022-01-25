@@ -1,0 +1,497 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Assets">
+      <UniqueIdentifier>3667300b-2f33-4384-905e-ff0e075b0140</UniqueIdentifier>
+      <Extensions>bmp;fbx;gif;jpg;jpeg;tga;tiff;tif;png</Extensions>
+    </Filter>
+    <Image Include="Assets\LockScreenLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Filter Include="source">
+      <UniqueIdentifier>{d3fdede2-adeb-425d-8055-68ab011daf1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{56e6702c-f4be-417b-9287-20511e0065b7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Externals\SDL2\src\main\winrt\SDL_winrt_main_NonXAML.cpp" />
+    <ClCompile Include="pop\data.c" />
+    <ClCompile Include="pop\lighting.c" />
+    <ClCompile Include="pop\main.c" />
+    <ClCompile Include="pop\menu.c" />
+    <ClCompile Include="pop\midi.c" />
+    <ClCompile Include="pop\opl3.c" />
+    <ClCompile Include="pop\options.c" />
+    <ClCompile Include="pop\replay.c" />
+    <ClCompile Include="pop\screenshot.c" />
+    <ClCompile Include="pop\seg000.c" />
+    <ClCompile Include="pop\seg001.c" />
+    <ClCompile Include="pop\seg002.c" />
+    <ClCompile Include="pop\seg003.c" />
+    <ClCompile Include="pop\seg004.c" />
+    <ClCompile Include="pop\seg005.c" />
+    <ClCompile Include="pop\seg006.c" />
+    <ClCompile Include="pop\seg007.c" />
+    <ClCompile Include="pop\seg008.c" />
+    <ClCompile Include="pop\seg009.cpp" />
+    <ClCompile Include="basicio\cueimage.c" />
+    <ClCompile Include="basicio\dskimage.c" />
+    <ClCompile Include="basicio\dynamicimage.c" />
+    <ClCompile Include="basicio\imdimage.c" />
+    <ClCompile Include="basicio\io.c" />
+    <ClCompile Include="basicio\port_io.c" />
+    <ClCompile Include="basicio\port_mapper.c" />
+    <ClCompile Include="basicio\staticimage.c" />
+    <ClCompile Include="bios\bios.c" />
+    <ClCompile Include="bios\biosmenu.c" />
+    <ClCompile Include="bios\biosrom.c" />
+    <ClCompile Include="bios\boot.c" />
+    <ClCompile Include="bios\initmem.c" />
+    <ClCompile Include="cpu\biu.c" />
+    <ClCompile Include="cpu\cb_manager.c" />
+    <ClCompile Include="cpu\cpu.c" />
+    <ClCompile Include="cpu\cpu_execution.c" />
+    <ClCompile Include="cpu\cpu_interrupts.c" />
+    <ClCompile Include="cpu\cpu_jmptbls.c" />
+    <ClCompile Include="cpu\cpu_jmptbls0f.c" />
+    <ClCompile Include="cpu\cpu_stack.c" />
+    <ClCompile Include="cpu\flags.c" />
+    <ClCompile Include="cpu\mmu.c" />
+    <ClCompile Include="cpu\modrm.c" />
+    <ClCompile Include="cpu\multitasking.c" />
+    <ClCompile Include="cpu\opcodeinformation.c" />
+    <ClCompile Include="cpu\opcodes0F_386.c" />
+    <ClCompile Include="cpu\opcodes_386.c" />
+    <ClCompile Include="cpu\opcodes_486.c" />
+    <ClCompile Include="cpu\opcodes_586.c" />
+    <ClCompile Include="cpu\opcodes_686.c" />
+    <ClCompile Include="cpu\opcodes_786.c" />
+    <ClCompile Include="cpu\opcodes_80286.c" />
+    <ClCompile Include="cpu\opcodes_8086.c" />
+    <ClCompile Include="cpu\opcodes_NECV30.c" />
+    <ClCompile Include="cpu\paging.c" />
+    <ClCompile Include="cpu\protecteddebugging.c" />
+    <ClCompile Include="cpu\protection.c" />
+    <ClCompile Include="cpu\timings.c" />
+    <ClCompile Include="cpu\unkop.c" />
+    <ClCompile Include="emu\core\emucore.c" />
+    <ClCompile Include="emu\core\emu_bios_post.c" />
+    <ClCompile Include="emu\core\emu_bios_sound.c" />
+    <ClCompile Include="emu\core\emu_vga_bios.c" />
+    <ClCompile Include="emu\debugger\debugger.c" />
+    <ClCompile Include="emu\debugger\debug_files.c" />
+    <ClCompile Include="emu\debugger\debug_graphics.c" />
+    <ClCompile Include="emu\debugger\debug_sound.c" />
+    <ClCompile Include="emu\debugger\runromverify.c" />
+    <ClCompile Include="emu\gpu\gpu_debug.c" />
+    <ClCompile Include="hardware\8042.c" />
+    <ClCompile Include="hardware\adlib.c" />
+    <ClCompile Include="hardware\CMOS.c" />
+    <ClCompile Include="hardware\dma.c" />
+    <ClCompile Include="hardware\dram.c" />
+    <ClCompile Include="hardware\ems.c" />
+    <ClCompile Include="hardware\floppy.c" />
+    <ClCompile Include="hardware\gameblaster.c" />
+    <ClCompile Include="hardware\i430fx.c" />
+    <ClCompile Include="hardware\ide.c" />
+    <ClCompile Include="hardware\inboard.c" />
+    <ClCompile Include="hardware\joystick.c" />
+    <ClCompile Include="hardware\midi\adsr.c" />
+    <ClCompile Include="hardware\midi\midi.c" />
+    <ClCompile Include="hardware\midi\mididevice.c" />
+    <ClCompile Include="hardware\midi\mpu.c" />
+    <ClCompile Include="hardware\modem.c" />
+    <ClCompile Include="hardware\parallel.c" />
+    <ClCompile Include="hardware\pci.c" />
+    <ClCompile Include="hardware\pic.c" />
+    <ClCompile Include="hardware\pit.c" />
+    <ClCompile Include="hardware\ppi.c" />
+    <ClCompile Include="hardware\ps2_keyboard.c" />
+    <ClCompile Include="hardware\ps2_mouse.c" />
+    <ClCompile Include="hardware\sermouse.c" />
+    <ClCompile Include="hardware\softdebugger.c" />
+    <ClCompile Include="hardware\soundblaster.c" />
+    <ClCompile Include="hardware\ssource.c" />
+    <ClCompile Include="hardware\uart.c" />
+    <ClCompile Include="hardware\vga\svga\tseng.c" />
+    <ClCompile Include="hardware\vga\vga.c" />
+    <ClCompile Include="hardware\vga\vga_attributecontroller.c" />
+    <ClCompile Include="hardware\vga\vga_cga_mda.c" />
+    <ClCompile Include="hardware\vga\vga_cga_ntsc.c" />
+    <ClCompile Include="hardware\vga\vga_crtcontroller.c" />
+    <ClCompile Include="hardware\vga\vga_dac.c" />
+    <ClCompile Include="hardware\vga\vga_dacrenderer.c" />
+    <ClCompile Include="hardware\vga\vga_io.c" />
+    <ClCompile Include="hardware\vga\vga_mmu.c" />
+    <ClCompile Include="hardware\vga\vga_precalcs.c" />
+    <ClCompile Include="hardware\vga\vga_renderer.c" />
+    <ClCompile Include="hardware\vga\vga_sequencer_graphicsmode.c" />
+    <ClCompile Include="hardware\vga\vga_sequencer_textmode.c" />
+    <ClCompile Include="hardware\vga\vga_vram.c" />
+    <ClCompile Include="hardware\vga\vga_vramtext.c" />
+    <ClCompile Include="hardware\xtexpansionunit.c" />
+    <ClCompile Include="interrupts\interrupt10.c" />
+    <ClCompile Include="interrupts\interrupt10_modelist_vga.c" />
+    <ClCompile Include="interrupts\interrupt10_romfont.c" />
+    <ClCompile Include="interrupts\interrupt10_switchvideomode.c" />
+    <ClCompile Include="interrupts\interrupt10_textmodedata.c" />
+    <ClCompile Include="interrupts\interrupt10_videoparametertable.c" />
+    <ClCompile Include="interrupts\interrupt11.c" />
+    <ClCompile Include="interrupts\interrupt12.c" />
+    <ClCompile Include="interrupts\interrupt13.c" />
+    <ClCompile Include="interrupts\interrupt15.c" />
+    <ClCompile Include="interrupts\interrupt16.c" />
+    <ClCompile Include="interrupts\interrupt18.c" />
+    <ClCompile Include="interrupts\interrupt19.c" />
+    <ClCompile Include="interrupts\interrupt1a.c" />
+    <ClCompile Include="interrupts\interrupt5.c" />
+    <ClCompile Include="interrupts\unkint.c" />
+    <ClCompile Include="mmu\mmuhandler.c" />
+    <ClCompile Include="support\dro.c" />
+    <ClCompile Include="support\isoreader.c" />
+    <ClCompile Include="support\lba.c" />
+    <ClCompile Include="support\mid.c" />
+    <ClCompile Include="support\sf2.c" />
+    <ClCompile Include="support\state.c" />
+    <ClCompile Include="pop\seqtbl.c" />
+    <ClCompile Include="pop\stb_vorbis.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pop\common.h" />
+    <ClInclude Include="pop\config.h" />
+    <ClInclude Include="pop\data.h" />
+    <ClInclude Include="pop\GPLv3.h" />
+    <ClInclude Include="pop\opl3.h" />
+    <ClInclude Include="pop\proto.h" />
+    <ClInclude Include="pop\types.h" />
+    <ClInclude Include="..\commonemuframework\exception\exception.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\directorylist.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\emucore.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\emu_main.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\emu_misc.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu_emu.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu_framerate.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu_renderer.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu_sdl.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\gpu\gpu_text.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\input.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\number_optimizations.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\sound.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\threads.h" />
+    <ClInclude Include="..\commonemuframework\headers\emu\timers.h" />
+    <ClInclude Include="..\commonemuframework\headers\endpacked.h" />
+    <ClInclude Include="..\commonemuframework\headers\fopen64.h" />
+    <ClInclude Include="..\commonemuframework\headers\hardware\ps2_keyboard.h" />
+    <ClInclude Include="..\commonemuframework\headers\packed.h" />
+    <ClInclude Include="..\commonemuframework\headers\sdl_rest.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\bmp.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\crc32.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\fifobuffer.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\filters.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\highrestimer.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\iniparser.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\keyboard.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\locks.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\log.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\signedness.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\sounddoublebuffer.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\tcphelper.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\wave.h" />
+    <ClInclude Include="..\commonemuframework\headers\support\zalloc.h" />
+    <ClInclude Include="..\commonemuframework\headers\types.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_base.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_linux.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_psp.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_switch.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_vita.h" />
+    <ClInclude Include="..\commonemuframework\headers\types_win.h" />
+    <ClInclude Include="headers\basicio\cueimage.h" />
+    <ClInclude Include="headers\basicio\dskimage.h" />
+    <ClInclude Include="headers\basicio\dynamicimage.h" />
+    <ClInclude Include="headers\basicio\imdimage.h" />
+    <ClInclude Include="headers\basicio\io.h" />
+    <ClInclude Include="headers\basicio\staticimage.h" />
+    <ClInclude Include="headers\bios\bios.h" />
+    <ClInclude Include="headers\bios\biosmenu.h" />
+    <ClInclude Include="headers\bios\biosrom.h" />
+    <ClInclude Include="headers\bios\boot.h" />
+    <ClInclude Include="headers\bios\initmem.h" />
+    <ClInclude Include="headers\cpu\8086_grpOPs.h" />
+    <ClInclude Include="headers\cpu\biu.h" />
+    <ClInclude Include="headers\cpu\cb_manager.h" />
+    <ClInclude Include="headers\cpu\cpu.h" />
+    <ClInclude Include="headers\cpu\cpu_execution.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80286.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80386.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80486.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80586.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80686.h" />
+    <ClInclude Include="headers\cpu\cpu_OP80786.h" />
+    <ClInclude Include="headers\cpu\cpu_OP8086.h" />
+    <ClInclude Include="headers\cpu\cpu_opcodeinformation.h" />
+    <ClInclude Include="headers\cpu\cpu_OPNECV30.h" />
+    <ClInclude Include="headers\cpu\cpu_pmtimings.h" />
+    <ClInclude Include="headers\cpu\cpu_stack.h" />
+    <ClInclude Include="headers\cpu\easyregs.h" />
+    <ClInclude Include="headers\cpu\flags.h" />
+    <ClInclude Include="headers\cpu\fpu_OP8087.h" />
+    <ClInclude Include="headers\cpu\interrupts.h" />
+    <ClInclude Include="headers\cpu\mmu.h" />
+    <ClInclude Include="headers\cpu\modrm.h" />
+    <ClInclude Include="headers\cpu\multitasking.h" />
+    <ClInclude Include="headers\cpu\paging.h" />
+    <ClInclude Include="headers\cpu\protecteddebugging.h" />
+    <ClInclude Include="headers\cpu\protection.h" />
+    <ClInclude Include="headers\emu\debugger\debugger.h" />
+    <ClInclude Include="headers\emu\debugger\runromverify.h" />
+    <ClInclude Include="headers\emu\emu_bios_sound.h" />
+    <ClInclude Include="headers\emu\emu_vga.h" />
+    <ClInclude Include="headers\emu\emu_vga_bios.h" />
+    <ClInclude Include="headers\emu\file_debug.h" />
+    <ClInclude Include="headers\emu\gpu\gpu_debug.h" />
+    <ClInclude Include="headers\emu\graphics_debug.h" />
+    <ClInclude Include="headers\emu\icon.h" />
+    <ClInclude Include="headers\emu\soundtest.h" />
+    <ClInclude Include="headers\emu\state.h" />
+    <ClInclude Include="headers\hardware\8042.h" />
+    <ClInclude Include="headers\hardware\8237A.h" />
+    <ClInclude Include="headers\hardware\8253.h" />
+    <ClInclude Include="headers\hardware\adlib.h" />
+    <ClInclude Include="headers\hardware\cmos.h" />
+    <ClInclude Include="headers\hardware\dram.h" />
+    <ClInclude Include="headers\hardware\ems.h" />
+    <ClInclude Include="headers\hardware\floppy.h" />
+    <ClInclude Include="headers\hardware\gameblaster.h" />
+    <ClInclude Include="headers\hardware\i430fx.h" />
+    <ClInclude Include="headers\hardware\ide.h" />
+    <ClInclude Include="headers\hardware\inboard.h" />
+    <ClInclude Include="headers\hardware\joystick.h" />
+    <ClInclude Include="headers\hardware\midi\adsr.h" />
+    <ClInclude Include="headers\hardware\midi\midi.h" />
+    <ClInclude Include="headers\hardware\midi\mididevice.h" />
+    <ClInclude Include="headers\hardware\modem.h" />
+    <ClInclude Include="headers\hardware\parallel.h" />
+    <ClInclude Include="headers\hardware\pci.h" />
+    <ClInclude Include="headers\hardware\pic.h" />
+    <ClInclude Include="headers\hardware\ports.h" />
+    <ClInclude Include="headers\hardware\ppi.h" />
+    <ClInclude Include="headers\hardware\ps2_mouse.h" />
+    <ClInclude Include="headers\hardware\sermouse.h" />
+    <ClInclude Include="headers\hardware\softdebugger.h" />
+    <ClInclude Include="headers\hardware\soundblaster.h" />
+    <ClInclude Include="headers\hardware\ssource.h" />
+    <ClInclude Include="headers\hardware\uart.h" />
+    <ClInclude Include="headers\hardware\vga\svga\tseng.h" />
+    <ClInclude Include="headers\hardware\vga\vga.h" />
+    <ClInclude Include="headers\hardware\vga\vga_attributecontroller.h" />
+    <ClInclude Include="headers\hardware\vga\vga_cga_mda.h" />
+    <ClInclude Include="headers\hardware\vga\vga_cga_ntsc.h" />
+    <ClInclude Include="headers\hardware\vga\vga_crtcontroller.h" />
+    <ClInclude Include="headers\hardware\vga\vga_dac.h" />
+    <ClInclude Include="headers\hardware\vga\vga_dacrenderer.h" />
+    <ClInclude Include="headers\hardware\vga\vga_precalcs.h" />
+    <ClInclude Include="headers\hardware\vga\vga_renderer.h" />
+    <ClInclude Include="headers\hardware\vga\vga_sequencer_graphicsmode.h" />
+    <ClInclude Include="headers\hardware\vga\vga_sequencer_textmode.h" />
+    <ClInclude Include="headers\hardware\vga\vga_vram.h" />
+    <ClInclude Include="headers\hardware\vga\vga_vramtext.h" />
+    <ClInclude Include="headers\hardware\xtexpansionunit.h" />
+    <ClInclude Include="headers\header_dosbox.h" />
+    <ClInclude Include="headers\header_dosboxmpu.h" />
+    <ClInclude Include="headers\interrupts\interrupt05.h" />
+    <ClInclude Include="headers\interrupts\interrupt10.h" />
+    <ClInclude Include="headers\interrupts\interrupt11.h" />
+    <ClInclude Include="headers\interrupts\interrupt12.h" />
+    <ClInclude Include="headers\interrupts\interrupt13.h" />
+    <ClInclude Include="headers\interrupts\interrupt15.h" />
+    <ClInclude Include="headers\interrupts\interrupt16.h" />
+    <ClInclude Include="headers\interrupts\interrupt18.h" />
+    <ClInclude Include="headers\interrupts\interrupt19.h" />
+    <ClInclude Include="headers\interrupts\interrupt1a.h" />
+    <ClInclude Include="headers\interrupts\textmodedata.h" />
+    <ClInclude Include="headers\mmu\mmuhandler.h" />
+    <ClInclude Include="headers\mmu\mmu_internals.h" />
+    <ClInclude Include="headers\support\dro.h" />
+    <ClInclude Include="headers\support\isoreader.h" />
+    <ClInclude Include="headers\support\lba.h" />
+    <ClInclude Include="headers\support\mid.h" />
+    <ClInclude Include="headers\support\sf2.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="gitcommitversion.h" />
+    <ClInclude Include="version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\SDLPoP.ini" />
+    <None Include="SDLPop_TemporaryKey.pfx" />
+    <None Include="Externals\SDL2\src\main\winrt\SDL2-WinRTResource_BlankCursor.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Externals\SDL2\src\main\winrt\SDL2-WinRTResources.rc" />
+    <ResourceCompile Include="UniPCemuVS.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\SmallTile.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SmallTile.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square150x150Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Wide310x150Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-24.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-unplated_targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-16.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-24.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-32.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-48.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\Square44x44Logo.altform-lightunplated_targetsize-256.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\SplashScreen.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\StoreLogo.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\data\icon.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="..\data\light.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-100.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-125.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-150.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-200.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="Assets\LargeTile.scale-400.png">
+      <Filter>Assets</Filter>
+    </Image>
+    <Image Include="UniPCemu.ico" />
+  </ItemGroup>
+</Project>

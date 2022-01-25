@@ -457,7 +457,8 @@ WINRT_DetectWindowFlags(SDL_Window * window)
     bool is_fullscreen = false;
 
 #if SDL_WINRT_USE_APPLICATIONVIEW
-    if (data->appView) {
+    if (data->appView) 
+	{
         is_fullscreen = data->appView->IsFullScreen;
     }
 #elif (WINAPI_FAMILY == WINAPI_FAMILY_PHONE_APP) || (NTDDI_VERSION == NTDDI_WIN8)

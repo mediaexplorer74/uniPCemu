@@ -1,0 +1,6 @@
+C:\Users\media\source\repos\SDLPoP\SDL2\SDL-UWP.vcxproj;x64
+C:\Users\media\source\repos\SDLPoP\SDL2\SDL-UWP.vcxproj;x64
+C:\Users\media\source\repos\SDLPoP\SDL2_image\libpng-UWP.vcxproj;x64
+C:\Users\media\source\repos\SDLPoP\SDL2_image\SDL_image-UWP.vcxproj;x64
+C:\Users\media\source\repos\SDLPoP\SDL2_image\zlib-UWP.vcxproj;x64
+C:\Users\media\source\repos\SDLPoP\SDLPoP\SDLPoP.vcxproj;x64
