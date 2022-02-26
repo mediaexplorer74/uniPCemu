@@ -457,7 +457,6 @@
     <ClCompile Include="pop\lighting.c" />
     <ClCompile Include="pop\main.c" />
     <ClCompile Include="pop\menu.c" />
-    <ClCompile Include="pop\midi.c" />
     <ClCompile Include="pop\opl3.c" />
     <ClCompile Include="pop\options.c" />
     <ClCompile Include="pop\replay.c" />

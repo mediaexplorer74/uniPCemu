@@ -264,7 +264,9 @@ void raiseError(char *source, const char *text, ...); //Raises an error!
 void printmsg(byte attribute, char *text, ...); //Prints a message to the screen!
 void raiseNonFatalError(char* source, const char* text, ...); //Raise a non-fatal error once!
 void delete_file(char *directory, char *filename); //Delete one or more files!
-int file_exists(char *filename); //File exists?
+
+//int file_exists(char *filename); //File exists?
+
 byte emu_use_profiler(); //To use the profiler?
 unsigned int OPTDIV(unsigned int val, unsigned int division);
 unsigned int OPTMOD(unsigned int val, unsigned int division);

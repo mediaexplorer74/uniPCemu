@@ -1,0 +1,16 @@
+﻿  adler32.c
+  compress.c
+  crc32.c
+  deflate.c
+  gzclose.c
+  gzlib.c
+  gzread.c
+  gzwrite.c
+  infback.c
+  inffast.c
+  inflate.c
+  inftrees.c
+  trees.c
+  uncompr.c
+  zutil.c
+  zlib-UWP.vcxproj -> C:\Users\media\source\repos\uniPCemu\Output\zlib-UWP\x64\Debug\zlib-UWP\zlib.lib

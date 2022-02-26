@@ -1,203 +1,197 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(514,5): warning MSB8028: промежуточный каталог (x64\Debug\) содержит файлы, которые используются совместно с другим проектом (winrt.vcxproj).  Это может привести к ошибкам очистки и перестроения.
 C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1098,5): warning MSB8027: два или более файлов с именем main.c выводят результаты в одно и то же расположение. Это может стать причиной неверного результата сборки.  Включенные файлы — pop\main.c, ..\commonemuframework\emu\main.c.
-C:\Program Files\Microsoft Visual Studio\2022\Preview\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(1098,5): warning MSB8027: два или более файлов с именем midi.c выводят результаты в одно и то же расположение. Это может стать причиной неверного результата сборки.  Включенные файлы — pop\midi.c, hardware\midi\midi.c.
   data.c
   lighting.c
   main.c
   menu.c
-  midi.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(327,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(557,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[32][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(566,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(886,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[2][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(888,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(1510,62): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\menu.c(1531,60): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(327,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(557,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[32][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(566,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(886,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[2][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(888,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
   opl3.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(1510,62): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\menu.c(1531,60): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
   options.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(365,9): warning C4018: <: несоответствие типов со знаком и без знака
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(463,19): warning C4244: *=: преобразование "float" в "int", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(517,27): warning C4244: -=: преобразование "int64_t" в "int", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(524,29): warning C4018: >=: несоответствие типов со знаком и без знака
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(559,70): warning C4018: >=: несоответствие типов со знаком и без знака
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(560,30): warning C4018: <: несоответствие типов со знаком и без знака
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(566,49): warning C4244: =: преобразование "uint64_t" в "int", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\midi.c(493,79): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
   replay.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(81,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[2][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(82,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[5][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(83,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[31][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(92,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(93,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(95,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(749,20): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\options.c(753,19): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(81,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[2][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(82,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[5][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(83,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[31][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(92,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(93,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(95,1): warning C4048: разные индексы массива: "const char (*)[0][20]" и "const char (*)[3][20]"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(749,20): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\options.c(753,19): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(261,19): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(476,48): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(486,48): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(516,22): warning C4267: +=: преобразование из "size_t" в "dword"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(525,22): warning C4267: +=: преобразование из "size_t" в "dword"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(794,8): warning C4013: mkdir: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(815,15): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(818,15): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\replay.c(827,47): warning C4267: инициализация: преобразование из "size_t" в "dword"; возможна потеря данных
   screenshot.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(261,19): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(476,48): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(486,48): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(516,22): warning C4267: +=: преобразование из "size_t" в "dword"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(525,22): warning C4267: +=: преобразование из "size_t" в "dword"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(815,15): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(818,15): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\replay.c(827,47): warning C4267: инициализация: преобразование из "size_t" в "dword"; возможна потеря данных
   seg000.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\screenshot.c(35,8): warning C4013: mkdir: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg000.c(1798,41): warning C4244: =: преобразование "double" в "word", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg000.c(1840,59): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
   seg001.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg000.c(1798,41): warning C4244: =: преобразование "double" в "word", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg000.c(1840,59): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
   seg002.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg001.c(508,106): warning C4244: функция: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg001.c(508,142): warning C4244: функция: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg001.c(508,106): warning C4244: функция: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg001.c(508,142): warning C4244: функция: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(73,16): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(83,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(94,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(178,14): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(180,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(289,37): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(293,44): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(939,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(953,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(1059,16): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg002.c(1061,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg003.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(73,16): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(83,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(94,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(178,14): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(180,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(289,37): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(293,44): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(939,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(953,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(1059,16): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg002.c(1061,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg004.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg003.c(183,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg003.c(615,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg003.c(716,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg003.c(183,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg003.c(615,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg003.c(716,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg004.c(63,29): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg004.c(70,30): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg004.c(129,33): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg004.c(305,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg004.c(476,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg005.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg004.c(63,29): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg004.c(70,30): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg004.c(129,33): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg004.c(305,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg004.c(476,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg006.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg005.c(117,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg005.c(216,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg005.c(117,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg005.c(216,17): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg006.c(1054,15): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg006.c(1145,13): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg006.c(1148,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg007.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg006.c(1054,15): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg006.c(1145,13): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg006.c(1148,19): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
   seg008.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(252,34): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(364,20): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(569,27): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(576,36): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(577,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(577,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(584,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(584,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(590,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(590,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(599,12): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(599,18): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(609,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(609,19): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(678,29): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(680,13): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(680,19): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(771,33): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(776,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(807,43): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(818,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(818,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(855,28): warning C4244: =: преобразование "const word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(856,19): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(859,18): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(911,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(933,35): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(955,12): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(1049,25): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg007.c(1233,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(252,34): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(364,20): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(569,27): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(576,36): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(577,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(577,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(584,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(584,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(590,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(590,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(599,12): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(212,31): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(599,18): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(609,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(355,81): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(356,85): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(400,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(609,19): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(678,29): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(680,13): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(680,19): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(771,33): warning C4244: =: преобразование "short" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(776,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(807,43): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(818,11): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(818,17): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(855,28): warning C4244: =: преобразование "const word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(856,19): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(859,18): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(419,96): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(911,13): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(933,35): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(421,48): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(955,12): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(423,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(1049,25): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(437,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(440,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(467,47): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg007.c(1233,18): warning C4244: =: преобразование "const short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(470,76): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(473,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(478,73): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(481,58): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(485,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(490,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(496,49): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(517,93): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(523,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(575,34): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(576,31): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(590,45): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(591,45): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(612,44): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(631,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(653,73): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(657,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(661,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(682,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(686,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(693,85): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(768,29): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(795,29): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(824,28): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1098,68): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1102,76): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1115,61): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1120,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1125,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1133,60): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1137,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1467,78): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1605,17): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1607,18): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1686,15): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1829,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1952,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1953,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1954,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1957,62): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1960,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1962,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1970,51): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1974,54): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(1998,51): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(2015,54): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(2046,68): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
   fopen64.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(212,31): warning C4244: функция: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(355,81): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(356,85): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(400,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(419,96): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(421,48): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(423,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(437,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(440,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(467,47): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(470,76): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(473,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(478,73): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(481,58): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(485,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(490,75): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(496,49): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(517,93): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(523,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(575,34): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(576,31): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(590,45): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(591,45): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(612,44): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(631,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(653,73): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(657,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(661,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(682,92): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(686,67): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(693,85): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(768,29): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(795,29): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(824,28): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1098,68): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1102,76): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1115,61): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1120,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1125,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1133,60): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1137,65): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1467,78): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1605,17): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1607,18): warning C4244: =: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1686,15): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1829,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1952,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1953,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1954,63): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1957,62): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1960,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1962,15): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1970,51): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1974,54): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(1998,51): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(2015,54): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(2046,68): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg008.c(2061,53): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\seg008.c(2061,53): warning C4244: функция: преобразование "word" в "sbyte", возможна потеря данных
   emu_main.c
   emu_misc.c
   errors.c
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(183,20): warning C4047: функция: "rsize_t" отличается по уровням косвенного обращения от "const char *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(183,17): warning C4024: strncpy_s: различные типы для формального и фактического параметров 2
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(183,36): warning C4047: функция: "const char *" отличается по уровням косвенного обращения от "size_t"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(183,33): warning C4024: strncpy_s: различные типы для формального и фактического параметров 3
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(206,21): warning C4047: функция: "rsize_t" отличается по уровням косвенного обращения от "const char *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(206,18): warning C4024: strncat_s: различные типы для формального и фактического параметров 2
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(206,29): warning C4047: функция: "const char *" отличается по уровням косвенного обращения от "size_t"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\core\emu_misc.c(206,23): warning C4024: strncat_s: различные типы для формального и фактического параметров 3
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(183,20): warning C4047: функция: "rsize_t" отличается по уровням косвенного обращения от "const char *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(183,17): warning C4024: strncpy_s: различные типы для формального и фактического параметров 2
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(183,36): warning C4047: функция: "const char *" отличается по уровням косвенного обращения от "size_t"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(183,33): warning C4024: strncpy_s: различные типы для формального и фактического параметров 3
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(206,21): warning C4047: функция: "rsize_t" отличается по уровням косвенного обращения от "const char *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(206,18): warning C4024: strncat_s: различные типы для формального и фактического параметров 2
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(206,29): warning C4047: функция: "const char *" отличается по уровням косвенного обращения от "size_t"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\core\emu_misc.c(206,23): warning C4024: strncat_s: различные типы для формального и фактического параметров 3
   number_optimizations.c
   threads.c
   gpu.c
   gpu_emu.c
   gpu_framerate.c
   gpu_renderer.c
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\gpu\gpu_renderer.c(78,22): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   gpu_sdl.c
   gpu_text.c
   directorylist.c
   input.c
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\io\directorylist.c(117,2): warning C4133: функция: несовместимые типы - из "TCHAR [260]" в "char *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\io\directorylist.c(129,2): warning C4133: функция: несовместимые типы - из "WCHAR [260]" в "const char *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\io\directorylist.c(169,3): warning C4133: функция: несовместимые типы - из "WCHAR [260]" в "const char *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\io\directorylist.c(117,2): warning C4133: функция: несовместимые типы - из "TCHAR [260]" в "char *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\io\directorylist.c(129,2): warning C4133: функция: несовместимые типы - из "WCHAR [260]" в "const char *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\io\directorylist.c(169,3): warning C4133: функция: несовместимые типы - из "WCHAR [260]" в "const char *"
   keyboard.c
   sound.c
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\io\sound.c(1206,22): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   main.c
   exception.c
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\main.c(259,12): warning C4047: =: "LONG" отличается по уровням косвенного обращения от "void *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\main.c(276,14): warning C4047: =: "LONG" отличается по уровням косвенного обращения от "void *"
-c:\Users\media\source\repos\SDLUni\commonemuframework\emu\main.c(266,19): warning C4101: dwType: неиспользованная локальная переменная
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\main.c(259,12): warning C4047: =: "LONG" отличается по уровням косвенного обращения от "void *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\main.c(276,14): warning C4047: =: "LONG" отличается по уровням косвенного обращения от "void *"
+C:\Users\media\source\repos\uniPCemu\commonemuframework\emu\main.c(266,19): warning C4101: dwType: неиспользованная локальная переменная
   ps2_keyboard_data.c
   bmp.c
   crc32.c
@@ -218,96 +212,99 @@ c:\Users\media\source\repos\SDLUni\commonemuframework\emu\main.c(266,19): warnin
   dynamicimage.c
   imdimage.c
   io.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(213,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(222,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(230,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(246,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(260,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(277,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(294,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(312,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(327,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(339,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(365,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(380,31): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(398,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(417,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(437,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(470,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(478,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(553,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(562,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(570,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(578,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(594,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(625,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(642,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(660,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(675,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(687,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(713,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(728,31): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(746,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(765,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(785,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(806,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(1867,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(1881,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(1914,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(1955,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(1989,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2060,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2074,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2116,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2127,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2136,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2149,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2159,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2174,37): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2180,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2192,37): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2194,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2206,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2213,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2237,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2244,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2270,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2531,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2553,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2620,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2864,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2872,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2892,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2966,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2974,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\basicio\imdimage.c(2994,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(213,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(222,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(230,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(246,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(260,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(277,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(294,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(312,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(327,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(339,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(365,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(380,31): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(398,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(417,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(437,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(470,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(478,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(553,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(562,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(570,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(578,28): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(594,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(625,29): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(642,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(660,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(675,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(687,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(713,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(728,31): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(746,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(765,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(785,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(806,27): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(1867,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(1881,32): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(1914,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(1955,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(1989,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2060,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2074,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2116,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2127,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2136,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2149,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2159,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2174,37): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2180,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2192,37): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2194,36): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2206,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2213,35): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2237,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2244,34): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2270,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2531,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2553,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2620,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2864,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2872,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2892,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2966,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2974,30): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\imdimage.c(2994,33): warning C4244: функция: преобразование "FILEPOS" в "uint32_t", возможна потеря данных
   port_io.c
   port_mapper.c
   staticimage.c
   bios.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\basicio\staticimage.c(42,17): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   biosmenu.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\bios.c(1474,100): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\bios.c(955,17): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\bios.c(1474,100): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
   biosrom.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosmenu.c(3402,67): warning C4267: функция: преобразование из "size_t" в "uint32_t"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosmenu.c(3621,67): warning C4267: функция: преобразование из "size_t" в "uint32_t"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosmenu.c(8004,95): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosmenu.c(3402,67): warning C4267: функция: преобразование из "size_t" в "uint32_t"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosmenu.c(3621,67): warning C4267: функция: преобразование из "size_t" в "uint32_t"; возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosmenu.c(8004,95): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
   boot.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1173,51): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1184,52): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1195,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1206,54): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1245,50): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1256,51): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1267,52): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1278,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\bios\biosrom.c(1484,19): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(284,18): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1173,51): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1184,52): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1195,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1206,54): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1245,50): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1256,51): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1267,52): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1278,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\bios\biosrom.c(1484,19): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
   initmem.c
   biu.c
   cb_manager.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\cpu\biu.c(431,77): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\cpu\biu.c(431,77): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
   cpu.c
   cpu_execution.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\cpu\cpu.c(1398,17): warning C4013: EMU_onCPUReset: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\cpu\cpu.c(1398,17): warning C4013: EMU_onCPUReset: нет определения; предполагается "extern" с возвратом типа "int"
   cpu_interrupts.c
   cpu_jmptbls.c
   cpu_jmptbls0f.c
@@ -330,127 +327,241 @@ c:\Users\media\source\repos\SDLUni\SDLPoP\cpu\cpu.c(1398,17): warning C4013: EMU
   protecteddebugging.c
   protection.c
   timings.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\cpu\protection.c(60,21): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\cpu\protection.c(60,21): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
   unkop.c
   emucore.c
   emu_bios_post.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\core\emucore.c(543,15): warning C4013: initMPU: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\core\emucore.c(766,10): warning C4013: doneMPU: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\core\emucore.c(1534,18): warning C4013: updateMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\core\emucore.c(1560,19): warning C4244: =: преобразование "uint64_t" в "double", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\core\emucore.c(543,15): warning C4013: initMPU: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\core\emucore.c(766,10): warning C4013: doneMPU: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\core\emucore.c(1534,18): warning C4013: updateMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\core\emucore.c(1560,19): warning C4244: =: преобразование "uint64_t" в "double", возможна потеря данных
   emu_bios_sound.c
   emu_vga_bios.c
   debugger.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(513,20): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   debug_files.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1272,88): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1299,103): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1323,56): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1342,103): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1366,56): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\emu\debugger\debugger.c(1378,81): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1272,88): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1299,103): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1323,56): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1342,103): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1366,56): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debugger.c(1378,81): warning C4244: =: преобразование "uint64_t" в "uint32_t", возможна потеря данных
   debug_graphics.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\debug_files.c(81,18): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   debug_sound.c
   runromverify.c
   gpu_debug.c
+C:\Users\media\source\repos\uniPCemu\SDLPoP\emu\debugger\runromverify.c(65,31): warning C4013: file_exists: нет определения; предполагается "extern" с возвратом типа "int"
   8042.c
   adlib.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\8042.c(675,23): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\8042.c(675,23): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
   CMOS.c
   dma.c
   dram.c
   ems.c
   floppy.c
   gameblaster.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\floppy.c(1410,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\floppy.c(1449,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\floppy.c(1513,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\floppy.c(2801,53): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\floppy.c(2873,32): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\floppy.c(1410,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\floppy.c(1449,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\floppy.c(1513,41): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\floppy.c(2801,53): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\floppy.c(2873,32): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
   i430fx.c
   ide.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\i430fx.c(354,24): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\i430fx.c(864,18): warning C4018: <=: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\i430fx.c(354,24): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\i430fx.c(864,18): warning C4018: <=: несоответствие типов со знаком и без знака
   inboard.c
   joystick.c
   adsr.c
   midi.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(188,42): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(189,38): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(209,36): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(210,32): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(230,34): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(231,30): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(272,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(273,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(314,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(315,33): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(335,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\adsr.c(336,33): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(188,42): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(189,38): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(209,36): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(210,32): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(230,34): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(231,30): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(272,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(273,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(314,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(315,33): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(335,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\adsr.c(336,33): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
   mididevice.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\midi.c(308,2): warning C4013: removeMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(368,9): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(469,17): warning C4244: *=: преобразование "float" в "int", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(523,27): warning C4244: -=: преобразование "int64_t" в "int", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(531,29): warning C4018: >=: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(568,70): warning C4018: >=: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(569,30): warning C4018: <: несоответствие типов со знаком и без знака
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(575,49): warning C4244: =: преобразование "uint64_t" в "int", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(499,79): warning C4244: инициализация: преобразование "__int64" в "int", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\commonemuframework\headers\types.h(72,1): warning C4005: MIN: изменение макроопределения (компилируется исходный файл hardware\midi\midi.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\common.h(62): message : см. предыдущее определение "MIN" (компилируется исходный файл hardware\midi\midi.c)
+C:\Users\media\source\repos\uniPCemu\commonemuframework\headers\types.h(73,1): warning C4005: MAX: изменение макроопределения (компилируется исходный файл hardware\midi\midi.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\common.h(59): message : см. предыдущее определение "MAX" (компилируется исходный файл hardware\midi\midi.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\midi.c(957,2): warning C4013: removeMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
   mpu.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(247,89): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(274,108): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(278,61): warning C4305: =: усечение из "double" в "float"
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(395,26): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(397,26): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(409,46): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(886,18): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(895,28): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(899,29): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(912,27): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(916,28): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(935,18): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1088,21): warning C4244: =: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1090,41): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1091,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1093,32): warning C4244: =: преобразование "int32_t" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1288,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1289,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1305,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1306,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1323,39): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1324,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1328,11): warning C4244: *=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1353,57): warning C4244: =: преобразование "ptrnum" в "word", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1397,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1398,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1402,32): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1429,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1430,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1447,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1448,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1465,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1466,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1505,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1506,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1510,30): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1529,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1530,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1532,19): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1556,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1557,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1574,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1575,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1592,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1593,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1956,31): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(1965,31): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(2365,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(2433,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(2947,16): warning C4047: =: "int" отличается по уровням косвенного обращения от "void *"
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mididevice.c(3053,14): warning C4047: =: "int" отличается по уровням косвенного обращения от "void *"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(247,89): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(274,108): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(278,61): warning C4305: =: усечение из "double" в "float"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(395,26): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(397,26): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(409,46): warning C4244: +=: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(886,18): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(895,28): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(899,29): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(912,27): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(916,28): warning C4244: функция: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(935,18): warning C4244: =: преобразование "double" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1088,21): warning C4244: =: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1090,41): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1091,37): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1093,32): warning C4244: =: преобразование "int32_t" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1288,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1289,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1305,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1306,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1323,39): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1324,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1328,11): warning C4244: *=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1353,57): warning C4244: =: преобразование "ptrnum" в "word", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1397,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1398,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1402,32): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1429,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1430,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1447,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1448,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1465,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1466,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1505,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1506,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1510,30): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1529,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1530,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1532,19): warning C4244: функция: преобразование "int" в "float", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1556,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1557,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1574,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1575,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1592,35): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1593,31): warning C4244: +=: преобразование "float" в "int32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1956,31): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(1965,31): warning C4244: =: преобразование "sword" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(2365,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(2433,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(2947,16): warning C4047: =: "int" отличается по уровням косвенного обращения от "void *"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\midi\mididevice.c(3053,14): warning C4047: =: "int" отличается по уровням косвенного обращения от "void *"
   modem.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mpu.c(270,28): warning C4013: MIDI_OUT: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mpu.c(279,5): warning C4013: removeMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\midi\mpu.c(286,5): warning C4013: setMPUTimer: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(7,19): error C2061: синтаксическая ошибка: идентификатор "init_game_main" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(7,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(7,34): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(8,19): error C2061: синтаксическая ошибка: идентификатор "start_game" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(8,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(8,30): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(9,18): error C2061: синтаксическая ошибка: идентификатор "process_key" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(9,18): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(9,30): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(10,19): error C2061: синтаксическая ошибка: идентификатор "play_frame" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(10,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(10,30): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(11,19): error C2061: синтаксическая ошибка: идентификатор "draw_game_frame" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(11,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(11,35): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(12,19): error C2061: синтаксическая ошибка: идентификатор "anim_tile_modif" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(12,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(12,35): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(14,19): error C2061: синтаксическая ошибка: идентификатор "load_sounds" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(14,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(14,35): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(15,19): error C2061: синтаксическая ошибка: идентификатор "load_opt_sounds" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(15,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(15,39): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(16,19): error C2061: синтаксическая ошибка: идентификатор "load_lev_spr" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(16,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(16,36): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(17,19): error C2061: синтаксическая ошибка: идентификатор "load_level" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(17,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(17,30): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(19,18): error C2061: синтаксическая ошибка: идентификатор "play_kid_frame" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(19,18): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(19,33): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(20,19): error C2061: синтаксическая ошибка: идентификатор "play_guard_frame" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(20,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(20,36): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(21,19): error C2061: синтаксическая ошибка: идентификатор "check_the_end" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(21,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(21,33): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(22,19): error C2061: синтаксическая ошибка: идентификатор "check_fall_flo" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(22,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(22,34): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(23,19): error C2061: синтаксическая ошибка: идентификатор "read_joyst_control" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(23,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(23,38): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(24,19): error C2061: синтаксическая ошибка: идентификатор "draw_kid_hp" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(24,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(24,37): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(25,19): error C2061: синтаксическая ошибка: идентификатор "draw_guard_hp" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(25,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(25,39): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(26,19): error C2061: синтаксическая ошибка: идентификатор "add_life" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(26,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(26,28): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(27,19): error C2061: синтаксическая ошибка: идентификатор "set_health_life" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(27,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(27,35): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(28,19): error C2061: синтаксическая ошибка: идентификатор "draw_hp" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(28,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(28,27): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(29,19): error C2061: синтаксическая ошибка: идентификатор "do_delta_hp" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(29,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(29,31): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(30,19): error C2061: синтаксическая ошибка: идентификатор "play_sound" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(30,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(30,34): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(31,19): error C2061: синтаксическая ошибка: идентификатор "play_next_sound" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(31,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(31,35): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(32,19): error C2061: синтаксическая ошибка: идентификатор "check_sword_vs_sword" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(32,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(32,40): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(33,19): error C2061: синтаксическая ошибка: идентификатор "load_chtab_from_file" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(33,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(33,44): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(34,19): error C2061: синтаксическая ошибка: идентификатор "free_all_chtabs_from" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(34,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(34,44): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(35,19): error C2061: синтаксическая ошибка: идентификатор "load_more_opt_graf" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(35,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(35,49): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(36,18): error C2061: синтаксическая ошибка: идентификатор "do_paused" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(36,18): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(36,28): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(37,19): error C2061: синтаксическая ошибка: идентификатор "read_keyb_control" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(37,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(37,37): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(38,19): error C2061: синтаксическая ошибка: идентификатор "copy_screen_rect" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(38,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(38,42): error C2059: синтаксическая ошибка: <cv-qualifer> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(39,19): error C2061: синтаксическая ошибка: идентификатор "toggle_upside" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(39,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(39,33): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(40,19): error C2061: синтаксическая ошибка: идентификатор "feather_fall" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(40,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(40,32): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(41,18): error C2061: синтаксическая ошибка: идентификатор "parse_grmode" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(41,18): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(41,31): error C2059: синтаксическая ошибка: <parameter-list> (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(42,19): error C2061: синтаксическая ошибка: идентификатор "gen_palace_wall_colors" (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(42,19): error C2059: синтаксическая ошибка: ; (компилируется исходный файл hardware\midi\mpu.c)
+C:\Users\media\source\repos\uniPCemu\SDLPoP\pop\proto.h(42,19): fatal error C1003: число ошибок превышает 100; остановка компиляции (компилируется исходный файл hardware\midi\mpu.c)
   parallel.c
   pci.c
   pic.c
   pit.c
   ppi.c
   ps2_keyboard.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\ppi.c(256,23): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\ppi.c(256,23): warning C4013: emu_raise_resetline: нет определения; предполагается "extern" с возвратом типа "int"
   ps2_mouse.c
   sermouse.c
   softdebugger.c
@@ -466,9 +577,9 @@ c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\ppi.c(256,23): warning C4013:
   vga_dac.c
   vga_dacrenderer.c
   vga_io.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\vga\vga_dacrenderer.c(190,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\vga\vga_dacrenderer.c(191,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\vga\vga_dacrenderer.c(192,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\vga\vga_dacrenderer.c(190,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\vga\vga_dacrenderer.c(191,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\hardware\vga\vga_dacrenderer.c(192,21): warning C4244: =: преобразование "word" в "byte", возможна потеря данных
   vga_mmu.c
   vga_precalcs.c
   vga_renderer.c
@@ -495,24 +606,24 @@ c:\Users\media\source\repos\SDLUni\SDLPoP\hardware\vga\vga_dacrenderer.c(192,21)
   unkint.c
   mmuhandler.c
   dro.c
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(261,8): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(322,38): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(352,8): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(364,36): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(365,41): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(937,151): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(939,62): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(942,42): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(997,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1009,54): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1020,55): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1031,56): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1066,42): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1283,11): warning C4244: =: преобразование "uint64_t" в "word", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1394,57): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1396,24): warning C4244: return: преобразование "uint64_t" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1477,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1546,9): warning C4244: return: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(261,8): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(322,38): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(352,8): warning C4244: функция: преобразование "uint64_t" в "uint32_t", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(364,36): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(365,41): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(937,151): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(939,62): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(942,42): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(997,53): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1009,54): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1020,55): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1031,56): warning C4244: =: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1066,42): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1283,11): warning C4244: =: преобразование "uint64_t" в "word", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1394,57): warning C4244: функция: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1396,24): warning C4244: return: преобразование "uint64_t" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1477,84): warning C4244: функция: преобразование "word" в "byte", возможна потеря данных
+C:\Users\media\source\repos\uniPCemu\SDLPoP\mmu\mmuhandler.c(1546,9): warning C4244: return: преобразование "uint64_t" в "byte", возможна потеря данных
   isoreader.c
   lba.c
   mid.c
@@ -520,58 +631,4 @@ c:\Users\media\source\repos\SDLUni\SDLPoP\mmu\mmuhandler.c(1546,9): warning C424
   state.c
   seqtbl.c
   stb_vorbis.c
-  seg009.cpp
-  SDL_winrt_main_NonXAML.cpp
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(267,18): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(267,18): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(433,15): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(433,15): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(441,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(441,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(499,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(499,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(529,12): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(529,12): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(538,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(538,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(548,7): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(548,7): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(560,9): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(560,9): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(562,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(562,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(576,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(576,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(600,9): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(600,9): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(602,8): warning C4200: нестандартное расширение: массив нулевого размера в структуре (объединении) (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\types.h(602,8): message : Этот член будет пропущен конструктором, установленным по умолчанию, или оператором назначения копии или перемещения (компилируется исходный файл pop\seg009.cpp)
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(113,2): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(325,21): warning C4244: =: преобразование "time_t" в "dword", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(433,3): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(459,4): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(1332,131): warning C4244: аргумент: преобразование "short" в "byte", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(1463,58): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(1658,31): warning C4267: =: преобразование из "size_t" в "short"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2310,86): warning C4267: аргумент: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2749,81): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2752,45): warning C4838: Преобразование из "int" в "short" требует сужающего преобразования.
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2784,22): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2787,81): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2790,45): warning C4838: Преобразование из "int" в "short" требует сужающего преобразования.
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(2988,5): warning C4477: "snprintf": в строке форматирования "%s" требуется аргумент типа "char *", но вариативный аргумент "1" имеет тип "Platform::String ^"
-c:\Users\media\source\repos\SDLUni\SDLPoP\pop\seg009.cpp(3460,64): warning C4244: =: преобразование "double" в "word", возможна потеря данных
-x64\Debug\main.obj : warning LNK4042: объект указан более одного раза; лишние не учитываются
-x64\Debug\midi.obj : warning LNK4042: объект указан более одного раза; лишние не учитываются
-     Создается библиотека C:\Users\media\source\repos\SDLUni\x64\Debug\SDLPoP\SDLPoP.lib и объект C:\Users\media\source\repos\SDLUni\x64\Debug\SDLPoP\SDLPoP.exp
-midi.obj : error LNK2019: ссылка на неразрешенный внешний символ removeMPUTimer в функции MPU401_Done.
-mpu.obj : error LNK2001: неразрешенный внешний символ removeMPUTimer.
-seg009.obj : error LNK2019: ссылка на неразрешенный внешний символ stop_midii в функции stop_sounds.
-seg009.obj : error LNK2019: ссылка на неразрешенный внешний символ midi_callbackk в функции "void __cdecl audio_callback(void *,unsigned char *,int)" (?audio_callback@@YAXPEAXPEAEH@Z).
-seg009.obj : error LNK2019: ссылка на неразрешенный внешний символ play_midi_sound в функции play_sound_from_buffer.
-emucore.obj : error LNK2019: ссылка на неразрешенный внешний символ initMPU в функции initEMU.
-emucore.obj : error LNK2019: ссылка на неразрешенный внешний символ doneMPU в функции doneEMU.
-emucore.obj : error LNK2019: ссылка на неразрешенный внешний символ updateMPUTimer в функции coreHandler.
-mpu.obj : error LNK2019: ссылка на неразрешенный внешний символ MIDI_OUT в функции MPU401_IntelligentOut.
-mpu.obj : error LNK2019: ссылка на неразрешенный внешний символ setMPUTimer в функции MPU401_Event.
-C:\Users\media\source\repos\SDLUni\x64\Debug\SDLPoP\SDLPoP.exe : fatal error LNK1120: неразрешенных внешних элементов: 9
+C:\Program Files (x86)\Windows Kits\10\bin\10.0.15063.0\XamlCompiler\Microsoft.Windows.UI.Xaml.Common.targets(415,5): error MSB4181: задача "CompileXaml" возвратила значение false, но не зарегистрировала ошибку.

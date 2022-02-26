@@ -1,22 +1,4 @@
-/*
-SDLPoP, a port/conversion of the DOS game Prince of Persia.
-Copyright (C) 2013-2020  Dávid Nagy
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
-The authors of this program may be contacted at https://forum.princed.org
-*/
+//
 
 #ifndef TYPES_H
 #define TYPES_H
@@ -38,6 +20,7 @@ The authors of this program may be contacted at https://forum.princed.org
 #if SDL_BYTEORDER != SDL_LIL_ENDIAN
 #error This program is not (yet) prepared for big endian CPUs, please contact the author.
 #endif
+#include <pop/config.h>
 
 // This macro is from SDL_types.h / SDL_stdinc.h .
 // It used to be #undefined at the end of that file, but since some time in 2006 it's kept available.
@@ -453,7 +436,7 @@ typedef struct dat_type {
 
 typedef void __pascal far (*cutscene_ptr_type)();
 
-#ifdef USE_FADE
+//#ifdef USE_FADE
 typedef struct palette_fade_type {
 	word which_rows;
 	word wait_time;
@@ -463,13 +446,13 @@ typedef struct palette_fade_type {
 	int __pascal far (*proc_fade_frame)(struct palette_fade_type far *palette_buffer);
 	void __pascal far (*proc_restore_free)(struct palette_fade_type far *palette_buffer);
 } palette_fade_type;
-#endif
+//#endif
 
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
 
-#ifdef USE_TEXT
+//#ifdef USE_TEXT
 typedef struct font_type {
 	byte first_char;
 	byte last_char;
@@ -501,7 +484,7 @@ typedef struct rawfont_type {
 SDL_COMPILE_TIME_ASSERT(rawfont_type, sizeof(rawfont_type) == 10);
 #pragma pack(pop)
 
-#endif
+//#endif
 
 typedef enum data_location {
 	data_none = 0,

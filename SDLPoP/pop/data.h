@@ -18,6 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 The authors of this program may be contacted at https://forum.princed.org
 */
 
+#include <pop/config.h>
+#include <pop/types.h>
 #ifndef DATA_H
 #define DATA_H
 

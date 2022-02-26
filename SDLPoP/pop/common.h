@@ -50,7 +50,7 @@ extern "C" {
 #define S_ISDIR(mode)  (((mode) & S_IFMT) == S_IFDIR)
 #endif
 
-#include "config.h"
+//#include "config.h"
 #include "types.h"
 #include "proto.h"
 #include "data.h"
